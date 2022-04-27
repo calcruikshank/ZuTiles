@@ -51,8 +51,8 @@ public class UserPresenceTest : MonoBehaviour
                 myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
                 myObject.InjectDependencies(userPresence);
 
-                setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
-                setStencilReference.Hide();
+                //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
+                
 
                 //this checks if the game is zu tiles and if it is then adds a zu tile player script to myobject has to be a better way to do this
                 if (ZuTilesSetup.singleton != null)

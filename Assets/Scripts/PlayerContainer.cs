@@ -36,7 +36,7 @@ public class PlayerContainer : MonoBehaviour
         cardsInHand.Add(cardToAdd);
         UpdateCardPositions();
         cardToAdd.GetComponent<MovableObjectStateMachine>().GivePlayerOwnership(this);
-        //AddToCompanion(cardToAdd);
+        AddToCompanion(cardToAdd);
         
     }
 
