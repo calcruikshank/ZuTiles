@@ -4,46 +4,52 @@ using UnityEngine;
 
 public class SetStencilReference : MonoBehaviour
 {
-    public GameObject hideObjectsWall;
+    public List<GameObject> hideObjectsWalls;
     public enum HideOptions
     {
         Outside,
         Inside
     }
     public HideOptions hideIf = HideOptions.Inside;
-    public GameObject[] objectsToHide;
+    public List<GameObject> objectsToHide;
 
-    private Shader _hideObjects;
-    private Shader _hiddenObject;
+    [SerializeField] private Shader _hideObjects;
+    [SerializeField] private Shader _hiddenObject;
 
     // Start is called before the first frame update
-    void Start()
+    public void Hide()
     {
-        if(hideIf == HideOptions.Outside)
+        if (hideIf == HideOptions.Outside)
         {
-            _hiddenObject = Shader.Find("Custom/HideObjects/HideObjectIfOutside");
+            // _hiddenObject = Shader.Find("Custom/HideObjects/HideObjectIfOutside");
+
+            // Debug.Log(Shader.Find("Custom/HideObjects/HideObjectIfOutside"));
         }
         else
         {
-            _hiddenObject = Shader.Find("Custom/HideObjects/HideObjectIfInside");
+            //  _hiddenObject = Shader.Find("Custom/HideObjects/HideObjectIfInside");
+            // Debug.Log(Shader.Find("Custom/HideObjects/HideObjectIfInside"));
         }
 
-        _hideObjects = Shader.Find("Custom/HideObjects/HideObjectsWall");
+        //  _hideObjects = Shader.Find("Custom/HideObjects/HideObjectsWall");
 
-
-        if (_hiddenObject == null || _hideObjects == null )
+        if (_hiddenObject == null || _hideObjects == null)
         {
-            Debug.Log("Shaders not found!");            
+            Debug.Log("Shaders not found!");
         }
-        else 
+        else
         {
-            hideObjectsWall.GetComponent<Renderer>().material.shader = _hideObjects;
-            hideObjectsWall.GetComponent<Renderer>().material.SetInt("_StencilRef", 3);
-
-            for (int i = 0; i < objectsToHide.Length; i++)
+            foreach (GameObject hideObjectsWall in hideObjectsWalls)
             {
-                objectsToHide[i].GetComponent<Renderer>().material.shader = _hiddenObject;
-                objectsToHide[i].GetComponent<Renderer>().material.SetInt("_StencilRef", 3);
+                hideObjectsWall.GetComponentInChildren<Renderer>().material.shader = _hideObjects;
+                hideObjectsWall.GetComponentInChildren<Renderer>().material.SetInt("_StencilRef", 3);
+
+            }
+
+            for (int i = 0; i < objectsToHide.Count; i++)
+            {
+                objectsToHide[i].GetComponentInChildren<Renderer>().material.shader = _hiddenObject;
+                objectsToHide[i].GetComponentInChildren<Renderer>().material.SetInt("_StencilRef", 3);
             }
         }
 
@@ -64,6 +70,6 @@ public class SetStencilReference : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

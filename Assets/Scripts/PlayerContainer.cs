@@ -12,20 +12,32 @@ public class PlayerContainer : MonoBehaviour
     List<GameObject> cardsInHand = new List<GameObject>();
     PlayerPresenceDrawer inPlayer;
     string cardHandID;
+    SetStencilReference
+     setStencilReference;
+
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
     private void Start()
     {
-        inPlayer = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>();
+        inPlayer = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>(); 
+        setStencilReference = FindObjectOfType<SetStencilReference>();
     }
     public void AddCardToHand(GameObject cardToAdd)
     {
         //position = (this.transform.bounds.x - this.transform.bounds.x + padding)
         //cardToAdd.transform.position = new Vector3(((this.transform.position.x + (this.transform.GetComponent<Collider>().bounds.size.x / 2) - (this.transform.GetComponent<Collider>().bounds.size.x / 2)) + (cardToAdd.transform.GetComponentInChildren<Collider>().bounds.size.x * cardsInHand.Count) + movableObjectPadding * cardsInHand.Count), cardToAdd.transform.position.y, this.transform.position.z);
         cardToAdd.transform.rotation = this.transform.rotation;
+        Transform[] objectsInCardToAdd = cardToAdd.GetComponentsInChildren<Transform>();
+        foreach (Transform objectInCard in objectsInCardToAdd)
+        {
+            setStencilReference.objectsToHide.Add(objectInCard.gameObject);
+            Debug.Log(objectInCard + " Object in card");
+        }
+        setStencilReference.Hide();
         cardsInHand.Add(cardToAdd);
         UpdateCardPositions();
         cardToAdd.GetComponent<MovableObjectStateMachine>().GivePlayerOwnership(this);
-        AddToCompanion(cardToAdd);
+        //AddToCompanion(cardToAdd);
+        
     }
 
     private void AddToCompanion(GameObject cardToAdd)
@@ -37,7 +49,7 @@ public class PlayerContainer : MonoBehaviour
         cardToAdd.GetComponent<Deck>().CardCompanionDefiniiton = newCardDef;
         AddCardToHand(newCardDef);
     }
-    
+
     private async void AddCardToHand(CardDefinition newCardDef)
     {
         cardHandID = CardsTool.singleton.GetCardHandDisplayedForPlayer(inPlayer.userId);
@@ -57,7 +69,7 @@ public class PlayerContainer : MonoBehaviour
     }
     private async void RemoveCardFromPlayerHand(GameObject cardToRemove)
     {
-        await  CardsTool.singleton.RemoveCardFromPlayerHand_Async(inPlayer.userId, cardHandID, cardToRemove.GetComponent<Deck>().CardCompanionDefiniiton);
+        await CardsTool.singleton.RemoveCardFromPlayerHand_Async(inPlayer.userId, cardHandID, cardToRemove.GetComponent<Deck>().CardCompanionDefiniiton);
     }
 
     void UpdateCardPositions()

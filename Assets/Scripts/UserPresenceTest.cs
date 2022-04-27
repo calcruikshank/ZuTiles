@@ -10,10 +10,10 @@ public class UserPresenceTest : MonoBehaviour
 {
     public List<PlayerPresenceDrawer> playerList = new List<PlayerPresenceDrawer>();
     private List<string> onScreenLog = new List<string>();
-    [SerializeField]GameObject playerPresenceSceneObject;
+    [SerializeField] GameObject playerPresenceSceneObject;
 
     public static UserPresenceTest singleton;
-
+    SetStencilReference setStencilReference;
 
     List<Texture2D> cardImageList = new List<Texture2D>();
 
@@ -24,6 +24,7 @@ public class UserPresenceTest : MonoBehaviour
             Destroy(this);
         }
         singleton = this;
+        setStencilReference = FindObjectOfType<SetStencilReference>();
         GameObject presenceObserverObj = GameObject.FindWithTag("UserPresenceObserver");
         UserPresenceObserver userPresenceObserver = presenceObserverObj.GetComponent<UserPresenceObserver>();
         userPresenceObserver.OnUserPresence += OnUserPresence;
@@ -46,11 +47,12 @@ public class UserPresenceTest : MonoBehaviour
                 };*/
 
                 GameObject scenePrefab = Instantiate(playerPresenceSceneObject, userPresence.boardUserPosition.screenPosition, Quaternion.identity);
-               
 
                 myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
                 myObject.InjectDependencies(userPresence);
 
+                setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
+                setStencilReference.Hide();
 
                 //this checks if the game is zu tiles and if it is then adds a zu tile player script to myobject has to be a better way to do this
                 if (ZuTilesSetup.singleton != null)
@@ -73,7 +75,7 @@ public class UserPresenceTest : MonoBehaviour
         {
             myObject.UpdateUserPresence(userPresence);
         }
-        
+
     }
 
 
@@ -153,7 +155,7 @@ public class UserPresenceTest : MonoBehaviour
     void CompanionButtonPressed(string inGameboardUserId, string inCallbackMethod)
     {
         AddToLog("--- Companion Button Pressed with callback: " + inCallbackMethod);
-        
+
     }
 
     void CardsButtonPressed(string inGameboardUserId, string inCallbackMethod, string inCardsId)

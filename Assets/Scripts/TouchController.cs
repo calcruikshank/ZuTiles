@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TouchController : MonoBehaviour
 {
-    [SerializeField] LayerMask buttonLayerMask;
     private void Awake()
     {
         TouchScript.touchedDown += FingerDown;

@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.7193775, y: 0.85366845, z: -0.57607555}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -43,7 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c9c648deb4da4488c3d976b06444ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideObjectsWall: {fileID: 0}
+  hideObjectsWalls: []
+  hideIf: 0
   objectsToHide:
   - {fileID: 0}
-  hideIf: 0
+  _hideObjects: {fileID: 4800000, guid: b28b3bceececed546b3e2a303a0f44a7, type: 3}
+  _hiddenObject: {fileID: 4800000, guid: a13bb999138872c4eaa1348f3e9f7467, type: 3}
+  hideIfOutsideMat: {fileID: 0}
