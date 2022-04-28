@@ -44,6 +44,11 @@ namespace Gameboard.Examples{
             this.gameObject.GetComponent<PlayerContainer>().AddCardToHand(cardToDraw);
         }
 
+        public Vector3 GetRotation()
+        {
+            return this.transform.eulerAngles;
+        }
+
         
 
     }

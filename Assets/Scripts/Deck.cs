@@ -14,7 +14,6 @@ public class Deck : MonoBehaviour
     GameObject currentCardShowing;
     public CardDefinition CardCompanionDefiniiton;
 
-    [SerializeField] LayerMask playerContainerLayerMask;
     void Start()
     {
         InitializeDeck();

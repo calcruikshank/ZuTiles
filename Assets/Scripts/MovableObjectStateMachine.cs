@@ -24,7 +24,7 @@ public class MovableObjectStateMachine : MonoBehaviour
 
     Vector3 startingTouchPositionFinger2;
     Vector3 fingerMovePosition2;
-    PlayerContainer playerOwningCard;
+    public PlayerContainer playerOwningCard;
     Vector3 targetRotation;
     float startingXRotation;
 
@@ -61,6 +61,7 @@ public class MovableObjectStateMachine : MonoBehaviour
 
     private void InitializeMovableObject()
     {
+        playerOwningCard = null;
         this.state = State.Idle;
         this.idList.Clear();
         if (this.GetComponentInChildren<Deck>() != null)

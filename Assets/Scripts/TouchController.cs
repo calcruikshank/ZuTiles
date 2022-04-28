@@ -12,19 +12,19 @@ public class TouchController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     private void AllFingersReleased(Vector3 position, int index)
     {
     }
 
-   
+
 
     private void FingerDown(Vector3 position, int index)
     {
@@ -38,13 +38,23 @@ public class TouchController : MonoBehaviour
                 Debug.Log("Hit Button Selector");
                 return;
             }
+            if (raycastHit.transform.GetComponentInChildren<PlayerContainer>() != null)
+            {
+                PlayerContainer playerContainer = raycastHit.transform.GetComponentInChildren<PlayerContainer>();
+                playerContainer.SelectContainer(index, raycastHit.point);
+            }
             if (GetFinalParent(raycastHit).GetComponent<MovableObjectStateMachine>() != null)
             {
+                
                 //if a movable was hit set position to target position and add movable to the dictionary
                 MovableObjectStateMachine movableHit = GetFinalParent(raycastHit).GetComponent<MovableObjectStateMachine>();
-                Ray ray2 = Camera.main.ScreenPointToRay(movableHit.transform.position);
-                //Vector3 offset = new Vector3(movableHit.transform.position.x - raycastHit.point.x, 0, movableHit.transform.position.z - raycastHit.point.z);
-                movableHit.SetTouched(index, raycastHit.point);
+                if (movableHit.playerOwningCard == null)
+                {
+                    Ray ray2 = Camera.main.ScreenPointToRay(movableHit.transform.position);
+                    //Vector3 offset = new Vector3(movableHit.transform.position.x - raycastHit.point.x, 0, movableHit.transform.position.z - raycastHit.point.z);
+                    movableHit.SetTouched(index, raycastHit.point);
+                }
+               
             }
             if (raycastHit.transform.GetComponent<BoxSelection>() != null)
             {
@@ -54,9 +64,10 @@ public class TouchController : MonoBehaviour
             if (raycastHit.transform.GetComponentInChildren<BoxSelectionObject>() != null)
             {
                 BoxSelectionObject boxSelection = raycastHit.transform.GetComponent<BoxSelectionObject>();
-                boxSelection.SelectBox (index, raycastHit.point);
+                boxSelection.SelectBox(index, raycastHit.point);
             }
-            
+
+
         }
     }
     public Transform GetFinalParent(RaycastHit raycastHit)
@@ -69,5 +80,5 @@ public class TouchController : MonoBehaviour
         }
         return targetToMove;
     }
-    
+
 }
