@@ -33,12 +33,9 @@ namespace Gameboard
             UserPresenceObserver userPresenceObserver = presenceObserverObj.GetComponent<UserPresenceObserver>();
             userPresenceObserver.OnUserPresence += OnUserPresence;
             CompanionTemplateTool.singleton.ButtonPressed += CompanionButtonPressed;
-            
+
         }
 
-        private void CardsButtonPressed(object sender, GameboardCompanionButtonPressedEventArgs e)
-        {
-        }
 
         private void Update()
         {
@@ -51,12 +48,12 @@ namespace Gameboard
             // Do the setup here in Update so we can just do a Singleton lookup on Gameboard, and not worry about race-conditions in using Start.
             if (!setupComplete)
             {
-                
-                    setupComplete = true;
+
+                setupComplete = true;
 
                 Gameboard.singleton.companionController.CompanionCardsButtonPressed += CardsButtonPressed;
-                    Debug.Log("--- Gameboard Companion Template Tool is ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-              
+                Debug.Log("--- Gameboard Companion Template Tool is ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
             }
             if (!string.IsNullOrEmpty(resolveOnUpdate))
             {
@@ -187,7 +184,6 @@ namespace Gameboard
             if (!string.IsNullOrEmpty(resolveOnUpdate))
             {
                 Debug.Log("--- Still resolving previous button press!");
-
             }
 
             resolveOnUpdate = inCallbackMethod;

@@ -84,6 +84,7 @@ public class CardCompanionHandler : MonoBehaviour
         // NOTE: Currently not awaiting the LoadAsset as the companion simulator doesn't respond for Asset loads.
         //CompanionCreateObjectEventArgs downImgEventArgs = await Gameboard.Gameboard.singleton.companionController.LoadAsset(inPlayer.gameboardId, buttonDownImage);
 
+        
         await Gameboard.Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.gameboardId, "1", DataTypes.ObjectDisplayStates.Displayed);
         await Gameboard.Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.gameboardId, "1", "Button A", "ButtonAPressed");
         AddToLog("--- Added Button A to " + inPlayer.gameboardId);

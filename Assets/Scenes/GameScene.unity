@@ -805,9 +805,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInDeck:
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &171853852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,6 +836,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &171853854
 Transform:
@@ -979,9 +977,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInDeck:
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &209038191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1013,6 +1008,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &209038193
 Transform:
@@ -1342,9 +1338,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInDeck:
   - {fileID: 8942986124643188718, guid: 9788230cdbbbe634f9cb815e3745eb0c, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &311712879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1376,6 +1369,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &311712881
 Transform:
@@ -1839,9 +1833,6 @@ MonoBehaviour:
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &380199364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,6 +1864,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &380199366
 Transform:
@@ -2705,9 +2697,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInDeck:
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &490790825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2739,6 +2728,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &490790827
 Transform:
@@ -3442,9 +3432,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInDeck:
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &555184034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3476,6 +3463,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &555184036
 Transform:
@@ -6427,9 +6415,6 @@ MonoBehaviour:
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &1110984106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6461,6 +6446,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &1110984108
 Transform:
@@ -9806,9 +9792,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInDeck:
   - {fileID: 8942986124643188718, guid: a1d9377e84fbf8e4d917f93830a467a0, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &1796600649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9840,6 +9823,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &1796600651
 Transform:
@@ -10003,6 +9987,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!114 &1838842068
 MonoBehaviour:
@@ -10463,9 +10448,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInDeck:
   - {fileID: 8942986124643188718, guid: 9788230cdbbbe634f9cb815e3745eb0c, type: 3}
-  playerContainerLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &1934120112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10497,6 +10479,7 @@ MonoBehaviour:
   state: 0
   idList: 
   faceUp: 0
+  playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &1934120114
 Transform:
