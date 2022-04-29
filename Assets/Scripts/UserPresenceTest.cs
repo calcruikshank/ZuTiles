@@ -6,162 +6,212 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UserPresenceTest : MonoBehaviour
+namespace Gameboard
 {
-    public List<PlayerPresenceDrawer> playerList = new List<PlayerPresenceDrawer>();
-    private List<string> onScreenLog = new List<string>();
-    [SerializeField] GameObject playerPresenceSceneObject;
 
-    public static UserPresenceTest singleton;
-    SetStencilReference setStencilReference;
-
-    List<Texture2D> cardImageList = new List<Texture2D>();
-
-    void Start()
+    public class UserPresenceTest : MonoBehaviour
     {
-        if (singleton != null)
-        {
-            Destroy(this);
-        }
-        singleton = this;
-        setStencilReference = FindObjectOfType<SetStencilReference>();
-        GameObject presenceObserverObj = GameObject.FindWithTag("UserPresenceObserver");
-        UserPresenceObserver userPresenceObserver = presenceObserverObj.GetComponent<UserPresenceObserver>();
-        userPresenceObserver.OnUserPresence += OnUserPresence;
-    }
+        public List<PlayerPresenceDrawer> playerList = new List<PlayerPresenceDrawer>();
+        private List<string> onScreenLog = new List<string>();
+        [SerializeField] GameObject playerPresenceSceneObject;
 
-    void OnUserPresence(GameboardUserPresenceEventArgs userPresence)
-    {
-        PlayerPresenceDrawer myObject = playerList.Find(s => s.userId == userPresence.userId);
-        if (myObject == null)
+        public static UserPresenceTest singleton;
+        SetStencilReference setStencilReference;
+
+        List<Texture2D> cardImageList = new List<Texture2D>();
+        private float cachedTime; private string resolveOnUpdate;
+        bool setupComplete = false;
+        void Start()
         {
-            Debug.Log("my object is not null");
-            // Add it here, and when adding also populate myObject
-            // If the user doesn't exist in our player list, add them now.
-            if (playerList.Find(s => s.userId == userPresence.userId) == null)
+            if (singleton != null)
             {
-                Debug.Log(userPresence.userId + " user presence id");
-                /*UserPresencePlayer testPlayer = new UserPresencePlayer()
-                {
-                    gameboardId = userPresence.userId
-                };*/
+                Destroy(this);
+            }
+            singleton = this;
+            setStencilReference = FindObjectOfType<SetStencilReference>();
+            GameObject presenceObserverObj = GameObject.FindWithTag("UserPresenceObserver");
+            UserPresenceObserver userPresenceObserver = presenceObserverObj.GetComponent<UserPresenceObserver>();
+            userPresenceObserver.OnUserPresence += OnUserPresence;
+            CompanionTemplateTool.singleton.ButtonPressed += CompanionButtonPressed;
+            
+        }
 
-                GameObject scenePrefab = Instantiate(playerPresenceSceneObject, userPresence.boardUserPosition.screenPosition, Quaternion.identity);
+        private void CardsButtonPressed(object sender, GameboardCompanionButtonPressedEventArgs e)
+        {
+        }
 
-                myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
-                myObject.InjectDependencies(userPresence);
+        private void Update()
+        {
+            cachedTime = Time.time;
+            if (Gameboard.singleton == null)
+            {
+                return;
+            }
 
-                //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
+            // Do the setup here in Update so we can just do a Singleton lookup on Gameboard, and not worry about race-conditions in using Start.
+            if (!setupComplete)
+            {
                 
+                    setupComplete = true;
 
-                //this checks if the game is zu tiles and if it is then adds a zu tile player script to myobject has to be a better way to do this
-                if (ZuTilesSetup.singleton != null)
+                Gameboard.singleton.companionController.CompanionCardsButtonPressed += CardsButtonPressed;
+                    Debug.Log("--- Gameboard Companion Template Tool is ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+              
+            }
+            if (!string.IsNullOrEmpty(resolveOnUpdate))
+            {
+                ResolveButtonPress(resolveOnUpdate);
+                resolveOnUpdate = "";
+            }
+        }
+
+        void OnUserPresence(GameboardUserPresenceEventArgs userPresence)
+        {
+            PlayerPresenceDrawer myObject = playerList.Find(s => s.userId == userPresence.userId);
+            if (myObject == null)
+            {
+                Debug.Log("my object is not null");
+                // Add it here, and when adding also populate myObject
+                // If the user doesn't exist in our player list, add them now.
+                if (playerList.Find(s => s.userId == userPresence.userId) == null)
                 {
-                    ZuTilesSetup.singleton.AddZuTilePlayer(myObject);
+                    Debug.Log(userPresence.userId + " user presence id");
+                    /*UserPresencePlayer testPlayer = new UserPresencePlayer()
+                    {
+                        gameboardId = userPresence.userId
+                    };*/
+
+                    GameObject scenePrefab = Instantiate(playerPresenceSceneObject, userPresence.boardUserPosition.screenPosition, Quaternion.identity);
+
+                    myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
+                    myObject.InjectDependencies(userPresence);
+
+                    //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
+
+
+                    //this checks if the game is zu tiles and if it is then adds a zu tile player script to myobject has to be a better way to do this
+                    if (ZuTilesSetup.singleton != null)
+                    {
+                        ZuTilesSetup.singleton.AddZuTilePlayer(myObject);
+                    }
+
+                    if (!string.IsNullOrEmpty(userPresence.userId))
+                    {
+                        myObject.InjectUserId(userPresence.userId);
+                    }
+
+
+                    playerList.Add(myObject);
+                    AddToLog("--- === New player added: " + userPresence.userId);
                 }
 
-                if (!string.IsNullOrEmpty(userPresence.userId))
-                {
-                    myObject.InjectUserId(userPresence.userId);
-                }
-
-
-                playerList.Add(myObject);
-                AddToLog("--- === New player added: " + userPresence.userId);
+            }
+            if (myObject != null)
+            {
+                myObject.UpdateUserPresence(userPresence);
             }
 
         }
-        if (myObject != null)
+
+
+        void AddToLog(string logMessage)
         {
-            myObject.UpdateUserPresence(userPresence);
+            onScreenLog.Add(logMessage);
+            Debug.Log(logMessage);
+        }
+
+        void OnGUI()
+        {
+            foreach (string thisString in onScreenLog)
+            {
+                GUILayout.Label(thisString);
+            }
+        }
+
+        public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
+        {
+            Debug.Log("--- Adding buttons to player " + inPlayer.userId);
+
+            await Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
+            Debug.Log("--- Button 1 now has control contents");
+
+            await Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
+            Debug.Log("--- Button 1 is now displayed.");
+
+
+            string cardHandId = await CardsTool.singleton.CreateCardHandOnPlayer(inPlayer.userId);
+            await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
+            AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
+
+            cardImageList.Clear();
+            for (int i = 0; i < deckToGivePlayer.GetComponent<Deck>().cardsInDeck.Count; i++)
+            {
+                cardImageList.Add((Texture2D)deckToGivePlayer.GetComponent<Deck>().cardsInDeck[i].GetComponentInChildren<Renderer>().material.mainTexture);
+            }
+
+            List<CardDefinition> cardIdList = new List<CardDefinition>();
+            for (int i = 0; i < cardImageList.Count; i++)
+            {
+                Debug.Log(cardImageList[i]);
+                byte[] textureArray = DeCompress(cardImageList[i]).EncodeToPNG();
+
+                CardDefinition newCardDef = new CardDefinition(cardImageList[i].name, textureArray, "", null, cardImageList[i].width / 2, cardImageList[i].height / 2);
+                Debug.Log(cardImageList[i].width / 2);
+                cardIdList.Add(newCardDef);
+
+                await CardsTool.singleton.GiveCardToPlayer(inPlayer.userId, newCardDef);
+            }
+        }
+        public Texture2D DeCompress(Texture2D source)
+        {
+            RenderTexture renderTex = RenderTexture.GetTemporary(
+                        source.width,
+                        source.height,
+                        0,
+                        RenderTextureFormat.Default,
+                        RenderTextureReadWrite.Linear);
+
+            Graphics.Blit(source, renderTex);
+            RenderTexture previous = RenderTexture.active;
+            RenderTexture.active = renderTex;
+            Texture2D readableText = new Texture2D(source.width, source.height);
+            readableText.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
+            readableText.Apply();
+            RenderTexture.active = previous;
+            RenderTexture.ReleaseTemporary(renderTex);
+            return readableText;
+        }
+
+        void CompanionButtonPressed(string inGameboardUserId, string inCallbackMethod)
+        {
+            if (!string.IsNullOrEmpty(resolveOnUpdate))
+            {
+                Debug.Log("--- Still resolving previous button press!");
+
+            }
+
+            resolveOnUpdate = inCallbackMethod;
+
+        }
+
+        void CardsButtonPressed(object sender, EventArgs.GameboardCompanionCardsButtonPressedEventArgs e)
+        {
+            Debug.Log("Card Button Pressed!!!!!!!!!!!!!!!!");
+            if (!string.IsNullOrEmpty(resolveOnUpdate))
+            {
+                Debug.Log("--- Still resolving previous button press!");
+                return;
+            }
+            resolveOnUpdate = e.callbackMethod;
+        }
+        private void ResolveButtonPress(string inCallbackMethod)
+        {
+            Debug.Log("ResolveButtonPress for " + inCallbackMethod);
+            if (inCallbackMethod == "ButtonAPressed")
+            {
+                Debug.Log("Button A Pressed");
+            }
         }
 
     }
-
-
-    void AddToLog(string logMessage)
-    {
-        onScreenLog.Add(logMessage);
-        Debug.Log(logMessage);
-    }
-
-    void OnGUI()
-    {
-        foreach (string thisString in onScreenLog)
-        {
-            GUILayout.Label(thisString);
-        }
-    }
-    public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
-    {
-        // NOTE: Currently not awaiting the LoadAsset as the companion simulator doesn't respond for Asset loads.
-        //CompanionCreateObjectEventArgs downImgEventArgs = await Gameboard.Gameboard.singleton.companionController.LoadAsset(inPlayer.gameboardId, buttonDownImage);
-
-        await Gameboard.Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
-        await Gameboard.Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Button A", "ButtonAPressed");
-        AddToLog("--- Added Button A to " + inPlayer.userId);
-
-        await Gameboard.Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "2", DataTypes.ObjectDisplayStates.Displayed);
-        await Gameboard.Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "2", "Button B", "ButtonBPressed");
-        AddToLog("--- Added Button B " + inPlayer.userId);
-
-        await Gameboard.Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "3", DataTypes.ObjectDisplayStates.Displayed);
-        await Gameboard.Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "3", "Button C", "ButtonCPressed");
-        AddToLog("--- Added Button C " + inPlayer.userId);
-
-        string cardHandId = await CardsTool.singleton.CreateCardHandOnPlayer(inPlayer.userId);
-        await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
-        AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
-
-        cardImageList.Clear();
-        for (int i = 0; i < deckToGivePlayer.GetComponent<Deck>().cardsInDeck.Count; i++)
-        {
-            cardImageList.Add((Texture2D)deckToGivePlayer.GetComponent<Deck>().cardsInDeck[i].GetComponentInChildren<Renderer>().material.mainTexture);
-        }
-
-        List<CardDefinition> cardIdList = new List<CardDefinition>();
-        for (int i = 0; i < cardImageList.Count; i++)
-        {
-            Debug.Log(cardImageList[i]);
-            byte[] textureArray = DeCompress(cardImageList[i]).EncodeToPNG();
-
-            CardDefinition newCardDef = new CardDefinition(cardImageList[i].name, textureArray, "", null, cardImageList[i].width / 2, cardImageList[i].height / 2);
-            Debug.Log(cardImageList[i].width / 2);
-            cardIdList.Add(newCardDef);
-
-            await CardsTool.singleton.GiveCardToPlayer(inPlayer.userId, newCardDef);
-        }
-    }
-    public Texture2D DeCompress(Texture2D source)
-    {
-        RenderTexture renderTex = RenderTexture.GetTemporary(
-                    source.width,
-                    source.height,
-                    0,
-                    RenderTextureFormat.Default,
-                    RenderTextureReadWrite.Linear);
-
-        Graphics.Blit(source, renderTex);
-        RenderTexture previous = RenderTexture.active;
-        RenderTexture.active = renderTex;
-        Texture2D readableText = new Texture2D(source.width, source.height);
-        readableText.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
-        readableText.Apply();
-        RenderTexture.active = previous;
-        RenderTexture.ReleaseTemporary(renderTex);
-        return readableText;
-    }
-
-    void CompanionButtonPressed(string inGameboardUserId, string inCallbackMethod)
-    {
-        AddToLog("--- Companion Button Pressed with callback: " + inCallbackMethod);
-
-    }
-
-    void CardsButtonPressed(string inGameboardUserId, string inCallbackMethod, string inCardsId)
-    {
-        AddToLog("--- Cards Button Pressed with callback: " + inCallbackMethod + " and card ID " + inCardsId);
-    }
-
-
 }

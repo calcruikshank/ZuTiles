@@ -118,6 +118,7 @@ namespace Gameboard.Tools
         /// <param name="inTargetLocation"></param>
         public void SetCardLocation(string inTargetLocation)
         {
+            Debug.Log("Current card location = "  + inTargetLocation);
             CurrentCardLocation = inTargetLocation;
         }
 

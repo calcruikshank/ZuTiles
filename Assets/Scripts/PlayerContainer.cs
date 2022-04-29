@@ -48,7 +48,6 @@ public class PlayerContainer : MonoBehaviour
         UpdateCardPositions();
         cardToAdd.GetComponent<MovableObjectStateMachine>().GivePlayerOwnership(this);
         AddToCompanion(cardToAdd);
-        
     }
 
 
