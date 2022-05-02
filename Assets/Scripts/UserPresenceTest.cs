@@ -32,7 +32,7 @@ namespace Gameboard
             GameObject presenceObserverObj = GameObject.FindWithTag("UserPresenceObserver");
             UserPresenceObserver userPresenceObserver = presenceObserverObj.GetComponent<UserPresenceObserver>();
             userPresenceObserver.OnUserPresence += OnUserPresence;
-            CompanionTemplateTool.singleton.ButtonPressed += CompanionButtonPressed;
+            //CompanionTemplateTool.singleton.ButtonPressed += CompanionButtonPressed;
 
         }
 
@@ -51,7 +51,7 @@ namespace Gameboard
 
                 setupComplete = true;
 
-                Gameboard.singleton.companionController.CompanionCardsButtonPressed += CardsButtonPressed;
+                //Gameboard.singleton.companionController.CompanionCardsButtonPressed += CardsButtonPressed;
                 Debug.Log("--- Gameboard Companion Template Tool is ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             }
@@ -185,21 +185,10 @@ namespace Gameboard
             {
                 Debug.Log("--- Still resolving previous button press!");
             }
-
             resolveOnUpdate = inCallbackMethod;
-
         }
 
-        void CardsButtonPressed(object sender, EventArgs.GameboardCompanionCardsButtonPressedEventArgs e)
-        {
-            Debug.Log("Card Button Pressed!!!!!!!!!!!!!!!!");
-            if (!string.IsNullOrEmpty(resolveOnUpdate))
-            {
-                Debug.Log("--- Still resolving previous button press!");
-                return;
-            }
-            resolveOnUpdate = e.callbackMethod;
-        }
+        
         private void ResolveButtonPress(string inCallbackMethod)
         {
             Debug.Log("ResolveButtonPress for " + inCallbackMethod);
@@ -208,6 +197,7 @@ namespace Gameboard
                 Debug.Log("Button A Pressed");
             }
         }
+        
 
     }
 }

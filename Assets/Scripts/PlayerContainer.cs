@@ -125,7 +125,7 @@ public class PlayerContainer : MonoBehaviour
     {
         Debug.Log("Starting Position " + startingPosition); 
         fingerDownPosition = startingPosition - currentOffset;
-       SubscribeToDelegates();
+        SubscribeToDelegates();
     }
 
     public void SubscribeToDelegates()

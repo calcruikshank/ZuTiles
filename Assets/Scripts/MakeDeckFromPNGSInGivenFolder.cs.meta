@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 94d441ec044af6b4e8a2287ef2171512
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - baseGameObjectToApplyTextureTo: {fileID: 4581355638258666796, guid: 4d52f3eda3e9c4244b0863c0cc826e7a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
