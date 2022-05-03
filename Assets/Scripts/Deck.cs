@@ -106,7 +106,6 @@ public class Deck : MonoBehaviour
                     }
                 }
                 targetHit = null;
-                PlayerContainer playerToAddCardTo = hits[j].transform.GetComponentInChildren<PlayerContainer>();
                 return;
             }
         }
@@ -116,8 +115,7 @@ public class Deck : MonoBehaviour
             if (placementObj != null && placementObj.ListContainsString(this.name))
             {
                 Debug.Log("The name of this component is " + hits[i].transform.name);
-
-                this.transform.position = new Vector3(hits[i].transform.position.x, 1f, hits[i].transform.position.z);
+                this.transform.position = new Vector3(hits[i].transform.position.x, placementObj.transform.position.y + .1f, hits[i].transform.position.z);
                 return;
             }
         }

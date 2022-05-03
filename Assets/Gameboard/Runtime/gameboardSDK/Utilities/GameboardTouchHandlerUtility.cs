@@ -186,7 +186,7 @@ namespace Gameboard.Utilities
                     inBoardObject.contourLocalVectors3D = new Vector3[contour.Length];
                 }
 
-                for (int j = 0; j < contour.Length; j++)
+               /* for (int j = 0; j < contour.Length; j++)
                 {
                     //TODO: dynamically figure out resolution, but in our case the GB-1 is always 1920x1920
                     try
@@ -194,7 +194,7 @@ namespace Gameboard.Utilities
                         if(contour[j] == null)
                         {
                             Debug.LogError("Contour index " + j + " was null!");
-                            continue;
+                            return;
                         }
 
                         inBoardObject.contourWorldVectors3D[j] = Camera.main.ScreenToWorldPoint(new Vector3(contour[j].Item1 * boardConfig.deviceResolution.x,
@@ -213,7 +213,7 @@ namespace Gameboard.Utilities
 
                         GameboardLogging.LogMessage($"HandleObjectCountourUpdates failed to acquire contours with exception {e.Message} / {e.InnerException}", GameboardLogging.MessageTypes.Error);
                     }
-                }
+                }*/
             }
         }
 

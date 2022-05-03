@@ -38,6 +38,8 @@ public class MovableObjectStateMachine : MonoBehaviour
 
     public bool boxSelected = false;
 
+
+    float targetPositionOnY = 3f;
     Vector3 previousInitialMoveDirection;
     public enum State
     {
@@ -87,7 +89,6 @@ public class MovableObjectStateMachine : MonoBehaviour
                 break;
             case State.Indeterminate:
                 CheckForInputCommands();
-                CheckToSeeIfShouldBeginRotating();
                 break;
             case State.Selected:
                 HandleSelected();
@@ -96,7 +97,6 @@ public class MovableObjectStateMachine : MonoBehaviour
             case State.Moving:
                 Move();
                 HandleRaising();
-                CheckToSeeIfShouldBeginRotating();
                 CheckForShuffle();
                 break;
             case State.Rotating:
@@ -116,13 +116,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         HandleFlipCard();
     }
 
-    private void CheckToSeeIfShouldBeginRotating()
-    {
-        if (idList.Count >= 2)
-        {
-            state = State.Rotating;
-        }
-    }
+   
 
     private void HandleRotating()
     {
@@ -218,6 +212,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         offset = new Vector3(this.transform.position.x - positionSent.x, 0, this.transform.position.z - positionSent.z);
         heldDownTimer = 0f;
         lowering = false;
+        targetPositionOnY = this.transform.position.y + 3f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
         snappingToThreeOnY = true;
         state = State.Indeterminate;
     }
@@ -241,6 +236,7 @@ public class MovableObjectStateMachine : MonoBehaviour
             return;
         }
         HideSelectedWheel();
+        Debug.Log("HeldDownTimer " + heldDownTimer);
         heldDownTimer += Time.deltaTime;
         Vector3 differenceBetweenStartingPositionAndMovePosition = startingTouchPosition - fingerMovePosition;
         //if held down timer is greater than helddowntimerthreshold then start moving entire entity
@@ -280,11 +276,12 @@ public class MovableObjectStateMachine : MonoBehaviour
     public void SnapPositionToThreeOnY()
     {
         Transform targetToMove = this.transform;
-        if (targetToMove.transform.position.y == 3)
+        if (targetToMove.transform.position.y == targetPositionOnY)
         {
             snappingToThreeOnY = false;
         }
-        targetToMove.position = Vector3.MoveTowards(targetToMove.position, new Vector3(targetToMove.position.x, 3, targetToMove.position.z), .05f * 1000 * Time.deltaTime);
+        Debug.Log(targetPositionOnY + "Target position on y");
+        targetToMove.position = Vector3.MoveTowards(targetToMove.position, new Vector3(targetToMove.position.x, targetPositionOnY, targetToMove.position.z), .05f * 1000 * Time.deltaTime);
     }
     public void SnapToLowestPointHit()
     {
@@ -421,7 +418,6 @@ public class MovableObjectStateMachine : MonoBehaviour
                 lowering = true;
                 snappingToThreeOnY = false;
                 state = State.Idle;
-                ResetRotationOnX();
             }
             if (deck != null)
             {
@@ -429,18 +425,6 @@ public class MovableObjectStateMachine : MonoBehaviour
             }
         }
         idList.Remove(index);
-    }
-    void ResetRotationOnX()
-    {
-       /*Debug.Log("FlipObject!!!!!!!!!!!!!!");
-        if (faceUp)
-        {
-            transform.GetChild(0).localEulerAngles = new Vector3(startingXRotation, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
-        }
-        if (!faceUp)
-        {
-            transform.GetChild(0).localEulerAngles = new Vector3(startingXRotation +180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
-        }*/
     }
 
     private void FingerMoved(Vector3 position, int index)
@@ -496,6 +480,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         Highlight();
         HideSelectedWheel();
+        targetPositionOnY = this.transform.position.y + 3f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
         snappingToThreeOnY = true;
         lowering = false;
         boxSelected = true;

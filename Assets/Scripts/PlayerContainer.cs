@@ -97,7 +97,7 @@ public class PlayerContainer : MonoBehaviour
         {
             for (int i = 0; i < cardsInHand.Count; i++)
             {
-                cardsInHand[i].transform.position = new Vector3(((this.transform.position.x + (cardsInHand[i].transform.GetComponentInChildren<Collider>().bounds.size.x * i) + movableObjectPadding * i)) + currentOffset.x, cardsInHand[i].transform.position.y, this.transform.position.z);
+                cardsInHand[i].transform.position = new Vector3(((this.transform.position.x + (cardsInHand[i].transform.GetComponentInChildren<Collider>().bounds.size.x * i) + movableObjectPadding * i)) + currentOffset.x, this.transform.position.y + .1f, this.transform.position.z);
             }
         }
         
@@ -148,7 +148,6 @@ public class PlayerContainer : MonoBehaviour
         {
             fingerMovePosition = raycastHit.point;
         }
-        Debug.Log(fingerMovePosition + " Player fingey position");
         newOffset = fingerMovePosition - fingerDownPosition;
         currentOffset = newOffset;
         UpdateCardPositions();

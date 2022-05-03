@@ -27,7 +27,7 @@ public class MakeDeckFromPNGSInGivenFolder : MonoBehaviour
 
             Texture2D selected = o as Texture2D;
 
-            Material material1 = new Material(Shader.Find("Unlit/Texture"));
+            Material material1 = new Material(Shader.Find("Standard (Specular setup)"));
             material1.mainTexture = (Texture)o;
 
             string savePath = AssetDatabase.GetAssetPath(selected);
