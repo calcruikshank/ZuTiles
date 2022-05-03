@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "10.1.10.180:5555",
         "name": "com.DefaultCompany.ZuTiles",
-        "processId": 15365,
+        "processId": 15568,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -186,6 +186,12 @@
             "deviceId": "10.1.10.180:5555",
             "name": "com.DefaultCompany.ZuTiles",
             "processId": 15365,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.180:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 15568,
             "exited": false
         }
     ],

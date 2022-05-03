@@ -65,7 +65,7 @@ namespace Gameboard.Utilities
 
                             HandleGameboardScreenPositionUpdates(trackedObject);
                             HandleUnityScenePositionUpdates(trackedObject);
-                            HandleObjectCountourUpdates(trackedObject);
+                            //HandleObjectCountourUpdates(trackedObject);
 
                             updatedBoardObjects.Add(trackedObject);
                         }
