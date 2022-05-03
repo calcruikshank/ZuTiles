@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -5,16 +6,20 @@ using UnityEngine;
 
 public class MakeDeckFromPNGSInGivenFolder : MonoBehaviour
 {
-    public static GameObject baseGameObjectToApplyTextureTo;
+    [SerializeField] static GameObject baseGameObjectToApplyTextureTo;
     [MenuItem("Project Tools/Create Materials")]
     private static void CreateMaterials()
     {
+        foreach (Transform transformSelected in Selection.transforms)
+        {
+            Debug.Log("Selected Transform = " + transformSelected);
+            baseGameObjectToApplyTextureTo = transformSelected.gameObject;
+        }
         foreach (Object o in Selection.objects)
         {
 
             if (o.GetType() != typeof(Texture2D))
             {
-                Debug.LogError("This isn't a texture: " + o);
                 continue;
             }
 
@@ -35,10 +40,15 @@ public class MakeDeckFromPNGSInGivenFolder : MonoBehaviour
             AssetDatabase.SaveAssets();
 
             GameObject Card = Instantiate(baseGameObjectToApplyTextureTo);
-            Card.GetComponent<Renderer>().material = material1;
+
+            Card.GetComponentInChildren<CardFront>().transform.GetComponent<MeshRenderer>().material = material1;
+            Card.name = material1.name;
+
 
         }
         Debug.Log("Done!");
     }
 
 }
+
+#endif
