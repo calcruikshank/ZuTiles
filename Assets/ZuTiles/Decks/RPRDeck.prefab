@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 3884102568410872721}
   - component: {fileID: 3884102568410872722}
   - component: {fileID: 3884102568410872723}
+  - component: {fileID: 3550059711281421455}
   m_Layer: 0
   m_Name: RPRDeck
   m_TagString: Untagged
@@ -304,6 +305,20 @@ MonoBehaviour:
   - {fileID: 1277346676085093624, guid: 770cfceb8a6b25845a9a93e61200c5bb, type: 3}
   - {fileID: 2793400112049022089, guid: bda0541222880f24faea783a07c527b8, type: 3}
   - {fileID: 6261565703477952297, guid: 4e18bf6ea9a16404ab3bd240d04c6441, type: 3}
+--- !u!114 &3550059711281421455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3884102568410872526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84b7923fcb2562b4da3557845df4182f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects: []
+  speed: 0
 --- !u!1 &3884102568410872527
 GameObject:
   m_ObjectHideFlags: 0

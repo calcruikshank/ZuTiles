@@ -12,8 +12,8 @@ public class MoveTowardsWithLerp : MonoBehaviour
 
     private void Start()
     {
-        speed = 1f;
-        moveTypes = MoveTypes.normal;
+        speed = 6f;
+        moveTypes = MoveTypes.lerp;
         i = 0;
     }
     private void Update()
