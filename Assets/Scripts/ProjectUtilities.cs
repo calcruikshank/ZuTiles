@@ -4,20 +4,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class MakeDeckFromPNGSInGivenFolder : MonoBehaviour
+public class ProjectUtilities : MonoBehaviour
 {
-    [SerializeField] static GameObject baseGameObjectToApplyTextureTo;
-    [MenuItem("Project Tools/Create cards from all selected textures")]
+    [MenuItem("Project Tools/Create Materials based on current selected textures")]
     private static void CreateMaterials()
     {
-        foreach (Transform transformSelected in Selection.transforms)
-        {
-            Debug.Log("Selected Transform = " + transformSelected);
-            baseGameObjectToApplyTextureTo = transformSelected.gameObject;
-        }
         foreach (Object o in Selection.objects)
         {
-
             if (o.GetType() != typeof(Texture2D))
             {
                 continue;
@@ -39,16 +32,8 @@ public class MakeDeckFromPNGSInGivenFolder : MonoBehaviour
 
             AssetDatabase.SaveAssets();
 
-            GameObject Card = Instantiate(baseGameObjectToApplyTextureTo);
-
-            Card.GetComponentInChildren<CardFront>().transform.GetComponent<MeshRenderer>().material = material1;
-            Card.name = material1.name;
-
-
         }
         Debug.Log("Done!");
     }
-
 }
-
 #endif
