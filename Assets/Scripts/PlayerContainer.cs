@@ -9,7 +9,7 @@ public class PlayerContainer : MonoBehaviour
 {
     int numberOfCardsInHand = 0;
     float movableObjectPadding = 1f;
-    List<GameObject> cardsInHand = new List<GameObject>();
+    public List<GameObject> cardsInHand = new List<GameObject>();
     PlayerPresenceDrawer inPlayer;
     string cardHandID;
     SetStencilReference
@@ -80,17 +80,8 @@ public class PlayerContainer : MonoBehaviour
             objectInCard.GetComponentInChildren<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
         }
         UpdateCardPositions();
-        RemoveFromCompanion(cardToRemove);
     }
 
-    void RemoveFromCompanion(GameObject cardToRemove)
-    {
-        RemoveCardFromPlayerHand(cardToRemove);
-    }
-    private async void RemoveCardFromPlayerHand(GameObject cardToRemove)
-    {
-        await CardsTool.singleton.RemoveCardFromPlayerHand_Async(inPlayer.userId, cardHandID, cardToRemove.GetComponent<Deck>().CardCompanionDefiniiton);
-    }
 
     void UpdateCardPositions()
     {
@@ -103,6 +94,19 @@ public class PlayerContainer : MonoBehaviour
         }
         
     }
+
+    internal void FindCardToRemove(CardDefinition selectedCard)
+    {
+        for (int i = 0; i < cardsInHand.Count; i++)
+        {
+            if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton)
+            {
+                cardsInHand[i].transform.position = Vector3.zero;
+                RemoveCardFromHand(cardsInHand[i]);
+            }
+        }
+    }
+
     public Texture2D DeCompress(Texture2D source)
     {
         RenderTexture renderTex = RenderTexture.GetTemporary(

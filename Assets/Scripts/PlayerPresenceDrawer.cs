@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-namespace Gameboard.Examples{
+namespace Gameboard.Examples
+{
 
     public class PlayerPresenceDrawer : UserPresenceSceneObject
     {
+        PlayerContainer playerContainer;
         private void Awake()
         {
             Gameboard.singleton.companionController.CompanionCardsButtonPressed += CardsButtonPressedAsync;
+            this.playerContainer = this.GetComponent<PlayerContainer>();
         }
-        protected override void ScenePositionUpdated(Vector3 inNewPosition) 
+        protected override void ScenePositionUpdated(Vector3 inNewPosition)
         {
             this.transform.position = inNewPosition;
             Debug.Log("UpdatedPosition = " + inNewPosition);
@@ -24,7 +27,7 @@ namespace Gameboard.Examples{
         {
             this.transform.localEulerAngles = inNewEulers;
         }
-        protected override void PlayerAdded() 
+        protected override void PlayerAdded()
         {
             Debug.Log("Adding Player");
         }
@@ -38,7 +41,7 @@ namespace Gameboard.Examples{
 
             Debug.Log("Player name changed");
         }
-        protected override void PlayerColorChanged() 
+        protected override void PlayerColorChanged()
         {
             Debug.Log("Player Color Changed ");
         }
@@ -54,19 +57,22 @@ namespace Gameboard.Examples{
             return this.transform.eulerAngles;
         }
 
-       void CardsButtonPressedAsync(object sender, EventArgs.GameboardCompanionCardsButtonPressedEventArgs e)
+        void CardsButtonPressedAsync(object sender, EventArgs.GameboardCompanionCardsButtonPressedEventArgs e)
         {
             if (e.userId != userId)
             {
                 return;
             }
             Debug.Log(this.gameObject + "Player to play card + " + e.ownerId + " Owner id " + e.callbackMethod + " callback method  " + e.selectedCardId + " Selected card id");
-            
+
             CardDefinition selectedCard = CardsTool.singleton.GetCardDefinitionByGUID(e.selectedCardId);
 
-           CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
+            UserPresenceTest.singleton.RemoveCardFromUser(userId, selectedCard);
+            
+            this.transform.GetComponentInChildren<PlayerContainer>().FindCardToRemove(selectedCard);
+            CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
         }
-        
+
 
         /*void CardsButtonEvent(string gameboardUserId, string callbackMethod, string cardsId)
         {

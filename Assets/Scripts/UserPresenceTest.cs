@@ -53,7 +53,6 @@ namespace Gameboard
                 setupComplete = true;
 
                 //Gameboard.singleton.companionController.CompanionCardsButtonPressed += CardsButtonPressed;
-                Debug.Log("--- Gameboard Companion Template Tool is ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             }
             if (!string.IsNullOrEmpty(resolveOnUpdate))
@@ -68,12 +67,10 @@ namespace Gameboard
             PlayerPresenceDrawer myObject = playerList.Find(s => s.userId == userPresence.userId);
             if (myObject == null)
             {
-                Debug.Log("my object is not null");
                 // Add it here, and when adding also populate myObject
                 // If the user doesn't exist in our player list, add them now.
                 if (playerList.Find(s => s.userId == userPresence.userId) == null)
                 {
-                    Debug.Log(userPresence.userId + " user presence id");
                     /*UserPresencePlayer testPlayer = new UserPresencePlayer()
                     {
                         gameboardId = userPresence.userId
@@ -111,6 +108,9 @@ namespace Gameboard
 
         }
 
+        internal void RemoveCardFromUser(string userId, CardDefinition selectedCard)
+        {
+        }
 
         void AddToLog(string logMessage)
         {
@@ -128,13 +128,11 @@ namespace Gameboard
 
         public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
         {
-            Debug.Log("--- Adding buttons to player " + inPlayer.userId);
-
             await Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
-            Debug.Log("--- Button 1 now has control contents");
+           
 
             await Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
-            Debug.Log("--- Button 1 is now displayed.");
+           
 
 
             string cardHandId = await CardsTool.singleton.CreateCardHandOnPlayer(inPlayer.userId);
