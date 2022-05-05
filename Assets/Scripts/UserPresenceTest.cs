@@ -18,6 +18,7 @@ namespace Gameboard
         public static UserPresenceTest singleton;
         SetStencilReference setStencilReference;
 
+        public List<CardDefinition> cardIdList;
         List<Texture2D> cardImageList = new List<Texture2D>();
         private float cachedTime; private string resolveOnUpdate;
         bool setupComplete = false;
@@ -146,7 +147,6 @@ namespace Gameboard
                 cardImageList.Add((Texture2D)deckToGivePlayer.GetComponent<Deck>().cardsInDeck[i].GetComponentInChildren<Renderer>().material.mainTexture);
             }
 
-            List<CardDefinition> cardIdList = new List<CardDefinition>();
             for (int i = 0; i < cardImageList.Count; i++)
             {
                 Debug.Log(cardImageList[i]);
@@ -155,7 +155,6 @@ namespace Gameboard
                 CardDefinition newCardDef = new CardDefinition(cardImageList[i].name, textureArray, "", null, cardImageList[i].width / 2, cardImageList[i].height / 2);
                 Debug.Log(cardImageList[i].width / 2);
                 cardIdList.Add(newCardDef);
-
                 await CardsTool.singleton.GiveCardToPlayer(inPlayer.userId, newCardDef);
             }
         }
@@ -179,14 +178,7 @@ namespace Gameboard
             return readableText;
         }
 
-        void CompanionButtonPressed(string inGameboardUserId, string inCallbackMethod)
-        {
-            if (!string.IsNullOrEmpty(resolveOnUpdate))
-            {
-                Debug.Log("--- Still resolving previous button press!");
-            }
-            resolveOnUpdate = inCallbackMethod;
-        }
+       
 
         
         private void ResolveButtonPress(string inCallbackMethod)
@@ -197,7 +189,5 @@ namespace Gameboard
                 Debug.Log("Button A Pressed");
             }
         }
-        
-
     }
 }

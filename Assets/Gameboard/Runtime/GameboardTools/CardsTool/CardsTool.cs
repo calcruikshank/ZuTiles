@@ -247,6 +247,7 @@ namespace Gameboard.Tools
         #region Removing Cards from Hand Displays
         public void RemoveCardFromPlayerHand(string playerId, string handId, CardDefinition cardDef)
         {
+            Debug.Log("RemoveCardFromPlayerHand_Async " + cardDef + " Card Arguments");
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             RemoveCardFromPlayerHand_Async(playerId, handId, cardDef);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -254,10 +255,13 @@ namespace Gameboard.Tools
 
         public async Task RemoveCardFromPlayerHand_Async(string playerId, string handId, CardDefinition cardDef)
         {
+            Gameboard.singleton.companionController.PrintConneted();
+            
             CompanionMessageResponseArgs responseArgs = await Gameboard.singleton.companionController.RemoveCardFromHandDisplay(playerId, handId, cardDef.cardGuid);
 
             if (responseArgs.wasSuccessful)
             {
+                Debug.Log("Remove card from player hand");
                 cardDef.ClearCardLocation();
                 return;
             }

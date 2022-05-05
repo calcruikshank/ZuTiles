@@ -3,6 +3,7 @@ using Gameboard.Tools;
 using Gameboard.Utilities;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -12,7 +13,7 @@ namespace Gameboard.Examples{
     {
         private void Awake()
         {
-            Gameboard.singleton.companionController.CompanionCardsButtonPressed += CardsButtonPressed;
+            Gameboard.singleton.companionController.CompanionCardsButtonPressed += CardsButtonPressedAsync;
         }
         protected override void ScenePositionUpdated(Vector3 inNewPosition) 
         {
@@ -53,14 +54,20 @@ namespace Gameboard.Examples{
             return this.transform.eulerAngles;
         }
 
-        void CardsButtonPressed(object sender, EventArgs.GameboardCompanionCardsButtonPressedEventArgs e)
+       void CardsButtonPressedAsync(object sender, EventArgs.GameboardCompanionCardsButtonPressedEventArgs e)
         {
             if (e.userId != userId)
             {
                 return;
             }
             Debug.Log(this.gameObject + "Player to play card + " + e.ownerId + " Owner id " + e.callbackMethod + " callback method  " + e.selectedCardId + " Selected card id");
+            
+            CardDefinition selectedCard = CardsTool.singleton.GetCardDefinitionByGUID(e.selectedCardId);
+
+           CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
         }
+        
+
         /*void CardsButtonEvent(string gameboardUserId, string callbackMethod, string cardsId)
         {
             if (gameboardUserId != Gameboard_UserID || isResolvingCardAction || isAiPlayer)

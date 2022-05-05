@@ -247,7 +247,7 @@ namespace Gameboard.Utilities
         }
 
         private async Task<SendMessageToCompanionServiceResponse> AwaitQueuedCompanionEvent(string inUserId, string inEventId)
-        {            
+        {
             SendMessageToCompanionServiceResponse responseObject = await AwaitEventAndReceiveResponseData(inEventId);
 
             lock(companionProcessingDict)

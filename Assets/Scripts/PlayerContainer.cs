@@ -58,6 +58,7 @@ public class PlayerContainer : MonoBehaviour
         CardDefinition newCardDef = new CardDefinition(cardImageTexture.name, textureArray, "", null, cardImageTexture.width / 2, cardImageTexture.height / 2);
         cardDefinitions.Add(newCardDef, CardsTool.singleton.GetCurrentLocationOfCardByGUID(newCardDef.cardGuid));
         cardToAdd.GetComponent<Deck>().CardCompanionDefiniiton = newCardDef;
+        CardsTool.singleton.AddCardToLibrary(newCardDef);
         AddCardToHand(newCardDef);
     }
 

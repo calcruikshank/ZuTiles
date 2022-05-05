@@ -418,10 +418,15 @@ namespace Gameboard.Companion
         /// <returns>CompanionResponse</returns>
         public async Task<CompanionMessageResponseArgs> RemoveCardFromHandDisplay(string userId, string handDisplayId, string cardId)
         {
+            Debug.Log("RemoveCardFromHandDisplay");
             CompanionMessageResponseArgs responseArgs = await companionHandler.RemoveCardFromHand(1, userId, handDisplayId, cardId);
             return responseArgs;
         }
 
+        public void PrintConneted()
+        {
+            Debug.Log("Companion connected");
+        }
         /// <summary>
         /// Removes all cards from the requested Hand Display for a specific user.
         /// </summary>
