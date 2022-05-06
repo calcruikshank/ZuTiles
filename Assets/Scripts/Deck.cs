@@ -13,7 +13,7 @@ public class Deck : MonoBehaviour
     MovableObjectStateMachine movableObject;
     GameObject currentCardShowing;
     public CardDefinition CardCompanionDefiniiton;
-
+    Shader startingShader;
     void Start()
     {
         InitializeDeck();
@@ -32,6 +32,7 @@ public class Deck : MonoBehaviour
     {
         currentCardShowing = this.transform.GetComponentInChildren<CardFront>().gameObject;
         movableObject = this.transform.GetComponent<MovableObjectStateMachine>();
+        startingShader = this.GetComponentInChildren<Renderer>().material.shader;
     }
 
     public void UpdateDeckInfo()
@@ -170,6 +171,12 @@ public class Deck : MonoBehaviour
             targetToMove = null;
         }*/
         #endregion
+    }
+
+    internal void SetToStartingShader()
+    {
+
+        this.GetComponentInChildren<Renderer>().material.shader = startingShader;
     }
 
     public void SetSize(Vector3 localSizeSent)

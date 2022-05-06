@@ -21,6 +21,9 @@ public class PlayerContainer : MonoBehaviour
     Vector3 fingerMovePosition;
     Vector3 fingerDownPosition;
 
+    
+    [SerializeField]Transform targetPlayCardTransform;
+
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
     private void Start()
     {
@@ -72,6 +75,7 @@ public class PlayerContainer : MonoBehaviour
         cardsInHand.Remove(cardToRemove);
         cardToRemove.GetComponent<MovableObjectStateMachine>().RemovePlayerOwnership(this);
 
+        cardToRemove.GetComponentInChildren<Deck>().SetToStartingShader();
         Transform[] objectsInCardToAdd = cardToRemove.GetComponentsInChildren<Transform>();
         foreach (Transform objectInCard in objectsInCardToAdd)
         {
@@ -101,7 +105,9 @@ public class PlayerContainer : MonoBehaviour
         {
             if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton)
             {
-                cardsInHand[i].transform.position = Vector3.zero;
+                cardsInHand[i].GetComponent<MoveTowardsWithLerp>().objects.Add(targetPlayCardTransform);
+                cardsInHand[i].GetComponent<MoveTowardsWithLerp>().ChangeStateToLerp();
+                //cardsInHand[i].
                 RemoveCardFromHand(cardsInHand[i]);
             }
         }
