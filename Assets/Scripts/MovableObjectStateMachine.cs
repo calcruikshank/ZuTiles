@@ -215,6 +215,10 @@ public class MovableObjectStateMachine : MonoBehaviour
         lowering = false;
         targetPositionOnY = this.transform.position.y + 3f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
         snappingToThreeOnY = true;
+        if (this.GetComponentInChildren<MoveTowardsWithLerp>() != null)
+        {
+            this.GetComponentInChildren<MoveTowardsWithLerp>().SetToIdle();
+        }
         state = State.Indeterminate;
     }
     public void FlipObject()

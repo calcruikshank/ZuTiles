@@ -60,4 +60,10 @@ public class MoveTowardsWithLerp : MonoBehaviour
     {
         moveTypes = MoveTypes.lerp;
     }
+
+    internal void SetToIdle()
+    {
+
+        moveTypes = MoveTypes.Idle;
+    }
 }
