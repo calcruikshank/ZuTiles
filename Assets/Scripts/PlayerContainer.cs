@@ -96,6 +96,13 @@ public class PlayerContainer : MonoBehaviour
                 cardsInHand[i].transform.position = new Vector3(((this.transform.position.x + (cardsInHand[i].transform.GetComponentInChildren<Collider>().bounds.size.x * i) + movableObjectPadding * i)) + currentOffset.x, this.transform.position.y + .1f, this.transform.position.z);
             }
         }
+        else 
+        {
+            for (int i = 0; i < cardsInHand.Count; i++)
+            {
+                cardsInHand[i].transform.position = this.transform.position;
+            }
+        }
         
     }
 

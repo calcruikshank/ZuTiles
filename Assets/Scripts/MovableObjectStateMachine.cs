@@ -140,7 +140,8 @@ public class MovableObjectStateMachine : MonoBehaviour
             currentLocalEulerAngles.y += 1500 * Time.deltaTime;
         }
 
-        transform.GetChild(0).localEulerAngles = new Vector3(transform.GetChild(0).localEulerAngles.x, currentLocalEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+        //transform.GetChild(0).localEulerAngles = new Vector3(transform.GetChild(0).localEulerAngles.x, currentLocalEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+        transform.GetChild(0).localEulerAngles = targetRotation;
     }
 
     void HandleFlipCard()

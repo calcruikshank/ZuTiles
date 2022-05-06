@@ -218,7 +218,7 @@ public class Deck : MonoBehaviour
 
     public void PickUpCards(int numOfCardsToPickUp)
     {
-        if (cardsInDeck.Count == 1) //change thisd to say if cardsindeck.count is greater than number of cards to pick up
+        if (cardsInDeck.Count == 1) //TODO change thisd to say if cardsindeck.count is greater than number of cards to pick up
         {
             return;
         }
