@@ -41,6 +41,8 @@ public class MovableObjectStateMachine : MonoBehaviour
 
     float targetPositionOnY = 3f;
     Vector3 previousInitialMoveDirection;
+
+    HistoryObject historyObject;
     public enum State
     {
         Idle,
@@ -77,6 +79,11 @@ public class MovableObjectStateMachine : MonoBehaviour
             targetRotation = this.transform.GetChild(0).transform.localEulerAngles;
             currentLocalEulerAngles = this.transform.GetChild(0).localEulerAngles;
         }
+        historyObject = gameObject.AddComponent<HistoryObject>();
+        historyObject.prefabToInstantiate = this.gameObject;
+        historyObject.positionToInstantiate = this.transform.position;
+        historyObject.currentRotation = this.transform.rotation;
+        HistoryTracker.singleton.AddToList(historyObject);
     }
 
     protected virtual void Update()
@@ -209,6 +216,7 @@ public class MovableObjectStateMachine : MonoBehaviour
             this.transform.GetComponentInChildren<CardTilter>().SetRotationToNotZero();
         }
         SubscribeToDelegates();
+        HistoryTracker.singleton.SetTouched();
         startingTouchPosition = positionSent;
         offset = new Vector3(this.transform.position.x - positionSent.x, 0, this.transform.position.z - positionSent.z);
         heldDownTimer = 0f;
@@ -241,7 +249,6 @@ public class MovableObjectStateMachine : MonoBehaviour
             return;
         }
         HideSelectedWheel();
-        Debug.Log("HeldDownTimer " + heldDownTimer);
         heldDownTimer += Time.deltaTime;
         Vector3 differenceBetweenStartingPositionAndMovePosition = startingTouchPosition - fingerMovePosition;
         //if held down timer is greater than helddowntimerthreshold then start moving entire entity
@@ -413,6 +420,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         if (!idList.Contains(index)) return;
         if (idList.Count == 1)
         {
+            HistoryTracker.singleton.FingerReleased(historyObject);
             UnsubscribeToDelegates();
             if (state == State.Indeterminate)
             {
@@ -430,6 +438,7 @@ public class MovableObjectStateMachine : MonoBehaviour
             }
         }
         idList.Remove(index);
+
     }
 
     private void FingerMoved(Vector3 position, int index)

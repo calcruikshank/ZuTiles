@@ -38,7 +38,6 @@ namespace Gameboard.Examples
         }
         protected override void PlayerNameChanged()
         {
-
             Debug.Log("Player name changed");
         }
         protected override void PlayerColorChanged()

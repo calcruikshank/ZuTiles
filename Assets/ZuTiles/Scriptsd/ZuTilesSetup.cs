@@ -65,11 +65,17 @@ public class ZuTilesSetup : MonoBehaviour
     {
         foreach (PlayerPresenceDrawer player in UserPresenceTest.singleton.playerList)
         {
+            
             GameObject deckToSpawn = player.GetComponentInChildren<ZuTilePlayer>().ChosenDeck;
             GameObject instantiatedDeck = Instantiate(deckToSpawn);
             instantiatedDeck.GetComponent<Deck>().ShuffleDeck(Vector3.zero, 0);
             
             deckToSpawn.gameObject.SetActive(false);
+            ZuTiileButtonSelector[] deckSelectors = FindObjectsOfType<ZuTiileButtonSelector>();
+            for (int i = 0; i < deckSelectors.Length; i++)
+            {
+                deckSelectors[i].enabled = false;
+            }
         }
     }
 }

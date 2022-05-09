@@ -103,7 +103,6 @@ public class PlayerContainer : MonoBehaviour
                 cardsInHand[i].transform.position = this.transform.position;
             }
         }
-        
     }
 
     internal void FindCardToRemove(CardDefinition selectedCard)

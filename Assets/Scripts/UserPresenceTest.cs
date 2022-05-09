@@ -129,12 +129,9 @@ namespace Gameboard
         public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
         {
             await Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
-           
 
             await Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
            
-
-
             string cardHandId = await CardsTool.singleton.CreateCardHandOnPlayer(inPlayer.userId);
             await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
             AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
