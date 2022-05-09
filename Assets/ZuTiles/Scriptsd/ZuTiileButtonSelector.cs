@@ -9,7 +9,7 @@ public class ZuTiileButtonSelector : MonoBehaviour
     ZuTilePlayer currentZuTilePlayer;
     void HaveChildSubscribeToDelegates()
     {
-        Debug.Log("Subscribe to delegates"); TouchScript.touchMoved += FingerMoved;
+        TouchScript.touchMoved += FingerMoved;
         
         TouchScript.fingerReleased += FingerReleased;
         if (currentZuTilePlayer != null)

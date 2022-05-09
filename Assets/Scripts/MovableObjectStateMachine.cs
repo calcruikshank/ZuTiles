@@ -55,11 +55,11 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     private void Awake()
     {
-        InitializeMovableObject();
     }
     // Start is called before the first frame update
     void Start()
     {
+        InitializeMovableObject();
         startingXRotation = this.currentLocalEulerAngles.x;
     }
 
@@ -83,7 +83,6 @@ public class MovableObjectStateMachine : MonoBehaviour
         historyObject.prefabToInstantiate = this.gameObject;
         historyObject.positionToInstantiate = this.transform.position;
         historyObject.currentRotation = this.transform.rotation;
-        HistoryTracker.singleton.AddToList(historyObject);
     }
 
     protected virtual void Update()
@@ -216,6 +215,10 @@ public class MovableObjectStateMachine : MonoBehaviour
             this.transform.GetComponentInChildren<CardTilter>().SetRotationToNotZero();
         }
         SubscribeToDelegates();
+        historyObject.prefabToInstantiate = this.gameObject;
+        historyObject.positionToInstantiate = this.transform.position;
+        historyObject.currentRotation = this.transform.rotation;
+        HistoryTracker.singleton.AddToList(historyObject);
         HistoryTracker.singleton.SetTouched();
         startingTouchPosition = positionSent;
         offset = new Vector3(this.transform.position.x - positionSent.x, 0, this.transform.position.z - positionSent.z);
@@ -292,7 +295,6 @@ public class MovableObjectStateMachine : MonoBehaviour
         {
             snappingToThreeOnY = false;
         }
-        Debug.Log(targetPositionOnY + "Target position on y");
         targetToMove.position = Vector3.MoveTowards(targetToMove.position, new Vector3(targetToMove.position.x, targetPositionOnY, targetToMove.position.z), .05f * 1000 * Time.deltaTime);
     }
     public void SnapToLowestPointHit()
@@ -421,6 +423,8 @@ public class MovableObjectStateMachine : MonoBehaviour
         if (idList.Count == 1)
         {
             HistoryTracker.singleton.FingerReleased(historyObject);
+
+            HistoryTracker.singleton.AddToList(historyObject);
             UnsubscribeToDelegates();
             if (state == State.Indeterminate)
             {

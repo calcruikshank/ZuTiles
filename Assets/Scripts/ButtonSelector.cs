@@ -38,7 +38,6 @@ public class ButtonSelector : MonoBehaviour
             foreach (MonoBehaviour mb in allScriptsInParent)
             {
                 mb.Invoke(methodToCall, 0f);
-                Debug.Log("Invoking " + methodToCall);
             }
         }
     }

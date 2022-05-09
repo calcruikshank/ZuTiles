@@ -35,7 +35,6 @@ public class TouchController : MonoBehaviour
             if (raycastHit.transform.GetComponent<ButtonSelector>() != null)
             {
                 raycastHit.transform.GetComponent<ButtonSelector>().Select();
-                Debug.Log("Hit Button Selector");
                 return;
             }
             if (raycastHit.transform.GetComponentInChildren<PlayerContainer>() != null)

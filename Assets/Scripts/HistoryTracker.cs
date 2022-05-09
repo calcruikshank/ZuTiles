@@ -45,7 +45,6 @@ public class HistoryTracker : MonoBehaviour
             historyObjects.Add(currentTurn, emptyHistoryObjectsList);
         }
         historyObjects[currentTurn].Add(historyObject);
-        Debug.Log(currentTurn + " " + historyObject + " History object");
     }
 
     public void FingerReleased(HistoryObject historyObject)
@@ -59,19 +58,27 @@ public class HistoryTracker : MonoBehaviour
 
     void GoToPreviousTurn()
     {
-        GoToTurn(currentTurn--);
+        if (currentTurn == 0)
+        {
+            return;
+        }
+        int newTurnToGoTo = currentTurn - 1;
+        GoToTurn(newTurnToGoTo);
     }
     public void GoToTurn(int turnToGoTo)
     {
-        for (int i = 0; i < historyObjects[currentTurn].Count; i++)
+        for (int i = 0; i < historyObjects[turnToGoTo].Count; i++)
         {
-            HistoryObject newHistoryObject = historyObjects[currentTurn][i];
+            Debug.Log(historyObjects[turnToGoTo].Count + " history object count");
+            HistoryObject newHistoryObject = historyObjects[turnToGoTo][i];
             Instantiate(newHistoryObject.prefabToInstantiate, newHistoryObject.positionToInstantiate, newHistoryObject.currentRotation);
         }
         for (int i = 0; i < historyObjects[currentTurn].Count; i++)
         {
-            HistoryObject newHistoryObject = historyObjects[currentTurn][i];
-            Instantiate(newHistoryObject.prefabToInstantiate, newHistoryObject.positionToInstantiate, newHistoryObject.currentRotation);
+            Debug.Log("Current object to destroy = " + historyObjects[currentTurn][i]);
+            Destroy(historyObjects[currentTurn][i].gameObject);
         }
+        historyObjects[currentTurn].Clear(); historyObjects[turnToGoTo].Clear();
+        currentTurn = turnToGoTo;
     }
 }
