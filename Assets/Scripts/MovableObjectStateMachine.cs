@@ -424,7 +424,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         {
             HistoryTracker.singleton.FingerReleased(historyObject);
 
-            HistoryTracker.singleton.AddToList(historyObject);
+            //HistoryTracker.singleton.AddToList(historyObject);
             UnsubscribeToDelegates();
             if (state == State.Indeterminate)
             {

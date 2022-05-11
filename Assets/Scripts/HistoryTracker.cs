@@ -7,6 +7,8 @@ public class HistoryTracker : MonoBehaviour
 {
     public static HistoryTracker singleton;
     public Dictionary<int, List<HistoryObject>> historyObjects = new Dictionary<int, List<HistoryObject>>();
+    public Dictionary<int, List<HistoryObject>> historyObjectsToRemove = new Dictionary<int, List<HistoryObject>>();
+
 
     public int currentTurn;
     //What variables do I need to keep track of? 
@@ -44,16 +46,36 @@ public class HistoryTracker : MonoBehaviour
             List<HistoryObject> emptyHistoryObjectsList = new List<HistoryObject>();
             historyObjects.Add(currentTurn, emptyHistoryObjectsList);
         }
+        if (historyObjects.ContainsKey(currentTurn))
+        {
+            historyObjects.Remove(currentTurn);
+            List<HistoryObject> emptyHistoryObjectsList = new List<HistoryObject>();
+            historyObjects.Add(currentTurn, emptyHistoryObjectsList);
+        }
         historyObjects[currentTurn].Add(historyObject);
     }
 
     public void FingerReleased(HistoryObject historyObject)
     {
-        currentTurn++;
+        currentTurn++; 
+        if (!historyObjectsToRemove.ContainsKey(currentTurn))
+        {
+            List<HistoryObject> emptyHistoryObjectsList = new List<HistoryObject>();
+            historyObjectsToRemove.Add(currentTurn, emptyHistoryObjectsList);
+        }
+        if (historyObjectsToRemove.ContainsKey(currentTurn))
+        {
+            historyObjectsToRemove.Remove(currentTurn);
+            List<HistoryObject> emptyHistoryObjectsList = new List<HistoryObject>();
+            historyObjectsToRemove.Add(currentTurn, emptyHistoryObjectsList);
+        }
+        historyObjectsToRemove[currentTurn].Add(historyObject);
+
     }
 
     internal void SetTouched()
     {
+
     }
 
     void GoToPreviousTurn()
@@ -71,14 +93,13 @@ public class HistoryTracker : MonoBehaviour
         {
             Debug.Log(historyObjects[turnToGoTo].Count + " history object count");
             HistoryObject newHistoryObject = historyObjects[turnToGoTo][i];
-            Instantiate(newHistoryObject.prefabToInstantiate, newHistoryObject.positionToInstantiate, newHistoryObject.currentRotation);
+            GameObject newGO = Instantiate(newHistoryObject.prefabToInstantiate, newHistoryObject.positionToInstantiate, newHistoryObject.currentRotation);
         }
-        for (int i = 0; i < historyObjects[currentTurn].Count; i++)
+        for (int i = 0; i < historyObjectsToRemove[currentTurn].Count; i++)
         {
-            Debug.Log("Current object to destroy = " + historyObjects[currentTurn][i]);
-            Destroy(historyObjects[currentTurn][i].gameObject);
+            Debug.Log("Current object to destroy = " + historyObjectsToRemove[currentTurn][i]);
+            Destroy(historyObjectsToRemove[currentTurn][i].gameObject);
         }
-        historyObjects[currentTurn].Clear(); historyObjects[turnToGoTo].Clear();
         currentTurn = turnToGoTo;
     }
 }
