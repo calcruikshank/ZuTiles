@@ -118,7 +118,6 @@ public class PlayerContainer : MonoBehaviour
                 cardsInHand[i].GetComponent<MovableObjectStateMachine>().FlipObject();
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().objects.Add(targetPlayCardTransform);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().ChangeStateToLerp();
-                //cardsInHand[i].
                 RemoveCardFromHand(cardsInHand[i]);
             }
         }

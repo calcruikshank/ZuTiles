@@ -72,45 +72,6 @@ namespace Gameboard.Examples
             CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
         }
 
-
-        /*void CardsButtonEvent(string gameboardUserId, string callbackMethod, string cardsId)
-        {
-            if (gameboardUserId != Gameboard_UserID || isResolvingCardAction || isAiPlayer)
-            {
-                Debug.Log("--- CardsButtonEvent refused because: " + (gameboardUserId != Gameboard_UserID) + " / " + isResolvingCardAction + " / " + isAiPlayer);
-                return;
-            }
-
-            if (isResolvingCardAction || isAiPlayer)
-            {
-                Debug.Log("--- Still resolving card action! Received event " + callbackMethod + " for usre " + gameboardUserId + " and cardID " + cardsId);
-                return;
-            }
-
-            Debug.Log("--- Successfully Received Cards Button event " + callbackMethod + " for user " + gameboardUserId + " and cardID " + cardsId);
-
-            if (callbackMethod == listenForCompanionEventGameplayCardSelect)
-            {
-                PrepareProjectCardToPlay(cardsId);
-            }
-            else if (callbackMethod == listenForCompanionEventCardSelectFinished)
-            {
-                finalizeSelectionNextUpdate = true;
-            }
-            else if (callbackMethod == listenForCompanionEventSelectCardToAddToHand)
-            {
-                SelectCardToAddToHand(cardsId);
-            }
-            else if (callbackMethod == listenForCompanionEventSelectForPatent)
-            {
-                FinalizeSellPatent(cardsId);
-            }
-            else if (callbackMethod == listenForCompanionEventCorporationSelected)
-            {
-                CorporationCardSelected(cardsId);
-            }
-        }*/
-
     }
 
 

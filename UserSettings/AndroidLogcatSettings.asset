@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "620102100500049",
+    "m_SelectedDeviceId": "10.1.10.61:5555",
     "m_SelectedPackage": {
-        "deviceId": "620102100500049",
-        "name": "com.DefaultCompany.ZuTiles",
-        "processId": 5586,
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -619,6 +619,12 @@
             "name": "com.DefaultCompany.ZuTiles",
             "processId": 15568,
             "exited": false
+        },
+        {
+            "deviceId": "10.1.10.61:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 4934,
+            "exited": true
         }
     ],
     "m_Tags": {

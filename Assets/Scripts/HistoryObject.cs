@@ -9,6 +9,8 @@ public class HistoryObject : MonoBehaviour
     public Vector3 currentEulerAngles;
     public Quaternion currentRotation;
 
+    public int objectID;
+
     public void SetParameters(GameObject prefabSent) 
     {
 

@@ -79,8 +79,14 @@ public class MovableObjectStateMachine : MonoBehaviour
             targetRotation = this.transform.GetChild(0).transform.localEulerAngles;
             currentLocalEulerAngles = this.transform.GetChild(0).localEulerAngles;
         }
-        
-        historyObject = new HistoryObject();
+        if (this.GetComponent<HistoryObject>() == null)
+        {
+            historyObject = this.gameObject.AddComponent<HistoryObject>();
+        }
+        else
+        {
+            historyObject = this.GetComponent<HistoryObject>();
+        }
         historyObject.prefabToInstantiate = this.gameObject;
         historyObject.positionToInstantiate = this.transform.position;
         historyObject.currentRotation = this.transform.rotation; 
