@@ -74,7 +74,7 @@ public class ZuTilesSetup : MonoBehaviour
             ZuTiileButtonSelector[] deckSelectors = FindObjectsOfType<ZuTiileButtonSelector>();
             for (int i = 0; i < deckSelectors.Length; i++)
             {
-                deckSelectors[i].enabled = false;
+                deckSelectors[i].gameObject.SetActive(false);
             }
         }
     }
