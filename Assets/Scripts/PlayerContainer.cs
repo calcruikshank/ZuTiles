@@ -21,13 +21,13 @@ public class PlayerContainer : MonoBehaviour
     Vector3 fingerMovePosition;
     Vector3 fingerDownPosition;
 
-    
-    [SerializeField]Transform targetPlayCardTransform;
+
+    public Transform targetPlayCardTransform;
 
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
     private void Start()
     {
-        inPlayer = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>(); 
+        inPlayer = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>();
         setStencilReference = FindObjectOfType<SetStencilReference>();
         currentOffset = Vector3.zero;
 
@@ -43,13 +43,17 @@ public class PlayerContainer : MonoBehaviour
         {
             setStencilReference.objectsToHide.Add(objectInCard.gameObject);
             Debug.Log(objectInCard + " Object in card");
-            objectInCard.GetComponentInChildren<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; 
+            objectInCard.GetComponentInChildren<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
         setStencilReference.Hide();
-        
+
         cardsInHand.Add(cardToAdd);
         UpdateCardPositions();
         cardToAdd.GetComponent<MovableObjectStateMachine>().GivePlayerOwnership(this);
+        if (cardToAdd.GetComponent<MovableObjectStateMachine>().faceUp)
+        {
+            cardToAdd.GetComponent<MovableObjectStateMachine>().FlipObject();
+        }
         AddToCompanion(cardToAdd);
     }
 
@@ -96,7 +100,7 @@ public class PlayerContainer : MonoBehaviour
                 cardsInHand[i].transform.position = new Vector3(((this.transform.position.x + (cardsInHand[i].transform.GetComponentInChildren<Collider>().bounds.size.x * i) + movableObjectPadding * i)) + currentOffset.x, this.transform.position.y + .1f, this.transform.position.z);
             }
         }
-        else 
+        else
         {
             for (int i = 0; i < cardsInHand.Count; i++)
             {
@@ -111,6 +115,7 @@ public class PlayerContainer : MonoBehaviour
         {
             if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton)
             {
+                cardsInHand[i].GetComponent<MovableObjectStateMachine>().FlipObject();
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().objects.Add(targetPlayCardTransform);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().ChangeStateToLerp();
                 //cardsInHand[i].
@@ -140,7 +145,7 @@ public class PlayerContainer : MonoBehaviour
     }
     internal void SelectContainer(int index, Vector3 startingPosition)
     {
-        Debug.Log("Starting Position " + startingPosition); 
+        Debug.Log("Starting Position " + startingPosition);
         fingerDownPosition = startingPosition - currentOffset;
         SubscribeToDelegates();
     }
@@ -150,7 +155,7 @@ public class PlayerContainer : MonoBehaviour
         TouchScript.touchMoved += Scroll;
         TouchScript.fingerReleased += FingerReleased;
         thisRotation = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>().GetRotation();
-        
+
     }
     public void UnsubToDelegates()
     {

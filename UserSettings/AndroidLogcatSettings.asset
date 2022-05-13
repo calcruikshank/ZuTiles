@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "10.1.10.61:5555",
+    "m_SelectedDeviceId": "620102100500049",
     "m_SelectedPackage": {
         "deviceId": "620102100500049",
         "name": "com.DefaultCompany.ZuTiles",
-        "processId": 4902,
+        "processId": 5586,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -510,6 +510,66 @@
             "deviceId": "620102100500049",
             "name": "com.DefaultCompany.ZuTiles",
             "processId": 4902,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 4579,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 4825,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 4976,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5152,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5323,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 4626,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 4968,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5111,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5298,
+            "exited": false
+        },
+        {
+            "deviceId": "620102100500049",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5586,
             "exited": false
         },
         {
