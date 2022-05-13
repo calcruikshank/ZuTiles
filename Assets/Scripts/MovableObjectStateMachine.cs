@@ -420,7 +420,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         targetRotation = new Vector3(transform.GetChild(0).localEulerAngles.x, (targetRotation.y - 90), transform.GetChild(0).localEulerAngles.z);
         state = State.Rotating;
     }
-    private void UnsubscribeToDelegates()
+    public void UnsubscribeToDelegates()
     {
         TouchScript.touchMoved -= FingerMoved;
         TouchScript.fingerReleased -= FingerReleased;

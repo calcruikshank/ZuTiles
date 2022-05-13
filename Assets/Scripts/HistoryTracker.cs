@@ -56,16 +56,23 @@ public class HistoryTracker : MonoBehaviour
                 nameExists++;
                 if (nameExists > 1)
                 {
-                    if (gameObjectsToDestroy.Count >=  nameExists - 1)
+                    if (gameObjectsToDestroy.Count >=  i)
                     {
-                        gameObjectsToDestroy.Remove(nameExists - 1);
+                        gameObjectsToDestroy.Remove(i);
                     }
                    
-                    gameObjectsToDestroy.Add(nameExists - 1, gameObjectsToInstantiate[i]);
-                    Debug.Log("adding " + gameObjectsToInstantiate[i]);
+                    gameObjectsToDestroy.Add(i, gameObjectsToInstantiate[i]);
                 }
             }
         }
+
+
+        currentTurn++;
+        if (gameObjectsToDestroy.Count >= currentTurn)
+        {
+            gameObjectsToDestroy.Remove(currentTurn);
+        }
+        gameObjectsToDestroy.Add(currentTurn, historyObject.prefabToInstantiate);
         /*if (!historyObjects.ContainsKey(currentTurn))
         {
             List<HistoryObject> emptyHistoryObjectsList = new List<HistoryObject>();
@@ -76,12 +83,6 @@ public class HistoryTracker : MonoBehaviour
     } 
     public void FingerReleased(HistoryObject historyObject)
     {
-        currentTurn++;
-        if (gameObjectsToDestroy.Count >= currentTurn)
-        {
-            gameObjectsToDestroy.Remove(currentTurn);
-        }
-        gameObjectsToDestroy.Add(currentTurn, historyObject.prefabToInstantiate);
         //Debug.Log("Adding " + historyObject.prefabToInstantiate + " to gameobjects to destroy.  Current Turn = " + currentTurn);
         /*if (!historyObjectsToRemove.ContainsKey(currentTurn))
         {
@@ -114,12 +115,17 @@ public class HistoryTracker : MonoBehaviour
     }
     public void GoToTurn(int turnToGoTo)
     {
+        if (gameObjectsToInstantiate.Count <= turnToGoTo)
+        {
+            return;
+        }
         if (currentTurn <= 0)
         {
             return;
         }
         GameObject activeObject = gameObjectsToInstantiate[turnToGoTo];
         activeObject.SetActive(true);
+        activeObject.GetComponent<MovableObjectStateMachine>().UnsubscribeToDelegates();
 
         gameObjectsToInstantiate.Remove(turnToGoTo);
 
