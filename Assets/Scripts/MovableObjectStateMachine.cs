@@ -150,6 +150,8 @@ public class MovableObjectStateMachine : MonoBehaviour
 
         //transform.GetChild(0).localEulerAngles = new Vector3(transform.GetChild(0).localEulerAngles.x, currentLocalEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
         transform.GetChild(0).localEulerAngles = targetRotation;
+
+        state = State.Idle;
     }
 
     void HandleFlipCard()
@@ -477,7 +479,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     public void SpawnInNewSelectedWheelTransform(Transform transformToSpawnOn)
     {
-        selectedWheelGO = Instantiate(Crutilities.singleton.SelectedWheelTransform, new Vector3(this.transform.position.x, 1, this.transform.position.z), this.transform.rotation);
+        selectedWheelGO = Instantiate(Crutilities.singleton.SelectedWheelTransform, new Vector3(this.transform.position.x, this.transform.position.y + 1f + (this.GetComponentInChildren<Collider>().bounds.size.y / 2), this.transform.position.z), this.transform.rotation);
         selectedWheelGO.transform.parent = this.transform;
     }
     public void DestroySpecificSelectedWheel(Transform transformToSpawnOn)
