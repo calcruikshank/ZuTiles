@@ -34,7 +34,8 @@ public class ZuTilePlayer : MonoBehaviour
     {
         Debug.Log("Instantiating deck  " + deckToInstantiate);
         ChosenDeck = deckToInstantiate;
-        // SetupZuTilePlayer(deckToInstantiate);
+        
+        //SetupZuTilePlayer(deckToInstantiate);
         deckSelected.transform.position = new Vector3(this.transform.GetComponentInChildren<PlayerContainer>().transform.position.x, this.transform.GetComponentInChildren<PlayerContainer>().transform.position.y + 1f, this.transform.GetComponentInChildren<PlayerContainer>().transform.position.z);
         deckSelected.transform.rotation = this.transform.rotation;
 

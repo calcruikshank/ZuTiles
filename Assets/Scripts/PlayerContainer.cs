@@ -21,7 +21,6 @@ public class PlayerContainer : MonoBehaviour
     Vector3 fingerMovePosition;
     Vector3 fingerDownPosition;
 
-
     public Transform targetPlayCardTransform;
 
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
@@ -34,6 +33,7 @@ public class PlayerContainer : MonoBehaviour
     }
     public void AddCardToHand(GameObject cardToAdd)
     {
+        Debug.Log("Adding card " + cardToAdd);
         thisRotation = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>().GetRotation();
         //position = (this.transform.bounds.x - this.transform.bounds.x + padding)
         //cardToAdd.transform.position = new Vector3(((this.transform.position.x + (this.transform.GetComponent<Collider>().bounds.size.x / 2) - (this.transform.GetComponent<Collider>().bounds.size.x / 2)) + (cardToAdd.transform.GetComponentInChildren<Collider>().bounds.size.x * cardsInHand.Count) + movableObjectPadding * cardsInHand.Count), cardToAdd.transform.position.y, this.transform.position.z);
@@ -60,8 +60,10 @@ public class PlayerContainer : MonoBehaviour
 
     private void AddToCompanion(GameObject cardToAdd)
     {
+        Debug.Log("Adding to companion " + cardToAdd);
         Texture2D cardImageTexture = (Texture2D)cardToAdd.GetComponentInChildren<Renderer>().material.mainTexture;
         byte[] textureArray = DeCompress(cardImageTexture).EncodeToPNG();
+        Debug.Log("Adding to companion deck " + cardToAdd.GetComponent<Deck>());
         CardDefinition newCardDef = new CardDefinition(cardImageTexture.name, textureArray, "", null, cardImageTexture.width / 2, cardImageTexture.height / 2);
         cardDefinitions.Add(newCardDef, CardsTool.singleton.GetCurrentLocationOfCardByGUID(newCardDef.cardGuid));
         cardToAdd.GetComponent<Deck>().CardCompanionDefiniiton = newCardDef;
@@ -177,4 +179,5 @@ public class PlayerContainer : MonoBehaviour
     {
         UnsubToDelegates();
     }
+
 }

@@ -19,7 +19,7 @@ public class Deck : MonoBehaviour
         InitializeDeck();
         UpdateDeckInfo();
     }
-    
+
     public void SetSelected(int id, Vector3 offset)
     {
         TouchScript.shuffleInitiated += ShuffleDeck;
@@ -76,7 +76,7 @@ public class Deck : MonoBehaviour
             }
         }
 
-        
+
 
         //this for loop is to check for any decks hit to add to
         for (int j = 0; j < hits.Length; j++)
@@ -173,6 +173,8 @@ public class Deck : MonoBehaviour
         #endregion
     }
 
+
+
     internal void SetToStartingShader()
     {
 
@@ -214,7 +216,46 @@ public class Deck : MonoBehaviour
         }
     }
 
-
+    internal List<GameObject> MakeANewListOfInstantiatedCards(int numOfCardsToStartWith)
+    {
+        List<GameObject> newCardsInstantiated = new List<GameObject>();
+        for (int i = 0; i < numOfCardsToStartWith; i++)
+        {
+            GameObject newCard;
+            if (cardsInDeck.Count == 1)
+            {
+                return null;
+            }
+            Debug.Log("new card is face up ");
+            newCard = InstantiateCardsFromBottom();
+            /*if (this.GetComponent<MovableObjectStateMachine>().faceUp)
+            {
+                newCard = InstantiateCardsFromBottom();
+                newCardsInstantiated.Add(newCard);
+            }
+            if (!this.GetComponent<MovableObjectStateMachine>().faceUp)
+            {
+                newCard = InstantiateCardsFromTop();
+                newCardsInstantiated.Add(newCard);
+            }*/
+            newCardsInstantiated.Add(newCard);
+            Debug.Log("new card is face up !" + newCard);
+        }
+        Debug.Log("Creating a new card " + newCardsInstantiated.Count);
+        return newCardsInstantiated;
+    }
+    GameObject InstantiateCardsFromBottom()
+    {
+        GameObject newDeck;
+        newDeck = Instantiate(this.gameObject, transform.position, Quaternion.identity);
+        Deck deck = newDeck.GetComponent<Deck>();
+        deck.cardsInDeck.Clear();
+        deck.cardsInDeck.Add(cardsInDeck[cardsInDeck.Count - 1]);
+        cardsInDeck.RemoveAt(cardsInDeck.Count - 1);
+        deck.UpdateDeckInfo();
+        UpdateDeckInfo();
+        return newDeck;
+    }
 
     public void PickUpCards(int numOfCardsToPickUp)
     {
@@ -231,7 +272,7 @@ public class Deck : MonoBehaviour
             PickUpCardsFromTop(numOfCardsToPickUp);
         }
     }
-    
+
 
     public void PickUpCardsFromBottom(int numOfCardsToPickUp)
     {

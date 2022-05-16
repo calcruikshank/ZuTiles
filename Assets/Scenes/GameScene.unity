@@ -9086,6 +9086,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CloseButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5901803169086856552, guid: a5105dde97673394ca44e5da2ec9a5bf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5901803169086856554, guid: a5105dde97673394ca44e5da2ec9a5bf, type: 3}
       propertyPath: methodToCall
       value: GoToPreviousTurn
@@ -11602,6 +11606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   decksToChooseFrom:
   - {fileID: 1421860925513984273, guid: 309c83466d9c18449a4ad666ce8631e6, type: 3}
+  numOfCardsToStartWith: 7
 --- !u!1 &2032503009
 GameObject:
   m_ObjectHideFlags: 0
