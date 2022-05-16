@@ -24,7 +24,7 @@ public class PlayerContainer : MonoBehaviour
     public Transform targetPlayCardTransform;
 
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
-    private void Start()
+    private void Awake()
     {
         inPlayer = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>();
         setStencilReference = FindObjectOfType<SetStencilReference>();
@@ -33,7 +33,6 @@ public class PlayerContainer : MonoBehaviour
     }
     public void AddCardToHand(GameObject cardToAdd)
     {
-        Debug.Log("Adding card " + cardToAdd);
         thisRotation = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>().GetRotation();
         //position = (this.transform.bounds.x - this.transform.bounds.x + padding)
         //cardToAdd.transform.position = new Vector3(((this.transform.position.x + (this.transform.GetComponent<Collider>().bounds.size.x / 2) - (this.transform.GetComponent<Collider>().bounds.size.x / 2)) + (cardToAdd.transform.GetComponentInChildren<Collider>().bounds.size.x * cardsInHand.Count) + movableObjectPadding * cardsInHand.Count), cardToAdd.transform.position.y, this.transform.position.z);
@@ -42,7 +41,6 @@ public class PlayerContainer : MonoBehaviour
         foreach (Transform objectInCard in objectsInCardToAdd)
         {
             setStencilReference.objectsToHide.Add(objectInCard.gameObject);
-            Debug.Log(objectInCard + " Object in card");
             objectInCard.GetComponentInChildren<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
         setStencilReference.Hide();
@@ -68,10 +66,10 @@ public class PlayerContainer : MonoBehaviour
         cardDefinitions.Add(newCardDef, CardsTool.singleton.GetCurrentLocationOfCardByGUID(newCardDef.cardGuid));
         cardToAdd.GetComponent<Deck>().CardCompanionDefiniiton = newCardDef;
         CardsTool.singleton.AddCardToLibrary(newCardDef);
-        AddCardToHand(newCardDef);
+        AddCardToHandDisplay(newCardDef);
     }
 
-    private async void AddCardToHand(CardDefinition newCardDef)
+    private async void AddCardToHandDisplay(CardDefinition newCardDef)
     {
         cardHandID = CardsTool.singleton.GetCardHandDisplayedForPlayer(inPlayer.userId);
         await CardsTool.singleton.PlaceCardInPlayerHand_Async(inPlayer.userId, cardHandID, newCardDef);
