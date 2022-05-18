@@ -91,14 +91,14 @@ public class Deck : MonoBehaviour
             {
                 if (targetHit.GetComponent<Deck>() != this)
                 {
-                    if (targetHit.GetComponent<MovableObjectStateMachine>().faceUp)
+                    if (targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
                     {
                         Debug.Log("Hit detected " + targetHit.name);
                         Deck deckToAddTo = targetHit.GetComponent<Deck>();
                         deckToAddTo.AddToDeck(this.cardsInDeck);
                         Destroy(this.gameObject);
                     }
-                    if (!targetHit.GetComponent<MovableObjectStateMachine>().faceUp)
+                    if (!targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
                     {
                         Debug.Log("Adding to front of list " + targetHit.name);
                         Deck deckToAddTo = targetHit.GetComponent<Deck>();
@@ -229,6 +229,7 @@ public class Deck : MonoBehaviour
             }
             newCard = InstantiateCardsFromBottom();
             newCard.GetComponent<Deck>().UpdateDeckInfo();
+            newCard.GetComponent<MovableObjectStateMachine>().FlipObject();
             /*if (this.GetComponent<MovableObjectStateMachine>().faceUp)
             {
                 newCard = InstantiateCardsFromBottom();
@@ -264,11 +265,11 @@ public class Deck : MonoBehaviour
         {
             return;
         }
-        if (movableObject.faceUp)
+        if (movableObject.GetCurrentFacing())
         {
             PickUpCardsFromBottom(numOfCardsToPickUp);
         }
-        if (!movableObject.faceUp)
+        if (!movableObject.GetCurrentFacing())
         {
             PickUpCardsFromTop(numOfCardsToPickUp);
         }
@@ -296,7 +297,7 @@ public class Deck : MonoBehaviour
     {
         GameObject newDeck;
         newDeck = Instantiate(this.gameObject, transform.position, Quaternion.identity);
-        newDeck.GetComponent<MovableObjectStateMachine>().faceUp = false;
+        
         int iniatedI = cardsInDeck.Count;
         cardsInDeck.Clear();
         for (int i = 0; i <= numOfCardsToPickUp - 1; i++)

@@ -73,6 +73,7 @@ public class ZuTilesSetup : MonoBehaviour
             GameObject deckToSpawn = player.GetComponentInChildren<ZuTilePlayer>().ChosenDeck;
             GameObject instantiatedDeck = Instantiate(deckToSpawn, player.GetComponentInChildren<PlayerContainer>().deckSpawnLocation.position, player.GetComponentInChildren<PlayerContainer>().targetPlayCardTransform.rotation);
             instantiatedDeck.GetComponent<Deck>().ShuffleDeck(Vector3.zero, 0);
+            instantiatedDeck.GetComponent<MovableObjectStateMachine>().HideObject();
             List<GameObject> cardsToAdd = (instantiatedDeck.GetComponent<Deck>().MakeANewListOfInstantiatedCards(numOfCardsToStartWith));
             for (int i = 0; i < cardsToAdd.Count; i++)
             {

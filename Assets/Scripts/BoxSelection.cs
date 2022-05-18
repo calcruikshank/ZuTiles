@@ -400,7 +400,7 @@ public class BoxSelection : MonoBehaviour
             {
                 if (hasChosenMasterObject)
                 {
-                    if (selectedMovableObjects[i].faceUp)
+                    if (selectedMovableObjects[i].GetCurrentFacing())
                     {
                         if (deckToAddTo != null)
                         {

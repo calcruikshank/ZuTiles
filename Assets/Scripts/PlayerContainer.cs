@@ -42,7 +42,9 @@ public class PlayerContainer : MonoBehaviour
         UpdateCardPositions();
         cardToAdd.GetComponent<MovableObjectStateMachine>().GivePlayerOwnership(this);
 
-        cardToAdd.SetActive(false);
+        //cardToAdd.SetActive(false);
+        cardToAdd.GetComponent<MovableObjectStateMachine>().HideObject();
+        
         AddToCompanion(cardToAdd);
         
     }
@@ -60,10 +62,8 @@ public class PlayerContainer : MonoBehaviour
 
     private void AddToCompanion(GameObject cardToAdd)
     {
-        Debug.Log("Adding to companion " + cardToAdd);
         Texture2D cardImageTexture = (Texture2D)cardToAdd.GetComponentInChildren<Renderer>().material.mainTexture;
         byte[] textureArray = DeCompress(cardImageTexture).EncodeToPNG();
-        Debug.Log("Adding to companion deck " + cardToAdd.GetComponent<Deck>());
         CardDefinition newCardDef = new CardDefinition(cardImageTexture.name, textureArray, "", null, cardImageTexture.width / 2, cardImageTexture.height / 2);
         cardDefinitions.Add(newCardDef, CardsTool.singleton.GetCurrentLocationOfCardByGUID(newCardDef.cardGuid));
         cardToAdd.GetComponent<Deck>().CardCompanionDefiniiton = newCardDef;
@@ -121,7 +121,7 @@ public class PlayerContainer : MonoBehaviour
         {
             if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton)
             {
-                cardsInHand[i].SetActive(true);
+               // cardsInHand[i].SetActive(true);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().objects.Add(targetPlayCardTransform);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().ChangeStateToLerp();
                 RemoveCardFromHand(cardsInHand[i]);

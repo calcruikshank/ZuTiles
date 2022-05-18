@@ -17,7 +17,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     float doubleTapThreshold = .25f;
     float distanceThreshold = .25f;
     Deck deck;
-    public bool faceUp = true;
+     bool faceUp = true;
     bool lowering;
     bool snappingToThreeOnY;
     int numOfFingersOnCard = 0;
@@ -92,6 +92,8 @@ public class MovableObjectStateMachine : MonoBehaviour
         historyObject.currentRotation = this.transform.rotation; 
         //HistoryTracker.singleton.AddToList(historyObject);
     }
+
+    
 
     protected virtual void Update()
     {
@@ -242,18 +244,45 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         state = State.Indeterminate;
     }
-    public void FlipObject()
+    internal void HideObject()
     {
+        Debug.Log("The object is face up!!!!!!!!!!!!!" + faceUp);
         if (faceUp)
         {
-            transform.GetChild(0).localEulerAngles = new Vector3(startingXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+            float tempSXRotation = startingXRotation;
+
+            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+          
+            faceUp = false;
+        }
+        
+    }
+    internal void RevealObject()
+    {
+        Debug.Log("The object is face up!!!!!!!!!!!!!" + faceUp);
+        if (!faceUp)
+        {
+            float tempSXRotation = startingXRotation;
+
+            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+
+            faceUp = true;
+        }
+
+    }
+    public void FlipObject()
+    {
+        /*float tempSXRotation = startingXRotation;
+        if (faceUp)
+        {
+            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
             faceUp = false;
         }
         if(!faceUp)
         {
-            transform.GetChild(0).localEulerAngles = new Vector3(startingXRotation, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
             faceUp = true;
-        }
+        }*/
     }
     public void CheckForInputCommands()
     {
@@ -453,6 +482,11 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         idList.Remove(index);
 
+    }
+
+    public bool GetCurrentFacing()
+    {
+        return faceUp;
     }
 
     private void FingerMoved(Vector3 position, int index)
