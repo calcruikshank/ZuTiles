@@ -80,7 +80,7 @@ namespace Gameboard
 
                     myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
                     myObject.InjectDependencies(userPresence);
-
+                    CreateCardHandOnPlayersAsync(myObject);
                     //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
 
 
@@ -107,7 +107,12 @@ namespace Gameboard
             }
 
         }
-
+        public async void CreateCardHandOnPlayersAsync(PlayerPresenceDrawer inPlayer)
+        {
+            string cardHandId = await CardsTool.singleton.CreateCardHandOnPlayer(inPlayer.userId);
+            await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
+            AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
+        }
         internal void RemoveCardFromUser(string userId, CardDefinition selectedCard)
         {
         }
@@ -125,16 +130,12 @@ namespace Gameboard
                 GUILayout.Label(thisString);
             }
         }
-
+        
         public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
         {
             await Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
 
             await Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
-           
-            string cardHandId = await CardsTool.singleton.CreateCardHandOnPlayer(inPlayer.userId);
-            await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
-            AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
 
             cardImageList.Clear();
             for (int i = 0; i < deckToGivePlayer.GetComponent<Deck>().cardsInDeck.Count; i++)
@@ -173,9 +174,9 @@ namespace Gameboard
             return readableText;
         }
 
-       
 
-        
+
+
         private void ResolveButtonPress(string inCallbackMethod)
         {
             Debug.Log("ResolveButtonPress for " + inCallbackMethod);
@@ -184,7 +185,7 @@ namespace Gameboard
                 Debug.Log("Button A Pressed");
             }
         }
-       
+
     }
 
 }

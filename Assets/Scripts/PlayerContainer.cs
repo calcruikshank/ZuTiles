@@ -22,6 +22,7 @@ public class PlayerContainer : MonoBehaviour
     Vector3 fingerDownPosition;
 
     public Transform targetPlayCardTransform;
+    public Transform deckSpawnLocation;
 
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
     private void Awake()
@@ -37,6 +38,17 @@ public class PlayerContainer : MonoBehaviour
         //position = (this.transform.bounds.x - this.transform.bounds.x + padding)
         //cardToAdd.transform.position = new Vector3(((this.transform.position.x + (this.transform.GetComponent<Collider>().bounds.size.x / 2) - (this.transform.GetComponent<Collider>().bounds.size.x / 2)) + (cardToAdd.transform.GetComponentInChildren<Collider>().bounds.size.x * cardsInHand.Count) + movableObjectPadding * cardsInHand.Count), cardToAdd.transform.position.y, this.transform.position.z);
         cardToAdd.transform.rotation = this.transform.rotation;
+        cardsInHand.Add(cardToAdd);
+        UpdateCardPositions();
+        cardToAdd.GetComponent<MovableObjectStateMachine>().GivePlayerOwnership(this);
+
+        cardToAdd.SetActive(false);
+        AddToCompanion(cardToAdd);
+        
+    }
+
+    void SetStencil(GameObject cardToAdd)
+    {
         Transform[] objectsInCardToAdd = cardToAdd.GetComponentsInChildren<Transform>();
         foreach (Transform objectInCard in objectsInCardToAdd)
         {
@@ -44,17 +56,7 @@ public class PlayerContainer : MonoBehaviour
             objectInCard.GetComponentInChildren<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
         setStencilReference.Hide();
-
-        cardsInHand.Add(cardToAdd);
-        UpdateCardPositions();
-        cardToAdd.GetComponent<MovableObjectStateMachine>().GivePlayerOwnership(this);
-        if (cardToAdd.GetComponent<MovableObjectStateMachine>().faceUp)
-        {
-            cardToAdd.GetComponent<MovableObjectStateMachine>().FlipObject();
-        }
-        AddToCompanion(cardToAdd);
     }
-
 
     private void AddToCompanion(GameObject cardToAdd)
     {
@@ -93,7 +95,7 @@ public class PlayerContainer : MonoBehaviour
 
     void UpdateCardPositions()
     {
-        if (thisRotation.y == 0)
+        /*if (thisRotation.y == 0)
         {
             for (int i = 0; i < cardsInHand.Count; i++)
             {
@@ -106,6 +108,10 @@ public class PlayerContainer : MonoBehaviour
             {
                 cardsInHand[i].transform.position = this.transform.position;
             }
+        }*/
+        for (int i = 0; i < cardsInHand.Count; i++)
+        {
+            cardsInHand[i].transform.position = this.transform.position;
         }
     }
 
@@ -115,7 +121,7 @@ public class PlayerContainer : MonoBehaviour
         {
             if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton)
             {
-                cardsInHand[i].GetComponent<MovableObjectStateMachine>().FlipObject();
+                cardsInHand[i].SetActive(true);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().objects.Add(targetPlayCardTransform);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().ChangeStateToLerp();
                 RemoveCardFromHand(cardsInHand[i]);

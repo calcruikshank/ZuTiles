@@ -12,6 +12,7 @@ public class ZuTilesSetup : MonoBehaviour
     public static ZuTilesSetup singleton;
 
     [SerializeField] int numOfCardsToStartWith = 7;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,7 @@ public class ZuTilesSetup : MonoBehaviour
             Destroy(this);
         }
         singleton = this;
+
         //display decks to choose from to the players
         //shuffle and load the decks for each player
     }
@@ -69,7 +71,7 @@ public class ZuTilesSetup : MonoBehaviour
         {
             
             GameObject deckToSpawn = player.GetComponentInChildren<ZuTilePlayer>().ChosenDeck;
-            GameObject instantiatedDeck = Instantiate(deckToSpawn, player.GetComponentInChildren<PlayerContainer>().targetPlayCardTransform.position, player.GetComponentInChildren<PlayerContainer>().targetPlayCardTransform.rotation);
+            GameObject instantiatedDeck = Instantiate(deckToSpawn, player.GetComponentInChildren<PlayerContainer>().deckSpawnLocation.position, player.GetComponentInChildren<PlayerContainer>().targetPlayCardTransform.rotation);
             instantiatedDeck.GetComponent<Deck>().ShuffleDeck(Vector3.zero, 0);
             List<GameObject> cardsToAdd = (instantiatedDeck.GetComponent<Deck>().MakeANewListOfInstantiatedCards(numOfCardsToStartWith));
             for (int i = 0; i < cardsToAdd.Count; i++)

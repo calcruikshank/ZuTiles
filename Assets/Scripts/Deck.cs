@@ -192,6 +192,7 @@ public class Deck : MonoBehaviour
 
     public void SetCurrentCardShowing(GameObject cardSent)
     {
+        
         GetComponentInChildren<CardFront>().ChangeCardFront(cardSent.GetComponentInChildren<CardFront>().gameObject);
         currentCardShowing = GetComponentInChildren<CardFront>().gameObject;
         if (currentCardShowing.GetComponent<CardTilter>() != null)
@@ -226,8 +227,8 @@ public class Deck : MonoBehaviour
             {
                 return null;
             }
-            Debug.Log("new card is face up ");
             newCard = InstantiateCardsFromBottom();
+            newCard.GetComponent<Deck>().UpdateDeckInfo();
             /*if (this.GetComponent<MovableObjectStateMachine>().faceUp)
             {
                 newCard = InstantiateCardsFromBottom();
@@ -239,19 +240,19 @@ public class Deck : MonoBehaviour
                 newCardsInstantiated.Add(newCard);
             }*/
             newCardsInstantiated.Add(newCard);
-            Debug.Log("new card is face up !" + newCard);
         }
-        Debug.Log("Creating a new card " + newCardsInstantiated.Count);
         return newCardsInstantiated;
     }
     GameObject InstantiateCardsFromBottom()
     {
         GameObject newDeck;
-        newDeck = Instantiate(this.gameObject, transform.position, Quaternion.identity);
+        newDeck = Instantiate(this.gameObject, Vector3.zero, Quaternion.identity);
         Deck deck = newDeck.GetComponent<Deck>();
+        UpdateDeckInfo();
         deck.cardsInDeck.Clear();
         deck.cardsInDeck.Add(cardsInDeck[cardsInDeck.Count - 1]);
         cardsInDeck.RemoveAt(cardsInDeck.Count - 1);
+        Debug.Log(" cards in new deck at 0 so update game god " + deck.cardsInDeck[0]  + " update game info " + newDeck.GetComponentInChildren<CardFront>());
         deck.UpdateDeckInfo();
         UpdateDeckInfo();
         return newDeck;

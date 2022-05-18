@@ -17,7 +17,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     float doubleTapThreshold = .25f;
     float distanceThreshold = .25f;
     Deck deck;
-    public bool faceUp;
+    public bool faceUp = true;
     bool lowering;
     bool snappingToThreeOnY;
     int numOfFingersOnCard = 0;
@@ -126,7 +126,7 @@ public class MovableObjectStateMachine : MonoBehaviour
                 HandleRotating();
                 break;
         }
-
+        
         HandleFlipCard();
     }
 
