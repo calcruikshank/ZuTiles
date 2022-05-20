@@ -248,7 +248,6 @@ public class MovableObjectStateMachine : MonoBehaviour
     public void FlipObject()
     {
         float tempSXRotation = startingXRotation;
-        Debug.Log("Currently face up " + faceUp);
         if (GetCurrentFacing())
         {
             transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
@@ -335,14 +334,12 @@ public class MovableObjectStateMachine : MonoBehaviour
         Collider colliderHit = transform.GetComponentInChildren<Collider>();
         RaycastHit hit;
         bool hitDetected = Physics.BoxCast(colliderHit.bounds.center, new Vector3(colliderHit.bounds.extents.x, colliderHit.bounds.extents.y, colliderHit.bounds.extents.z), Vector3.down, out hit, Quaternion.identity, Mathf.Infinity);
-
         if (hitDetected)
         {
             if (hit.transform.GetComponent<Collider>() != null && this.transform.GetComponentInChildren<Collider>() != null)
             {
                 return hit.transform.GetComponent<Collider>().bounds.extents.y + hit.transform.position.y + this.transform.GetComponentInChildren<Collider>().bounds.extents.y;
             }
-
         }
         return -.9f;
     }
@@ -365,7 +362,6 @@ public class MovableObjectStateMachine : MonoBehaviour
             state = State.Moving;
         }
     }
-
     void SetSelected()
     {
         ShowSelectedWheel();
@@ -380,7 +376,6 @@ public class MovableObjectStateMachine : MonoBehaviour
     {
         state = State.Idle;
     }
-
     void ShowSelectedWheel()
     {
         showSelectedWheel = true;
@@ -459,7 +454,6 @@ public class MovableObjectStateMachine : MonoBehaviour
             }
         }
         idList.Remove(index);
-
     }
 
     public bool GetCurrentFacing()
