@@ -17,7 +17,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     float doubleTapThreshold = .25f;
     float distanceThreshold = .25f;
     Deck deck;
-     bool faceUp = true;
+     bool faceUp;
     bool lowering;
     bool snappingToThreeOnY;
     int numOfFingersOnCard = 0;
@@ -55,12 +55,13 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     private void Awake()
     {
+        startingXRotation = this.currentLocalEulerAngles.x;
+        faceUp = true;
     }
     // Start is called before the first frame update
     void Start()
     {
         InitializeMovableObject();
-        startingXRotation = this.currentLocalEulerAngles.x;
     }
 
     private void InitializeMovableObject()
@@ -72,7 +73,6 @@ public class MovableObjectStateMachine : MonoBehaviour
         {
             deck = this.GetComponentInChildren<Deck>();
         }
-        faceUp = true;
         doubleTapTimer = doubleTapThreshold;
         if (this.transform.childCount != 0)
         {
@@ -244,45 +244,23 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         state = State.Indeterminate;
     }
-    internal void HideObject()
-    {
-        Debug.Log("The object is face up!!!!!!!!!!!!!" + faceUp);
-        if (faceUp)
-        {
-            float tempSXRotation = startingXRotation;
-
-            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
-          
-            faceUp = false;
-        }
-        
-    }
-    internal void RevealObject()
-    {
-        Debug.Log("The object is face up!!!!!!!!!!!!!" + faceUp);
-        if (!faceUp)
-        {
-            float tempSXRotation = startingXRotation;
-
-            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
-
-            faceUp = true;
-        }
-
-    }
+    
     public void FlipObject()
     {
-        /*float tempSXRotation = startingXRotation;
-        if (faceUp)
+        float tempSXRotation = startingXRotation;
+        Debug.Log("Currently face up " + faceUp);
+        if (GetCurrentFacing())
         {
             transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
             faceUp = false;
+            return;
         }
-        if(!faceUp)
+        if (!GetCurrentFacing())
         {
-            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
             faceUp = true;
-        }*/
+            return;
+        }
     }
     public void CheckForInputCommands()
     {

@@ -39,7 +39,10 @@ public class Deck : MonoBehaviour
     {
         SetSize(new Vector3(this.transform.localScale.x, cardsInDeck.Count, this.transform.localScale.z));
         SetTopCard(cardsInDeck[0]);
-        SetCurrentCardShowing(cardsInDeck[cardsInDeck.Count - 1]);
+        if (this.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
+        {
+            SetCurrentCardShowing(cardsInDeck[cardsInDeck.Count - 1]);
+        }
     }
 
     public void AddToDeck(List<GameObject> cardsSents)
@@ -229,7 +232,6 @@ public class Deck : MonoBehaviour
             }
             newCard = InstantiateCardsFromBottom();
             newCard.GetComponent<Deck>().UpdateDeckInfo();
-            newCard.GetComponent<MovableObjectStateMachine>().FlipObject();
             /*if (this.GetComponent<MovableObjectStateMachine>().faceUp)
             {
                 newCard = InstantiateCardsFromBottom();
@@ -253,9 +255,11 @@ public class Deck : MonoBehaviour
         deck.cardsInDeck.Clear();
         deck.cardsInDeck.Add(cardsInDeck[cardsInDeck.Count - 1]);
         cardsInDeck.RemoveAt(cardsInDeck.Count - 1);
+        
         Debug.Log(" cards in new deck at 0 so update game god " + deck.cardsInDeck[0]  + " update game info " + newDeck.GetComponentInChildren<CardFront>());
         deck.UpdateDeckInfo();
-        UpdateDeckInfo();
+        UpdateDeckInfo(); 
+        
         return newDeck;
     }
 

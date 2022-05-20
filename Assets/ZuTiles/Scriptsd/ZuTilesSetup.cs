@@ -73,17 +73,27 @@ public class ZuTilesSetup : MonoBehaviour
             GameObject deckToSpawn = player.GetComponentInChildren<ZuTilePlayer>().ChosenDeck;
             GameObject instantiatedDeck = Instantiate(deckToSpawn, player.GetComponentInChildren<PlayerContainer>().deckSpawnLocation.position, player.GetComponentInChildren<PlayerContainer>().targetPlayCardTransform.rotation);
             instantiatedDeck.GetComponent<Deck>().ShuffleDeck(Vector3.zero, 0);
-            instantiatedDeck.GetComponent<MovableObjectStateMachine>().HideObject();
+            //instantiatedDeck.GetComponent<MovableObjectStateMachine>().HideObject();
+            if (instantiatedDeck.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
+            {
+                
+                //instantiatedDeck.GetComponent<MovableObjectStateMachine>().FlipObject();
+            }
+
             List<GameObject> cardsToAdd = (instantiatedDeck.GetComponent<Deck>().MakeANewListOfInstantiatedCards(numOfCardsToStartWith));
             for (int i = 0; i < cardsToAdd.Count; i++)
             {
-               player.gameObject.GetComponentInChildren<PlayerContainer>().AddCardToHand(cardsToAdd[i]);
+                player.gameObject.GetComponentInChildren<PlayerContainer>().AddCardToHand(cardsToAdd[i]);
             }
             deckToSpawn.gameObject.SetActive(false);
             ZuTiileButtonSelector[] deckSelectors = FindObjectsOfType<ZuTiileButtonSelector>();
             for (int i = 0; i < deckSelectors.Length; i++)
             {
                 deckSelectors[i].gameObject.SetActive(false);
+            }
+            if (instantiatedDeck.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
+            {
+                instantiatedDeck.GetComponent<MovableObjectStateMachine>().FlipObject();
             }
         }
     }

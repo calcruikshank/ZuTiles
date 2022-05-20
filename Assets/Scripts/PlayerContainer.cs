@@ -41,12 +41,16 @@ public class PlayerContainer : MonoBehaviour
         cardsInHand.Add(cardToAdd);
         UpdateCardPositions();
         cardToAdd.GetComponent<MovableObjectStateMachine>().GivePlayerOwnership(this);
-
+        cardToAdd.GetComponent<MovableObjectStateMachine>().state = MovableObjectStateMachine.State.Idle;
         //cardToAdd.SetActive(false);
-        cardToAdd.GetComponent<MovableObjectStateMachine>().HideObject();
-        
+        //cardToAdd.GetComponent<MovableObjectStateMachine>().HideObject();
+        cardToAdd.GetComponent<MovableObjectStateMachine>().UnsubscribeToDelegates();
+        Debug.Log("Currently face up " + cardToAdd.GetComponent<MovableObjectStateMachine>().GetCurrentFacing());
+        if (cardToAdd.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
+        {
+            cardToAdd.GetComponent<MovableObjectStateMachine>().FlipObject();
+        }
         AddToCompanion(cardToAdd);
-        
     }
 
     void SetStencil(GameObject cardToAdd)
@@ -65,10 +69,10 @@ public class PlayerContainer : MonoBehaviour
         Texture2D cardImageTexture = (Texture2D)cardToAdd.GetComponentInChildren<Renderer>().material.mainTexture;
         byte[] textureArray = DeCompress(cardImageTexture).EncodeToPNG();
         CardDefinition newCardDef = new CardDefinition(cardImageTexture.name, textureArray, "", null, cardImageTexture.width / 2, cardImageTexture.height / 2);
-        cardDefinitions.Add(newCardDef, CardsTool.singleton.GetCurrentLocationOfCardByGUID(newCardDef.cardGuid));
+        //cardDefinitions.Add(newCardDef, CardsTool.singleton.GetCurrentLocationOfCardByGUID(newCardDef.cardGuid));
         cardToAdd.GetComponent<Deck>().CardCompanionDefiniiton = newCardDef;
         CardsTool.singleton.AddCardToLibrary(newCardDef);
-        AddCardToHandDisplay(newCardDef);
+        AddCardToHandDisplay(newCardDef); 
     }
 
     private async void AddCardToHandDisplay(CardDefinition newCardDef)
