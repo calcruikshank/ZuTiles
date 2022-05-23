@@ -180,7 +180,6 @@ public class Deck : MonoBehaviour
 
     internal void SetToStartingShader()
     {
-
         this.GetComponentInChildren<Renderer>().material.shader = startingShader;
     }
 

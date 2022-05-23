@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,4 +41,9 @@ public class Crutilities : MonoBehaviour
     }
 
     
+
+    internal void HighlightGameObject(GameObject gameObjectSent)
+    {
+        Debug.Log("Gameobject to highlight " + gameObjectSent);
+    }
 }

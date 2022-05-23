@@ -21,6 +21,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     bool lowering;
     bool snappingToThreeOnY;
     int numOfFingersOnCard = 0;
+    Vector3 rayPosition;
 
     Vector3 startingTouchPositionFinger2;
     Vector3 fingerMovePosition2;
@@ -114,6 +115,7 @@ public class MovableObjectStateMachine : MonoBehaviour
                 Move();
                 HandleRaising();
                 CheckForShuffle();
+                HighlightPotentialCompatibleObjects();
                 break;
             case State.Rotating:
                 Move();
@@ -233,9 +235,11 @@ public class MovableObjectStateMachine : MonoBehaviour
         HistoryTracker.singleton.AddToList(historyObject);
         HistoryTracker.singleton.SetTouched();
         startingTouchPosition = positionSent;
+        raycastStartPos = startingTouchPosition;
         offset = new Vector3(this.transform.position.x - positionSent.x, 0, this.transform.position.z - positionSent.z);
         heldDownTimer = 0f;
-        lowering = false;
+        lowering = false; 
+        rayPosition = positionSent;
         targetPositionOnY = this.transform.position.y + 3f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
         snappingToThreeOnY = true;
         if (this.GetComponentInChildren<MoveTowardsWithLerp>() != null)
@@ -471,7 +475,7 @@ public class MovableObjectStateMachine : MonoBehaviour
             }
         }
         if (idList[0] != index) return;
-
+        rayPosition = position;
         Ray ray = Camera.main.ScreenPointToRay(position);
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
@@ -572,6 +576,48 @@ public class MovableObjectStateMachine : MonoBehaviour
         SubscribeToDelegates();
         HideSelectedWheel();
         state = State.Moving;
+    }
+
+
+    float distanceFromStartToCurrent;
+    Vector3 raycastStartPos;
+    Vector3 currentPosition;
+    void HighlightPotentialCompatibleObjects()
+    {
+        distanceFromStartToCurrent = Vector3.Distance(raycastStartPos, fingerMovePosition);
+        if (distanceFromStartToCurrent > .001f)
+        {
+            HighlightAllCompatibleObjects();
+            raycastStartPos = fingerMovePosition;
+        }
+    }
+
+    void HighlightAllCompatibleObjects()
+    {
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(transform.position, Vector3.down, 100.0F);
+
+        //this for loop is to check for any player containers hit
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (Crutilities.singleton.GetFinalParent( hits[i].transform) != this.transform)
+            {
+                if (Crutilities.singleton.GetFinalParent(hits[i].transform).GetComponent<MovableObjectStateMachine>() != null)
+                {
+                    Crutilities.singleton.HighlightGameObject(hits[i].transform.gameObject);
+                }
+                if (Crutilities.singleton.GetFinalParent(hits[i].transform).GetComponent<PlacementObject>() != null)
+                {
+                    Crutilities.singleton.HighlightGameObject(hits[i].transform.gameObject);
+                }
+
+            }
+            
+        }
+
+        
+          
+
     }
 
 }
