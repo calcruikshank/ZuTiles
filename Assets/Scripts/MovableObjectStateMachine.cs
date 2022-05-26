@@ -2,6 +2,7 @@ using Shared.UI.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MovableObjectStateMachine : MonoBehaviour
@@ -17,7 +18,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     float doubleTapThreshold = .25f;
     float distanceThreshold = .25f;
     Deck deck;
-     bool faceUp;
+    bool faceUp;
     bool lowering;
     bool snappingToThreeOnY;
     int numOfFingersOnCard = 0;
@@ -34,6 +35,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     bool showSelectedWheel = false;
     GameObject selectedWheelGO;
 
+    Crutilities crutilitiesSingleton;
     float shakeTimer = 0f;
     float shakeTimerThreshold = 0f;
 
@@ -67,6 +69,7 @@ public class MovableObjectStateMachine : MonoBehaviour
 
     private void InitializeMovableObject()
     {
+        crutilitiesSingleton = Crutilities.singleton;
         playerOwningCard = null;
         this.state = State.Idle;
         this.idList.Clear();
@@ -90,11 +93,11 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         historyObject.prefabToInstantiate = this.gameObject;
         historyObject.positionToInstantiate = this.transform.position;
-        historyObject.currentRotation = this.transform.rotation; 
+        historyObject.currentRotation = this.transform.rotation;
         //HistoryTracker.singleton.AddToList(historyObject);
     }
 
-    
+
 
     protected virtual void Update()
     {
@@ -116,6 +119,10 @@ public class MovableObjectStateMachine : MonoBehaviour
                 HandleRaising();
                 CheckForShuffle();
                 HighlightPotentialCompatibleObjects();
+                if (deck != null)
+                {
+                    HighlightPotentialCompatibleObjects();
+                }
                 break;
             case State.Rotating:
                 Move();
@@ -130,11 +137,11 @@ public class MovableObjectStateMachine : MonoBehaviour
                 HandleRotating();
                 break;
         }
-        
+
         HandleFlipCard();
     }
 
-   
+
 
     private void HandleRotating()
     {
@@ -238,7 +245,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         raycastStartPos = startingTouchPosition;
         offset = new Vector3(this.transform.position.x - positionSent.x, 0, this.transform.position.z - positionSent.z);
         heldDownTimer = 0f;
-        lowering = false; 
+        lowering = false;
         rayPosition = positionSent;
         targetPositionOnY = this.transform.position.y + 3f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
         snappingToThreeOnY = true;
@@ -248,7 +255,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         state = State.Indeterminate;
     }
-    
+
     public void FlipObject()
     {
         float tempSXRotation = startingXRotation;
@@ -347,7 +354,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         return -.9f;
     }
-   
+
     public void LongPress()
     {
         state = State.Moving;
@@ -556,7 +563,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         targetRotation = new Vector3(transform.GetChild(0).localEulerAngles.x, (targetRotation.y - 90), transform.GetChild(0).localEulerAngles.z);
         state = State.BoxRotation;
     }
-     
+
     public void ShuffleDeck()
     {
         if (deck != null)
@@ -592,31 +599,75 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
     }
 
+    GameObject previousGameObjectHit;
     void HighlightAllCompatibleObjects()
     {
-        RaycastHit[] hits;
-        hits = Physics.RaycastAll(transform.position, Vector3.down, 100.0F);
+        /* RaycastHit[] hits;
+         hits = Physics.RaycastAll(transform.position, Vector3.down, 100.0F);
 
-        //this for loop is to check for any player containers hit
-        for (int i = 0; i < hits.Length; i++)
+         List<Outline> newListOfMovablesToSelect = new List<Outline>();
+         int numOfObjectsHighlightedPerObject = 0;
+         //this for loop is to check for any player containers hit
+         for (int i = 0; i < hits.Length; i++)
+         {
+             if (Crutilities.singleton.GetFinalParent(hits[i].transform) != this.transform)
+             {
+                 if (numOfObjectsHighlightedPerObject >= 1)
+                 {
+                     continue;
+                 }
+                 numOfObjectsHighlightedPerObject++;
+                 if (Crutilities.singleton.GetFinalParent(hits[i].transform).GetComponent<MovableObjectStateMachine>() != null)
+                 {
+                     Crutilities.singleton.HighlightGameObject(hits[i].transform.gameObject);
+                     newListOfMovablesToSelect.Add(hits[i].transform.gameObject.GetComponent<Outline>());
+                 }
+                 if (Crutilities.singleton.GetFinalParent(hits[i].transform).GetComponent<PlacementObject>() != null)
+                 {
+                     Crutilities.singleton.HighlightGameObject(hits[i].transform.gameObject);
+                     newListOfMovablesToSelect.Add(hits[i].transform.gameObject.GetComponent<Outline>());
+                 }
+
+             }
+
+         }
+
+
+
+         {
+             resultToAdd[j].SetBoxSelected();
+         }
+         selectedMovableObjects = newListOfMovablesToSelect;*/
+        RaycastHit hit;
+        GameObject newGameObjectHit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 100.0F))
         {
-            if (Crutilities.singleton.GetFinalParent( hits[i].transform) != this.transform)
+            if (crutilitiesSingleton.GetFinalParent(hit.transform) != this.transform)
             {
-                if (Crutilities.singleton.GetFinalParent(hits[i].transform).GetComponent<MovableObjectStateMachine>() != null)
+                if (crutilitiesSingleton.GetFinalParent(hit.transform).GetComponent<MovableObjectStateMachine>() != null)
                 {
-                    Crutilities.singleton.HighlightGameObject(hits[i].transform.gameObject);
+                    crutilitiesSingleton.HighlightGameObject(hit.transform.gameObject);
+                    newGameObjectHit = hit.transform.gameObject;
+                    if (previousGameObjectHit != newGameObjectHit && previousGameObjectHit != null)
+                    {
+                        crutilitiesSingleton.RemoveHighlight(previousGameObjectHit); 
+                    }
+                    previousGameObjectHit = newGameObjectHit;
                 }
-                if (Crutilities.singleton.GetFinalParent(hits[i].transform).GetComponent<PlacementObject>() != null)
+                if (crutilitiesSingleton.GetFinalParent(hit.transform).GetComponent<PlacementObject>() != null)
                 {
-                    Crutilities.singleton.HighlightGameObject(hits[i].transform.gameObject);
+                    crutilitiesSingleton.HighlightGameObject(hit.transform.gameObject);
+                    newGameObjectHit = hit.transform.gameObject;
+                    if (previousGameObjectHit != newGameObjectHit && previousGameObjectHit != null)
+                    {
+                        crutilitiesSingleton.RemoveHighlight(previousGameObjectHit);
+                    }
+                    previousGameObjectHit = newGameObjectHit;
                 }
-
             }
-            
         }
 
-        
-          
+
 
     }
 

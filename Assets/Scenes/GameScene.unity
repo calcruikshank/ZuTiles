@@ -835,7 +835,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &171853854
@@ -1007,7 +1006,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &209038193
@@ -1368,7 +1366,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &311712881
@@ -1863,7 +1860,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &380199366
@@ -2727,7 +2723,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &490790827
@@ -3462,7 +3457,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &555184036
@@ -6551,7 +6545,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &1110984108
@@ -9391,6 +9384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedWheelTransform: {fileID: 2707454680480196699, guid: 2020f8ed0e207244bb7e70b7a3ce0130, type: 3}
+  highlightedObjects: []
 --- !u!1 &1677328604
 GameObject:
   m_ObjectHideFlags: 0
@@ -10163,7 +10157,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &1796600651
@@ -10327,7 +10320,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!114 &1838842068
@@ -10819,7 +10811,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!4 &1934120114
@@ -11607,7 +11598,6 @@ MonoBehaviour:
   decksToChooseFrom:
   - {fileID: 1421860925513984273, guid: 309c83466d9c18449a4ad666ce8631e6, type: 3}
   numOfCardsToStartWith: 7
-  setupDeck: {fileID: 3884102568410872526, guid: 2ed30f67ed142944b8d0b43e5611639a, type: 3}
 --- !u!1 &2032503009
 GameObject:
   m_ObjectHideFlags: 0
