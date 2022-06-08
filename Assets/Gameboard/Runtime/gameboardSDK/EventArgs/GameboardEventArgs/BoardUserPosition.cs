@@ -30,5 +30,10 @@ namespace Gameboard.EventArgs
         /// The Vector2 version of the Gameboard screen x/y position.
         /// </summary>
         public Vector2 screenPosition { get { return new Vector2(x, y); } }
+
+        public override string ToString()
+        {
+            return JsonUtility.ToJson(this);
+        }
     }
 }

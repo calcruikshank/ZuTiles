@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Gameboard
+namespace Gameboard.Menu
 {
     [CustomEditor(typeof(Gameboard))]
     public class GameboardInspector : Editor

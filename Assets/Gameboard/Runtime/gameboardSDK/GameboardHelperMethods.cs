@@ -34,10 +34,10 @@ namespace Gameboard.Helpers
         {
             try
             {
-                GameboardConfig config = Gameboard.singleton.config;
+                GameboardConfig config = Gameboard.Instance.config;
                 Vector3 position = new Vector3(inScreenPoint.x * config.deviceResolution.x,
                                                               (1 - inScreenPoint.y) * config.deviceResolution.y,
-                                                              Gameboard.singleton.gameCamera != null ? Gameboard.singleton.gameCamera.transform.position.y : Camera.main.transform.position.y);
+                                                              Gameboard.Instance.gameCamera != null ? Gameboard.Instance.gameCamera.transform.position.y : Camera.main.transform.position.y);
 
                 Vector3 worldPoint = inCamera.ScreenToWorldPoint(position);
                 return worldPoint;

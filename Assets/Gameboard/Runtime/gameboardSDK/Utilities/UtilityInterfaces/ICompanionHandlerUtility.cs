@@ -51,9 +51,11 @@ namespace Gameboard.Utilities
         Task<CompanionCreateObjectEventArgs> CreateCompanionTickbox(int versionTag, string userId, string onTextureId, string offTextureId, TickboxStates startingState, bool isInputLocked);
         Task<CompanionCreateObjectEventArgs> CreateCompanionLabel(int versionTag, string userId, string textToDisplay);
         Task<CompanionCreateObjectEventArgs> CreateCompanionDropdown(int versionTag, string userId, List<string> orderedStringList, int defaultIndex);
-        Task<CompanionMessageResponseArgs> SetCompanionButtonValues(int versionTag, string userId, string buttonId, string inButtonLabelText, string inButtonCallback);
+        Task<CompanionMessageResponseArgs> SetCompanionButtonValues(int versionTag, string userId, string buttonId, string inButtonLabelText, string inButtonCallback, string assetId);
         Task<CompanionMessageResponseArgs> ResetPlayPanel(int versionTag, string userId);
-
+        Task<CompanionMessageResponseArgs> SetCardHighlight(int versionTag, string userId, CardHighlights cardHighlight);
+        Task<CompanionMessageResponseArgs> SetCardFrontAssetId(int versionTag, string userId, CardAssetId cardAssetId);
+        Task<CompanionMessageResponseArgs> SetCardBackAssetId(int versionTag, string userId, CardAssetId cardAssetId);
 
         // Companion Originating Events
         void StartGame(int versionTag);

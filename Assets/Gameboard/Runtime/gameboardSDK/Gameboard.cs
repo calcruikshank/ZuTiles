@@ -1,10 +1,12 @@
 ﻿using Gameboard.Companion;
+using Gameboard.Utilities;
 using System;
+using System.Threading;
 using UnityEngine;
 
 namespace Gameboard
 {
-    public class Gameboard : MonoBehaviour
+    public class Gameboard : Singleton<Gameboard>
     {
         /// <summary>
         /// Controller for managing Token and Pointer input from the Gameboard. (Note that this is separate from device touch input).
@@ -29,6 +31,18 @@ namespace Gameboard
         [Tooltip("Camera to be used for the viewport displayed on the Gameboard, and used for input of any touches or tokens. If null, Camera.main will be used instead.")]
         public Camera gameCamera;
 
+        /// <summary>
+        /// Event emitted when the gameboard is fully initialized and ready to be used.
+        /// </summary>
+        public event Action GameboardInitializationCompleted;
+
+        private bool gameboardInitialized = false;
+        
+        /// <summary>
+        /// Bool for if the gameboard fully initialized and ready to use
+        /// </summary>
+        public bool IsInitialized => gameboardInitialized;
+
         [Tooltip("The Gameboard ID to be used while in the Unity editor. When running on a Gameboard, this value is acquired from the board itself.")]
         public string mockGameboardId;
 
@@ -38,24 +52,17 @@ namespace Gameboard
         public event Action GameboardShutdownBegun;
 
         private bool isPerformingShutdown;
+        
+        // We should probably move this to a json config file, or use the package version
+        public const int COMPANION_VERSION = 1;
 
-        public static Gameboard singleton;
+        // TODO: we can likely just remove this, nothing should be using it, but I left it in case people made games referencing it.
+        public static Gameboard singleton => Instance;
 
-        void Start()
+        protected override void OnAwake()
         {
-            if (singleton != null)
-            {
-                GameboardLogging.LogMessage("There are two Gameboard objects in your scene. Make sure there is only ever one! The duplicate will now be destroyed.", GameboardLogging.MessageTypes.Error);
-                DestroyImmediate(gameObject);
-                return;
-            }
-
-            DontDestroyOnLoad(gameObject);
-
-            GameboardLogging.LogMessage("Initializing Gameboard", GameboardLogging.MessageTypes.Log);
-
-            singleton = this;
-
+            base.OnAwake();
+            GameboardLogging.Verbose("Initializing Gameboard");
             config = new GameboardConfig(mockGameboardId);
             services = new GameboardServiceManager(config);
             boardTouchController = new GameboardTouchController();
@@ -66,32 +73,40 @@ namespace Gameboard
             UnityEditor.Compilation.CompilationPipeline.assemblyCompilationFinished += CompilationPipeline_assemblyCompilationFinished;
 #endif
 
+            ThreadStart injectDependencies = InjectGameboardDependencies;
+            Thread dependendiesThread = new Thread(injectDependencies);
+            dependendiesThread.Start();
+
+            GameboardLogging.Verbose("Gameboard awake Completed");
+        }
+
+        private void InjectGameboardDependencies()
+        {
+            GameboardLogging.Verbose("injecting Gameboard dependencies");
             boardTouchController.InjectDependencies(services.gameBoardCommunicationsUtility, services.gameBoardHandler);
             companionController.InjectDependencies(services.companionCommunications, services.companionHandler, services.jsonUtility, config);
-
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             boardTouchController?.EnableGameboard();
             companionController?.EnableAndConnect();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
-            GameboardLogging.LogMessage("Gameboard Initialization Completed", GameboardLogging.MessageTypes.Log);
+            gameboardInitialized = true;
+            GameboardInitializationCompleted?.Invoke();
+            GameboardLogging.Verbose("Gameboard initialization Completed");
         }
 
 #if UNITY_EDITOR
         private void CompilationPipeline_assemblyCompilationStarted(string obj)
         {
-            if (singleton?.companionController != null && singleton.companionController.isConnected)
+            if (Instance.companionController?.isConnected ?? false)
             {
-                singleton?.companionController.ShutDownCompanionController();
+                Instance.companionController.ShutDownCompanionController();
             }
         }
 
         private void CompilationPipeline_assemblyCompilationFinished(string arg1, UnityEditor.Compilation.CompilerMessage[] arg2)
         {
-            if (singleton?.companionController != null && !singleton.companionController.isConnected)
+            if (!Instance.companionController?.isConnected ?? false)
             {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                singleton?.companionController.EnableAndConnect();
+                Instance.companionController.EnableAndConnect();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
         }
@@ -135,7 +150,6 @@ namespace Gameboard
             isPerformingShutdown = true;
             boardTouchController?.DisableGameboard();
             companionController?.ShutDownCompanionController();
-            singleton = null;
         }
 
         /// <summary>

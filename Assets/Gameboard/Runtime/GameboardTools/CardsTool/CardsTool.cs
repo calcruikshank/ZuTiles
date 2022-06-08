@@ -31,15 +31,15 @@ namespace Gameboard.Tools
 
         protected override void PerformCleanup()
         {
-            if (setupCompleted && Gameboard.singleton != null && Gameboard.singleton.companionController != null)
+            if (setupCompleted && Gameboard.Instance != null && Gameboard.Instance.companionController != null)
             {
-                Gameboard.singleton.companionController.CardPlayed -= CompanionController_CardPlayed;
+                Gameboard.Instance.companionController.CardPlayed -= CompanionController_CardPlayed;
             }
         }
 
         void Update()
         {
-            if (Gameboard.singleton == null)
+            if (Gameboard.Instance == null)
             {
                 return;
             }
@@ -47,11 +47,11 @@ namespace Gameboard.Tools
             // Do the setup here in Update so we can just do a Singleton lookup on Gameboard, and not worry about race-conditions in using Start.
             if (!setupCompleted)
             {
-                if (Application.isEditor || Gameboard.singleton.companionController.isConnected)
+                if (Application.isEditor || Gameboard.Instance.companionController.isConnected)
                 {
                     if (!Application.isEditor)
                     {
-                        Gameboard.singleton.companionController.CardPlayed += CompanionController_CardPlayed;
+                        Gameboard.Instance.companionController.CardPlayed += CompanionController_CardPlayed;
                     }
 
                     singleton = this;
@@ -91,9 +91,9 @@ namespace Gameboard.Tools
         {
             if (!CurrentDisplayedHandIDForPlayers.ContainsKey(inPlayerId))
             {
-                Debug.Log(CurrentDisplayedHandIDForPlayers[inPlayerId] + " CurrentHand id");
                 CurrentDisplayedHandIDForPlayers.Add(inPlayerId, "");
             }
+
             return CurrentDisplayedHandIDForPlayers[inPlayerId];
         }
 
@@ -104,7 +104,7 @@ namespace Gameboard.Tools
                 CardHandIdDict.Add(playerId, new List<string>());
             }
 
-            CompanionCreateObjectEventArgs eventArgs = await Gameboard.singleton.companionController.CreateCompanionHandDisplay(playerId);
+            CompanionCreateObjectEventArgs eventArgs = await Gameboard.Instance.companionController.CreateCompanionHandDisplay(playerId);
             if (eventArgs != null && eventArgs.wasSuccessful)
             {
                 CardHandIdDict[playerId].Add(eventArgs.newObjectUid);
@@ -196,7 +196,7 @@ namespace Gameboard.Tools
                 CurrentDisplayedHandIDForPlayers.Add(inPlayerId, "");
             }
 
-            CompanionMessageResponseArgs responseArgs = await Gameboard.singleton.companionController.ShowCompanionHandDisplay(inPlayerId, inCardHandId);
+            CompanionMessageResponseArgs responseArgs = await Gameboard.Instance.companionController.ShowCompanionHandDisplay(inPlayerId, inCardHandId);
             if (responseArgs.wasSuccessful)
             {
                 CurrentDisplayedHandIDForPlayers[inPlayerId] = inCardHandId;
@@ -230,7 +230,7 @@ namespace Gameboard.Tools
             await GiveCardToPlayer(playerId, inCardDef);
 
             // Tell the CompanionController to place this card in the player hand
-            CompanionMessageResponseArgs responseArgs = await Gameboard.singleton.companionController.AddCardToHandDisplay(playerId, handId, inCardDef.cardGuid);
+            CompanionMessageResponseArgs responseArgs = await Gameboard.Instance.companionController.AddCardToHandDisplay(playerId, handId, inCardDef.cardGuid);
             if (responseArgs.wasSuccessful)
             {
                 inCardDef.SetCardLocation(handId);
@@ -247,7 +247,6 @@ namespace Gameboard.Tools
         #region Removing Cards from Hand Displays
         public void RemoveCardFromPlayerHand(string playerId, string handId, CardDefinition cardDef)
         {
-            Debug.Log("RemoveCardFromPlayerHand_Async " + cardDef + " Card Arguments");
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             RemoveCardFromPlayerHand_Async(playerId, handId, cardDef);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -255,13 +254,9 @@ namespace Gameboard.Tools
 
         public async Task RemoveCardFromPlayerHand_Async(string playerId, string handId, CardDefinition cardDef)
         {
-            Gameboard.singleton.companionController.PrintConneted();
-            
-            CompanionMessageResponseArgs responseArgs = await Gameboard.singleton.companionController.RemoveCardFromHandDisplay(playerId, handId, cardDef.cardGuid);
-
+            CompanionMessageResponseArgs responseArgs = await Gameboard.Instance.companionController.RemoveCardFromHandDisplay(playerId, handId, cardDef.cardGuid);
             if (responseArgs.wasSuccessful)
             {
-                Debug.Log("Remove card from player hand");
                 cardDef.ClearCardLocation();
                 return;
             }
@@ -283,7 +278,7 @@ namespace Gameboard.Tools
         {
             // NOTE: Need to also update cardDef.SetCardLocation(""); with this!!
 
-            CompanionMessageResponseArgs responseArgs = await Gameboard.singleton.companionController.RemoveAllCardsFromHandDisplay(playerId, handId);
+            CompanionMessageResponseArgs responseArgs = await Gameboard.Instance.companionController.RemoveAllCardsFromHandDisplay(playerId, handId);
             if (responseArgs.wasSuccessful)
             {
                 // Companion removal was successful, therefore remove all cards from the player's hand here in the CardsTool.
@@ -330,8 +325,7 @@ namespace Gameboard.Tools
                 frontLoadedAsset = await CompanionAssetsTool.singleton.VerifyTextureLoadedToCompanion(playerId, inCardDef.cardFrontTexturePath, inCardDef.cardFrontBytes);
                 if (frontLoadedAsset == null)
                 {
-                    GameboardLogging.LogMessage($"--- Card {inCardDef.cardGuid} for player {playerId} is missing the Front Texture because the texture failed to load to the companion.", GameboardLogging.MessageTypes.Error); 
-                    
+                    GameboardLogging.LogMessage($"--- Card {inCardDef.cardGuid} for player {playerId} is missing the Front Texture because the texture failed to load to the companion.", GameboardLogging.MessageTypes.Error);
                 }
                 else
                 {
@@ -369,7 +363,7 @@ namespace Gameboard.Tools
                 }
             }*/
 
-            CompanionCreateObjectEventArgs createCardEventArgs = await Gameboard.singleton.companionController.CreateCompanionCard(playerId, inCardDef.cardGuid, frontLoadedAsset?.assetUID, backLoadedAsset?.assetUID, inCardDef.cardTextureWidth, inCardDef.cardTextureHeight);
+            CompanionCreateObjectEventArgs createCardEventArgs = await Gameboard.Instance.companionController.CreateCompanionCard(playerId, inCardDef.cardGuid, frontLoadedAsset?.assetUID, backLoadedAsset?.assetUID, inCardDef.cardTextureWidth, inCardDef.cardTextureHeight);
             if(createCardEventArgs.wasSuccessful)
             {
                 inCardDef.CardWasLoadedToCompanion(playerId);

@@ -7,5 +7,6 @@
         public string buttonText;
         public string buttonDownTextureId;
         public string buttonUpTextureId;
+        public string ownerId;
     }
 }

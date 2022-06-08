@@ -155,6 +155,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        // TODO: move to controllers
         #region Model Objects
         /// <summary>
         /// Async method that adjusts the color tint applied to the texture on the model.
@@ -170,6 +171,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        // TODO: move to controllers
         #region Object Management
         /// <summary>
         /// Changes the display state of an object between Hidden and Displayed.
@@ -185,6 +187,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        // TODO: move to controllers
         #region Containers
         public async Task<CompanionCreateObjectEventArgs> CreateContainer(string userId, CompanionContainerSortingTypes sortingType)
         {
@@ -208,7 +211,7 @@ namespace Gameboard.Companion
         #region Companion Buttons
         public async Task<CompanionMessageResponseArgs> SetCompanionButtonValues(string userId, string buttonId, string inButtonLabelText, string inButtonCallback)
         {
-            CompanionMessageResponseArgs responseArgs = await companionHandler.SetCompanionButtonValues(1, userId, buttonId, inButtonLabelText, inButtonCallback);
+            CompanionMessageResponseArgs responseArgs = await companionHandler.SetCompanionButtonValues(1, userId, buttonId, inButtonLabelText, inButtonCallback, null);
             return responseArgs;
         }
         #endregion
@@ -256,10 +259,6 @@ namespace Gameboard.Companion
         }
         #endregion
 
-        #region Dice
-        // Nothing dice related is in Phase 1
-        #endregion
-
         #region Dice Roll Manager
         /// <summary>
         /// Event handler for when a Dice Roll occurs on a Companion.
@@ -303,6 +302,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        // TODO: move to controllers
         #region Companion Mats
         /// <summary>
         /// Event handler for when a Mat Zone is triggered by dropping a Companion Object in it.
@@ -384,6 +384,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        
         #region Companion Hand Display
         /// <summary>
         /// Creates a Hand Display on the companion for the requested user.
@@ -422,9 +423,6 @@ namespace Gameboard.Companion
             return responseArgs;
         }
 
-        public void PrintConneted()
-        {
-        }
         /// <summary>
         /// Removes all cards from the requested Hand Display for a specific user.
         /// </summary>
@@ -450,6 +448,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        // TODO: move to controllers
         #region Companion Dialogs
         /// <summary>
         /// Creates a new Dialog on a specific Companion.
@@ -514,6 +513,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        // TODO: move to controllers
         #region Tickbox Objects
         /// <summary>
         /// Event handler for when a Tickbox value changes.
@@ -557,6 +557,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        // TODO: move to controllers
         #region Label Objects
         public async Task<CompanionCreateObjectEventArgs> CreateCompanionLabel(string userId, string labelString)
         {
@@ -565,6 +566,7 @@ namespace Gameboard.Companion
         }
         #endregion
 
+        // TODO: move to controllers
         #region Dropdown List Objects
         /// <summary>
         /// Event Handler for when the selected index in a Dropdown changes
@@ -625,14 +627,14 @@ namespace Gameboard.Companion
 
         private void Drawers_SetVisibility(bool inVisibleState)
         {
-            AndroidJavaClass drawerHelper = Gameboard.singleton.config.drawerHelper;
+            AndroidJavaClass drawerHelper = Gameboard.Instance.config.drawerHelper;
             if (drawerHelper == null)
             {
                 GameboardLogging.LogMessage("Drawer Helper is not available. Unable to set drawers as " + (inVisibleState ? "Visible" : "Hidden") + ".", GameboardLogging.MessageTypes.Warning);
                 return;
             }
 
-            AndroidApplicationContext context = Gameboard.singleton.config.androidApplicationContext;
+            AndroidApplicationContext context = Gameboard.Instance.config.androidApplicationContext;
             if (drawerHelper == null)
             {
                 GameboardLogging.LogMessage("Android Application Context is not available. Unable to set drawers as " + (inVisibleState ? "Visible" : "Hidden") + ".", GameboardLogging.MessageTypes.Warning);

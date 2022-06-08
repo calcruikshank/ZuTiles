@@ -141,5 +141,10 @@ namespace Gameboard.EventArgs
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return JsonUtility.ToJson(this);
+        }
     }
 }

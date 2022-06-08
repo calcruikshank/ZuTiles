@@ -1,4 +1,5 @@
 ﻿using Gameboard.EventArgs;
+using Gameboard.Objects;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -247,7 +248,7 @@ namespace Gameboard.Utilities
         }
 
         private async Task<SendMessageToCompanionServiceResponse> AwaitQueuedCompanionEvent(string inUserId, string inEventId)
-        {
+        {            
             SendMessageToCompanionServiceResponse responseObject = await AwaitEventAndReceiveResponseData(inEventId);
 
             lock(companionProcessingDict)
@@ -821,9 +822,12 @@ namespace Gameboard.Utilities
 
         private CompanionCreateObjectEventArgs CreateCompanionObjectResponseArgs<T>(SendMessageToCompanionServiceResponse inResponse)
         {
+            GameboardLogging.Verbose($"CreateCompanionObjectResponseArgs Received Response: {inResponse}");
+            GameboardLogging.Verbose($"CreateCompanionObjectResponseArgs Received args: {inResponse.eventArgs}");
+
             if (inResponse == null)
             {
-                return BuildObjectErrorResponseFromErrorMessage($"Entered SendMessageToCompanionServiceResponse was null. Error was: {inResponse.errorMessage}");
+                return BuildObjectErrorResponseFromErrorMessage($"Entered SendMessageToCompanionServiceResponse was null. Error was: null");
             }
 
             if (inResponse.eventArgs == null)
@@ -831,7 +835,7 @@ namespace Gameboard.Utilities
                 return BuildObjectErrorResponseFromErrorMessage($"Entered SendMessageToCompanionServiceResponse eventArgs was null. Error was: {inResponse.errorMessage}");
             }
 
-            if (inResponse.eventArgs.body == null)
+            if (inResponse.eventArgs.body == null || inResponse.eventArgs.body == "null")
             {
                 return BuildObjectErrorResponseFromErrorMessage($"Entered SendMessageToCompanionServiceResponse eventArgs.body was null. Error was: {inResponse.errorMessage}");
             }
@@ -896,7 +900,7 @@ namespace Gameboard.Utilities
             ServerMessageCompletionObject completionObject = new ServerMessageCompletionObject()
             {
                 eventId = inEventId,
-                message = "{\"responseStatus\":\"200\",\"body\":\"{\\\"ownerId\\\":\\\"" + targetEvent.targetDestinationId + "\\\"}\"}",
+                message = "{\"responseStatus\":\"200\",\"body\":\"[{\\\"ownerId\\\":\\\"" + targetEvent.targetDestinationId + "\\\"}]\"}",
             };
 
             CompanionServerAckReceived(this, completionObject);
@@ -933,6 +937,15 @@ namespace Gameboard.Utilities
             SendMessageToCompanionServiceResponse companionResponse = await AwaitQueuedCompanionEvent(userId, eventId);
 
             return CreateCompanionMessageResponseArgs<CompanionDisplayMessageErrorResponse.DisplayMessageErrorTypes>(companionResponse);
+        }
+
+        public async Task<CompanionMessageResponseArgs> SetTopLabel(int versionTag, string userId, string labelText)
+        {
+            var topLabel = new TopLabelProperty()
+            {
+                label = labelText
+            };
+            return await SetConfiguration(versionTag, userId, topLabel, ConfigurationProperty.TopLabel);
         }
         #endregion
 
@@ -983,6 +996,23 @@ namespace Gameboard.Utilities
 
             return CreateCompanionMessageResponseArgs<CompanionContainerErrorResponse.ContainerErrorTypes>(companionResponse);
         }
+
+        private async Task<CompanionMessageResponseArgs> SetConfiguration(int versionTag, string userId, object value, ConfigurationProperty property)
+        {
+            EventArgsToCompanionServer eventArgs = BuildEventArgsToTargetUser(versionTag, userId, "setConfiguration");
+            EventArgSetConfiguration setCardPropertyEventArgs = new EventArgSetConfiguration()
+            {
+                property = (int)property,
+                value = value,
+                ownerId = gameboardConfig.gameboardId,
+            };
+
+            string eventId = AddEventToCompanionQueue(userId, eventArgs, setCardPropertyEventArgs);
+            SendMessageToCompanionServiceResponse companionResponse = await AwaitQueuedCompanionEvent(userId, eventId);
+
+            return CreateCompanionMessageResponseArgs<CompanionPropertyErrorResponse>(companionResponse);
+        }
+
         #endregion
 
         #region Object Management
@@ -1054,6 +1084,48 @@ namespace Gameboard.Utilities
 
             return CreateCompanionMessageResponseArgs<CompanionCardErrorResponse.CardErrorTypes>(companionResponse);
         }
+
+        public async Task<CompanionMessageResponseArgs> SetControlAsset(int versionTag, string userId, ControlAssetType assetType, string assetGuid)
+        {
+            Enum.TryParse(Enum.GetName(typeof(ControlAssetType), assetType), out ConfigurationProperty property);
+            return await SetConfiguration(versionTag, userId, assetGuid, property);
+        }
+
+        public async Task<CompanionMessageResponseArgs> SetCardTemplate(int versionTag, string userId, CompanionCardTemplateType templateType)
+        {
+            return await SetConfiguration(versionTag, userId, (int)templateType, ConfigurationProperty.CardTemplate);
+        }
+        public async Task<CompanionMessageResponseArgs> SetCardHighlight(int versionTag, string userId, CardHighlights cardHighlight)
+        {
+            return await SetCardProperty(versionTag, userId, cardHighlight, CardProperty.Highlight);
+        }
+
+        public async Task<CompanionMessageResponseArgs> SetCardFrontAssetId(int versionTag, string userId, CardAssetId cardAssetId)
+        {
+            return await SetCardProperty(versionTag, userId, cardAssetId, CardProperty.FrontAssetId);
+        }
+
+        public async Task<CompanionMessageResponseArgs> SetCardBackAssetId(int versionTag, string userId, CardAssetId cardAssetId)
+        {
+            return await SetCardProperty(versionTag, userId, cardAssetId, CardProperty.BackAssetId);
+        }
+
+        private async Task<CompanionMessageResponseArgs> SetCardProperty(int versionTag, string userId, object value, CardProperty property)
+        {
+            EventArgsToCompanionServer eventArgs = BuildEventArgsToTargetUser(versionTag, userId, "setCardProperty");
+            EventArgsSetCardProperty setCardPropertyEventArgs = new EventArgsSetCardProperty()
+            {
+                property = (int)property,
+                value = value,
+                ownerId = gameboardConfig.gameboardId,
+            };
+
+            string eventId = AddEventToCompanionQueue(userId, eventArgs, setCardPropertyEventArgs);
+            SendMessageToCompanionServiceResponse companionResponse = await AwaitQueuedCompanionEvent(userId, eventId);
+
+            return CreateCompanionMessageResponseArgs<CompanionPropertyErrorResponse.CompanionPropertyErrorTypes>(companionResponse);
+        }
+
         #endregion
 
         #region Card Hand Displays
@@ -1145,7 +1217,7 @@ namespace Gameboard.Utilities
             {
                 diceSizesToRoll = inDiceSizesToRoll,
                 addedModifier = inAddedModifier,
-                diceTintHexColor = $"#{ColorUtility.ToHtmlStringRGBA(inDiceTint)}",
+                diceTintHexColor = $"#{ColorUtility.ToHtmlStringRGB(inDiceTint)}",
                 diceNotation = inDiceNotation,
                 ownerId = gameboardConfig.gameboardId,
                 //orderedDiceTextureUIDs // Phase 2
@@ -1157,6 +1229,17 @@ namespace Gameboard.Utilities
 
             return CreateCompanionMessageResponseArgs<CompanionDiceRollErrorResponse>(companionResponse);
         }
+
+        public async Task<CompanionMessageResponseArgs> SetDiceBackground(int versionTag, string userId, string assetGuid)
+        {
+            return await SetConfiguration(versionTag, userId, assetGuid, ConfigurationProperty.DiceBackgroundAssetId);
+        }
+
+        public async Task<CompanionMessageResponseArgs> SetDiceSelectorVisibility(int versionTag, string userId, bool visible)
+        {
+            return await SetConfiguration(versionTag, userId, visible, ConfigurationProperty.DiceSelectorEnabled);
+        }
+
         #endregion
 
         #region Mats
@@ -1267,6 +1350,7 @@ namespace Gameboard.Utilities
                 buttonText = newButtonText,
                 buttonDownTextureId = inButtonDownTextureId,
                 buttonUpTextureId = inButtonDownTextureId,
+                ownerId = gameboardConfig.gameboardId,
             };
 
             string eventId = AddEventToCompanionQueue(userId, eventArgs, createButtonEventArgs);
@@ -1377,14 +1461,16 @@ namespace Gameboard.Utilities
         #endregion
 
         #region Companion Buttons
-        public async Task<CompanionMessageResponseArgs> SetCompanionButtonValues(int versionTag, string userId, string buttonId, string inButtonLabelText, string inButtonCallback)
+        public async Task<CompanionMessageResponseArgs> SetCompanionButtonValues(int versionTag, string userId, string buttonId, string inButtonLabelText, string inButtonCallback, string assetId)
         {
             EventArgsToCompanionServer eventArgs = BuildEventArgsToTargetUser(versionTag, userId, "setCompanionButton");
-            EventArgSetCompanionButton setCompanionButtonEventArgs = new EventArgSetCompanionButton()
+            EventArgSetCompanionButton setCompanionButtonEventArgs;
+            setCompanionButtonEventArgs = new EventArgSetCompanionButton()
             {
                 buttonId = buttonId,
                 buttonText = inButtonLabelText,
                 buttonCallback = inButtonCallback,
+                assetId = assetId,
             };
 
             string eventId = AddEventToCompanionQueue(userId, eventArgs, setCompanionButtonEventArgs);

@@ -19,7 +19,7 @@ public class UserPresenceObserver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Gameboard.Gameboard.singleton is null)
+        if(Gameboard.Gameboard.Instance is null)
         {
             Debug.LogWarning("Gameboard controller is uninitialized. Cannot handle player presence updates.");
             return;

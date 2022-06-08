@@ -18,7 +18,7 @@ namespace Gameboard.Tools
 
         void Update()
         {
-            if (Gameboard.singleton == null)
+            if (Gameboard.Instance == null)
             {
                 return;
             }
@@ -26,7 +26,7 @@ namespace Gameboard.Tools
             // Do the setup here in Update so we can just do a Singleton lookup on Gameboard, and not worry about race-conditions in using Start.
             if (!setupCompleted)
             {
-                if (Gameboard.singleton.companionController.isConnected || Application.isEditor)
+                if (Gameboard.Instance.companionController.isConnected || Application.isEditor)
                 {
                     singleton = this;
                     setupCompleted = true;
@@ -80,6 +80,7 @@ namespace Gameboard.Tools
             {
                 LoadedCompanionAssetDict.Add(playerId, new List<LoadedCompanionAsset>());
             }
+
             LoadedCompanionAsset loadedTextureAsset = LoadedCompanionAssetDict[playerId].Find(s => s.assetPath == inTexturePath);
             if (loadedTextureAsset != null)
             {
@@ -138,7 +139,7 @@ namespace Gameboard.Tools
                 return null;
             }
 
-            CompanionCreateObjectEventArgs objectEventArgs = await Gameboard.singleton.companionController.LoadAsset(playerId, textureByteArray);
+            CompanionCreateObjectEventArgs objectEventArgs = await Gameboard.Instance.companionController.LoadAsset(playerId, textureByteArray);
             if (objectEventArgs.wasSuccessful)
             {
                 LoadedCompanionAsset loadedAsset = new LoadedCompanionAsset()
@@ -235,7 +236,7 @@ namespace Gameboard.Tools
                 return;
             }
 
-            CompanionMessageResponseArgs messageResponseArgs = await Gameboard.singleton.companionController.DeleteAsset(playerId, loadedTextureAsset.assetUID);
+            CompanionMessageResponseArgs messageResponseArgs = await Gameboard.Instance.companionController.DeleteAsset(playerId, loadedTextureAsset.assetUID);
             if (messageResponseArgs.wasSuccessful)
             {
                 LoadedCompanionAssetDict[playerId].Remove(loadedTextureAsset);
@@ -257,7 +258,7 @@ namespace Gameboard.Tools
                 return;
             }
 
-            CompanionMessageResponseArgs messageResponseArgs = await Gameboard.singleton.companionController.DeleteAsset(playerId, inAssetGuid);
+            CompanionMessageResponseArgs messageResponseArgs = await Gameboard.Instance.companionController.DeleteAsset(playerId, inAssetGuid);
             if (messageResponseArgs.wasSuccessful)
             {
                 LoadedCompanionAssetDict[playerId].Remove(loadedAsset);

@@ -47,5 +47,10 @@
         /// The version of the endpoint that this call was intended for (to support previous endpoint versions).
         /// </summary>
         public int version;
+
+        public override string ToString()
+        {
+            return UnityEngine.JsonUtility.ToJson(this);
+        }
     }
 }

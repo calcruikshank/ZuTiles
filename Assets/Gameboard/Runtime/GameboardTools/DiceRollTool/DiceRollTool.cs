@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// This is an example of how to integrate Dice Rolling into your game. This tool can be used as is, or can be used as the foundation
 /// for your own User Presence integration. Simply add this component to a GameObject in your game scene and call DrainQueue
-/// to fetch the most recent received Dice Rolls that occured on Companions.
+/// to fetch the most recent received Dice Rolls that ocurred on Companions.
 /// </summary>
 
 namespace Gameboard.Tools
@@ -19,15 +19,15 @@ namespace Gameboard.Tools
 
         protected override void PerformCleanup()
         {
-            if (Gameboard.singleton != null && setupCompleted)
+            if (Gameboard.Instance != null && setupCompleted)
             {
-                Gameboard.singleton.companionController.DiceRolled -= CompanionController_DiceRolled;
+                Gameboard.Instance.companionController.DiceRolled -= CompanionController_DiceRolled;
             }
         }
 
         void Update()
         {
-            if (Gameboard.singleton == null)
+            if (Gameboard.Instance == null)
             {
                 return;
             }
@@ -35,9 +35,9 @@ namespace Gameboard.Tools
             // Do the setup here in Update so we can just do a Singleton lookup on Gameboard, and not worry about race-conditions in using Start.
             if (!setupCompleted)
             {
-                if (Gameboard.singleton.companionController.isConnected)
+                if (Gameboard.Instance.companionController.isConnected)
                 {
-                    Gameboard.singleton.companionController.DiceRolled += CompanionController_DiceRolled;
+                    Gameboard.Instance.companionController.DiceRolled += CompanionController_DiceRolled;
                     setupCompleted = true;
 
                     Debug.Log("Gameboard Dice Roll tool is ready!");

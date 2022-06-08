@@ -1,4 +1,6 @@
-﻿namespace Gameboard.EventArgs
+﻿using UnityEngine;
+
+namespace Gameboard.EventArgs
 {
     public class CompanionMessageResponseArgs
     {
@@ -13,5 +15,10 @@
 
         // NOTE: userId is a placeholder item to cover some edge cases in the companion. These are all being turned into ownerId, and this will get removed.
         public string userId;
+
+        public override string ToString()
+        {
+            return JsonUtility.ToJson(this);
+        }
     }
 }

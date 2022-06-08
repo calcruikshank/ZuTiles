@@ -75,11 +75,11 @@ namespace Gameboard.Tools
 
         void CheckForSetupReady()
         {
-            if (Gameboard.singleton.boardTouchController != null && Gameboard.singleton.boardTouchController.boardTouchHandler != null)
+            if (Gameboard.Instance.boardTouchController != null && Gameboard.Instance.boardTouchController.boardTouchHandler != null)
             {
-                Gameboard.singleton.boardTouchController.boardTouchHandler.NewBoardObjectsCreated += NewBoardObjectsCreated;
-                Gameboard.singleton.boardTouchController.boardTouchHandler.BoardObjectSessionsDeleted += BoardObjectSessionsDeleted;
-                Gameboard.singleton.boardTouchController.boardTouchHandler.BoardObjectsUpdated += BoardObjectsUpdated;
+                Gameboard.Instance.boardTouchController.boardTouchHandler.NewBoardObjectsCreated += NewBoardObjectsCreated;
+                Gameboard.Instance.boardTouchController.boardTouchHandler.BoardObjectSessionsDeleted += BoardObjectSessionsDeleted;
+                Gameboard.Instance.boardTouchController.boardTouchHandler.BoardObjectsUpdated += BoardObjectsUpdated;
 
                 singleton = this;
                 setupCompleted = true;

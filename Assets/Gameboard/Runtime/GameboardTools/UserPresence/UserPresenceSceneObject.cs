@@ -17,7 +17,7 @@ namespace Gameboard.Tools
         void Start()
         {
 #if UNITY_EDITOR
-            Gameboard.singleton.GameboardShutdownBegun += EditorOnly_HaveUserLeaveGame;
+            Gameboard.Instance.GameboardShutdownBegun += EditorOnly_HaveUserLeaveGame;
 #endif
         }
 
@@ -25,7 +25,7 @@ namespace Gameboard.Tools
         public void EditorOnly_HaveUserLeaveGame()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            Gameboard.singleton.companionController.UserLeft(userId);
+            Gameboard.Instance.companionController.UserLeft(userId);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 #endif

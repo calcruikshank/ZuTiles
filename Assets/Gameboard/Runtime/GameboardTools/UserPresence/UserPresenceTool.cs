@@ -42,15 +42,15 @@ namespace Gameboard.Tools
 
         protected override void PerformCleanup()
         {
-            if (Gameboard.singleton != null && setupCompleted)
+            if (Gameboard.Instance != null && setupCompleted)
             {
-                Gameboard.singleton.companionController.UserPresenceUpdated -= CompanionController_UserPresenceUpdated;
+                Gameboard.Instance.companionController.UserPresenceUpdated -= CompanionController_UserPresenceUpdated;
             }
         }
 
         void Update()
         {
-            if (Gameboard.singleton == null)
+            if (Gameboard.Instance == null)
             {
                 return;
             }
@@ -58,9 +58,9 @@ namespace Gameboard.Tools
             // Do the setup here in Update so we can just do a Singleton lookup on Gameboard, and not worry about race-conditions in using Start.
             if(!setupCompleted)
             {
-                if (Gameboard.singleton.companionController.isConnected)
+                if (Gameboard.Instance.companionController.isConnected)
                 {
-                    Gameboard.singleton.companionController.UserPresenceUpdated += CompanionController_UserPresenceUpdated;
+                    Gameboard.Instance.companionController.UserPresenceUpdated += CompanionController_UserPresenceUpdated;
                     singleton = this;
                     setupCompleted = true;
 
@@ -98,7 +98,7 @@ namespace Gameboard.Tools
             // We're ready! Let's fetch that presence!
             playerPresenceRequestActive = true;
 
-            Task<CompanionUserPresenceEventArgs> task = Gameboard.singleton.companionController.FetchUserPresence();
+            Task<CompanionUserPresenceEventArgs> task = Gameboard.Instance.companionController.FetchUserPresence();
             if (await Task.WhenAny(task, Task.Delay(2500)) == task)
             {
                 CompanionUserPresenceEventArgs userPresence = task.Result;
@@ -139,12 +139,12 @@ namespace Gameboard.Tools
                             
                         case DataTypes.UserPresenceChangeTypes.ADD:
                             // User was just added. Clear their PlayPanel to make sure it's fresh.
-                            await Gameboard.singleton.companionController.ResetPlayPanel(playerObject.userId);
+                            await Gameboard.Instance.companionController.ResetPlayPanel(playerObject.userId);
                         break;
                             
                         case DataTypes.UserPresenceChangeTypes.REMOVE:
                             // User was removed, so clear any events the game was waiting on for this player.
-                            Gameboard.singleton.companionController.ClearQueueForPlayer(playerObject.userId);
+                            Gameboard.Instance.companionController.ClearQueueForPlayer(playerObject.userId);
                         break;
                             
                         case DataTypes.UserPresenceChangeTypes.CHANGE:

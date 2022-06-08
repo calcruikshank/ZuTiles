@@ -5,5 +5,6 @@
         public string buttonId;
         public string buttonText;
         public string buttonCallback;
+        public string assetId;
     }
 }

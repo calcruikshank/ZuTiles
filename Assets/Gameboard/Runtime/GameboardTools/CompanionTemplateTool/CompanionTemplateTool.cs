@@ -16,16 +16,16 @@ namespace Gameboard.Tools
 
         protected override void PerformCleanup()
         {
-            if (Gameboard.singleton != null && setupCompleted)
+            if (Gameboard.Instance != null && setupCompleted)
             {
-                Gameboard.singleton.companionController.CompanionButtonPressed -= CompanionController_CompanionButtonPressed;
-                Gameboard.singleton.companionController.CompanionCardsButtonPressed -= CompanionController_CompanionCardsButtonPressed;
+                Gameboard.Instance.companionController.CompanionButtonPressed -= CompanionController_CompanionButtonPressed;
+                Gameboard.Instance.companionController.CompanionCardsButtonPressed -= CompanionController_CompanionCardsButtonPressed;
             }
         }
 
         void Update()
         {
-            if (Gameboard.singleton == null)
+            if (Gameboard.Instance == null)
             {
                 return;
             }
@@ -33,10 +33,10 @@ namespace Gameboard.Tools
             // Do the setup here in Update so we can just do a Singleton lookup on Gameboard, and not worry about race-conditions in using Start.
             if (!setupCompleted)
             {
-                if (Gameboard.singleton.companionController.isConnected)
+                if (Gameboard.Instance.companionController.isConnected)
                 {
-                    Gameboard.singleton.companionController.CompanionButtonPressed += CompanionController_CompanionButtonPressed;
-                    Gameboard.singleton.companionController.CompanionCardsButtonPressed += CompanionController_CompanionCardsButtonPressed;
+                    Gameboard.Instance.companionController.CompanionButtonPressed += CompanionController_CompanionButtonPressed;
+                    Gameboard.Instance.companionController.CompanionCardsButtonPressed += CompanionController_CompanionCardsButtonPressed;
 
                     singleton = this;
                     setupCompleted = true;

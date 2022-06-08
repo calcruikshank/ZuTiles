@@ -212,7 +212,7 @@ namespace Gameboard.Tools
                 return false;
             }
 
-            Vector3 scenePosition = CalculateCameraScreenToWorldPoint(inPosition);
+            Vector3 scenePosition = Gameboard.Instance.gameCamera != null ? Gameboard.Instance.gameCamera.ScreenToWorldPoint(inPosition) : Camera.main.ScreenToWorldPoint(inPosition);
             switch (downAxis)
             {
                 case AxisAngles.X: scenePosition.x = transform.position.x; break;
