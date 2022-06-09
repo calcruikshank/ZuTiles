@@ -58,7 +58,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     private void Awake()
     {
-        startingXRotation = this.currentLocalEulerAngles.x;
+        startingXRotation = this.transform.GetChild(0).localEulerAngles.x;
         faceUp = true;
     }
     // Start is called before the first frame update
@@ -208,6 +208,7 @@ public class MovableObjectStateMachine : MonoBehaviour
 
     public void SetTouched(int id, Vector3 positionSent)
     {
+        Debug.Log("Set Touched this " + this.transform);
         if (!this.idList.Contains(id))
         {
             this.idList.Add(id);
@@ -239,8 +240,11 @@ public class MovableObjectStateMachine : MonoBehaviour
         historyObject.prefabToInstantiate = this.gameObject;
         historyObject.positionToInstantiate = this.transform.position;
         historyObject.currentRotation = this.transform.rotation;
-        HistoryTracker.singleton.AddToList(historyObject);
-        HistoryTracker.singleton.SetTouched();
+        if (HistoryTracker.singleton != null)
+        {
+            HistoryTracker.singleton.AddToList(historyObject);
+            HistoryTracker.singleton.SetTouched();
+        }
         startingTouchPosition = positionSent;
         raycastStartPos = startingTouchPosition;
         offset = new Vector3(this.transform.position.x - positionSent.x, 0, this.transform.position.z - positionSent.z);
@@ -267,7 +271,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         if (!GetCurrentFacing())
         {
-            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
             faceUp = true;
             return;
         }
@@ -445,7 +449,10 @@ public class MovableObjectStateMachine : MonoBehaviour
         if (!idList.Contains(index)) return;
         if (idList.Count == 1)
         {
-            HistoryTracker.singleton.FingerReleased(historyObject);
+            if (HistoryTracker.singleton != null)
+            {
+                HistoryTracker.singleton.FingerReleased(historyObject);
+            }
 
             //HistoryTracker.singleton.AddToList(historyObject);
             UnsubscribeToDelegates();
@@ -594,7 +601,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         distanceFromStartToCurrent = Vector3.Distance(raycastStartPos, fingerMovePosition);
         if (distanceFromStartToCurrent > .001f)
         {
-            HighlightAllCompatibleObjects();
+            //HighlightAllCompatibleObjects();
             raycastStartPos = fingerMovePosition;
         }
     }
@@ -646,7 +653,7 @@ public class MovableObjectStateMachine : MonoBehaviour
             {
                 if (crutilitiesSingleton.GetFinalParent(hit.transform).GetComponent<MovableObjectStateMachine>() != null)
                 {
-                    crutilitiesSingleton.HighlightGameObject(hit.transform.gameObject);
+                    //crutilitiesSingleton.HighlightGameObject(hit.transform.gameObject);
                     newGameObjectHit = hit.transform.gameObject;
                     if (previousGameObjectHit != newGameObjectHit && previousGameObjectHit != null)
                     {
