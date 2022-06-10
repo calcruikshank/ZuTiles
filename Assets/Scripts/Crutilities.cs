@@ -9,7 +9,6 @@ public class Crutilities : MonoBehaviour
     public static Crutilities singleton;
     List<MovableObjectStateMachine> movableObjectsTiedTo = new List<MovableObjectStateMachine>();
 
-    public List<Outline> highlightedObjects = new List<Outline>();
 
     private void Awake()
     {
@@ -46,18 +45,18 @@ public class Crutilities : MonoBehaviour
 
     internal void HighlightGameObject(GameObject gameObjectSent)
     {
-        Outline outline = gameObjectSent.GetComponentInChildren<Outline>();
+        /*Outline outline = gameObjectSent.GetComponentInChildren<Outline>();
         if (outline == null)
         {
             outline = gameObjectSent.AddComponent<Outline>();
         }
         outline.enabled = true;
-        highlightedObjects.Add(outline);
+        highlightedObjects.Add(outline);*/
     }
 
 
     internal void RemoveHighlight(GameObject outline)
     {
-        outline.GetComponentInChildren<Outline>().enabled = false;
+       // outline.GetComponentInChildren<Outline>().enabled = false;
     }
 }

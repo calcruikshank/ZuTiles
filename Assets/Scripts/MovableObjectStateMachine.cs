@@ -263,6 +263,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     public void FlipObject()
     {
         float tempSXRotation = startingXRotation;
+        Debug.Log(GetCurrentFacing());
         if (GetCurrentFacing())
         {
             transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);

@@ -83,6 +83,7 @@ namespace Gameboard
                     CreateCardHandOnPlayersAsync(myObject);
                     //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
 
+                    AddButtonsToPlayer(this.transform.GetComponentInChildren<PlayerPresenceDrawer>(), null);
 
                     //this checks if the game is zu tiles and if it is then adds a zu tile player script to myobject has to be a better way to do this
                     if (ZuTilesSetup.singleton != null)

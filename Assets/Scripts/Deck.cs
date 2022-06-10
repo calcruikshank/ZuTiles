@@ -43,6 +43,10 @@ public class Deck : MonoBehaviour
         {
             SetCurrentCardShowing(cardsInDeck[cardsInDeck.Count - 1]);
         }
+        else
+        {
+            SetCurrentCardShowing(cardsInDeck[0]);
+        }
     }
 
     public void AddToDeck(List<GameObject> cardsSents)
@@ -194,7 +198,6 @@ public class Deck : MonoBehaviour
 
     public void SetCurrentCardShowing(GameObject cardSent)
     {
-        
         GetComponentInChildren<CardFront>().ChangeCardFront(cardSent.GetComponentInChildren<CardFront>().gameObject);
         currentCardShowing = GetComponentInChildren<CardFront>().gameObject;
         if (currentCardShowing.GetComponent<CardTilter>() != null)
