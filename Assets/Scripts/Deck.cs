@@ -11,7 +11,6 @@ public class Deck : MonoBehaviour
     // Start is called before the first frame update
     public List<GameObject> cardsInDeck = new List<GameObject>();
     MovableObjectStateMachine movableObject;
-    GameObject currentCardShowing;
     public CardDefinition CardCompanionDefiniiton;
     Shader startingShader;
     void Start()
@@ -30,23 +29,13 @@ public class Deck : MonoBehaviour
     }
     public void InitializeDeck()
     {
-        currentCardShowing = this.transform.GetComponentInChildren<CardFront>().gameObject;
         movableObject = this.transform.GetComponent<MovableObjectStateMachine>();
         startingShader = this.GetComponentInChildren<Renderer>().material.shader;
     }
 
     public void UpdateDeckInfo()
     {
-        SetSize(new Vector3(this.transform.localScale.x, cardsInDeck.Count, this.transform.localScale.z));
-        SetTopCard(cardsInDeck[0]);
-        if (this.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
-        {
-            SetCurrentCardShowing(cardsInDeck[cardsInDeck.Count - 1]);
-        }
-        else
-        {
-            SetCurrentCardShowing(cardsInDeck[0]);
-        }
+        this.GetComponentInChildren<DeckVisualScript>().UpdateDeckVisuals(cardsInDeck);
     }
 
     public void AddToDeck(List<GameObject> cardsSents)
@@ -187,24 +176,6 @@ public class Deck : MonoBehaviour
         this.GetComponentInChildren<Renderer>().material.shader = startingShader;
     }
 
-    public void SetSize(Vector3 localSizeSent)
-    {
-        this.transform.localScale = localSizeSent;
-    }
-
-    public void SetTopCard(GameObject cardSent)
-    {
-    }
-
-    public void SetCurrentCardShowing(GameObject cardSent)
-    {
-        GetComponentInChildren<CardFront>().ChangeCardFront(cardSent.GetComponentInChildren<CardFront>().gameObject);
-        currentCardShowing = GetComponentInChildren<CardFront>().gameObject;
-        if (currentCardShowing.GetComponent<CardTilter>() != null)
-        {
-            currentCardShowing.GetComponent<CardTilter>().enabled = false;
-        }
-    }
     public void ShuffleDeck(Vector3 offset, int id)
     {
         Shuffle(cardsInDeck);
