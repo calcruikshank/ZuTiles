@@ -102,7 +102,8 @@ namespace Gameboard.Examples
 
         private void OnCardPlayed(CompanionCardPlayedEventArgs cardPlayedEvent)
         {
-            Results.text = $"OnCardPlayed {cardPlayedEvent}";
+            //Results.text = $"OnCardPlayed {cardPlayedEvent}";
+            Debug.Log("Card Okayed");
         }
 
         public async void LoadAssets()

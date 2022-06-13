@@ -253,7 +253,6 @@ namespace Gameboard.Companion
                     userId = cardPlayedEventArgs.userId,
                     cardId = cardPlayedEventArgs.cardId
                 };
-
                 CardPlayed(this, eventArgs);
             }
         }
@@ -503,11 +502,13 @@ namespace Gameboard.Companion
 
         void DigestEvent_CompanionButtonPressed(GameboardCompanionButtonPressedEventArgs inEventArgs)
         {
+            Debug.Log("Companion button pressed");
             CompanionButtonPressed?.Invoke(this, inEventArgs);
         }
 
         void DigestEvent_CompanionCardsButtonPressed(GameboardCompanionCardsButtonPressedEventArgs inEventArgs)
         {
+            Debug.Log("Companion button pressed");
             Debug.Log("--- DigestEvent_CompanionCardsButtonPressed");
             CompanionCardsButtonPressed?.Invoke(this, inEventArgs);
         }

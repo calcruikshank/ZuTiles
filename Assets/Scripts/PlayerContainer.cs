@@ -123,6 +123,7 @@ public class PlayerContainer : MonoBehaviour
     {
         for (int i = 0; i < cardsInHand.Count; i++)
         {
+            Debug.Log("Card companion definition = " + cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton);
             if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton)
             {
                // cardsInHand[i].SetActive(true);

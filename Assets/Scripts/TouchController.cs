@@ -63,7 +63,7 @@ public class TouchController : MonoBehaviour
             if (raycastHit.transform.GetComponentInChildren<BoxSelectionObject>() != null)
             {
                // BoxSelectionObject boxSelection = raycastHit.transform.GetComponent<BoxSelectionObject>();
-             //   boxSelection.SelectBox(index, raycastHit.point);
+               // boxSelection.SelectBox(index, raycastHit.point);
             }
 
 

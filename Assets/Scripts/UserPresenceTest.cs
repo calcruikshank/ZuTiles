@@ -33,7 +33,6 @@ namespace Gameboard
             GameObject presenceObserverObj = GameObject.FindWithTag("UserPresenceObserver");
             UserPresenceObserver userPresenceObserver = presenceObserverObj.GetComponent<UserPresenceObserver>();
             userPresenceObserver.OnUserPresence += OnUserPresence;
-            //CompanionTemplateTool.singleton.ButtonPressed += CompanionButtonPressed;
 
         }
 
@@ -83,7 +82,6 @@ namespace Gameboard
                     CreateCardHandOnPlayersAsync(myObject);
                     //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
 
-                    AddButtonsToPlayer(this.transform.GetComponentInChildren<PlayerPresenceDrawer>(), null);
 
                     //this checks if the game is zu tiles and if it is then adds a zu tile player script to myobject has to be a better way to do this
                     if (ZuTilesSetup.singleton != null)
@@ -132,17 +130,23 @@ namespace Gameboard
             }
         }
         
-        public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
+        public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer)
         {
             await Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
 
             await Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
 
-            cardImageList.Clear();
+            
+        }
+
+        public async void AddCardsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
+        {
             for (int i = 0; i < deckToGivePlayer.GetComponent<Deck>().cardsInDeck.Count; i++)
             {
                 cardImageList.Add((Texture2D)deckToGivePlayer.GetComponent<Deck>().cardsInDeck[i].GetComponentInChildren<Renderer>().material.mainTexture);
             }
+            cardImageList.Clear();
+
 
             for (int i = 0; i < cardImageList.Count; i++)
             {
