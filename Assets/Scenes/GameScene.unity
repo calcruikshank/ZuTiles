@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4374898, g: 0.48531306, b: 0.56558794, a: 1}
+  m_IndirectSpecularColor: {r: 0.43504456, g: 0.48216474, b: 0.5630989, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2652,7 +2652,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474982804}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 12, z: 0}
+  m_LocalPosition: {x: 0, y: 118.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4644,8 +4644,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 1
+  field of view: 23.5
+  orthographic: 0
   orthographic size: 25
   m_Depth: -1
   m_CullingMask:
@@ -6773,6 +6773,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8fcfdffca871d174990f70caffa017f7, type: 2}
+    - target: {fileID: 1421860924253160828, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 1421860925513984273, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
       propertyPath: m_Name
       value: DeckSelectionHorse (2)
@@ -8355,6 +8359,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1421860924253160828, guid: 26892411ea14e444692282d31d5a1adb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 1421860925513984273, guid: 26892411ea14e444692282d31d5a1adb, type: 3}
       propertyPath: m_Name
       value: THDDeckSelection
@@ -8745,6 +8753,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8d0461bb045a80c4c8ade4a3ca357043, type: 2}
+    - target: {fileID: 1421860924253160828, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 1421860925513984273, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
       propertyPath: m_Name
       value: DeckSelectionHorse (1)
@@ -9344,7 +9356,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedWheelTransform: {fileID: 2707454680480196699, guid: 2020f8ed0e207244bb7e70b7a3ce0130, type: 3}
-  highlightedObjects: []
 --- !u!1 &1677328604
 GameObject:
   m_ObjectHideFlags: 0
@@ -9784,6 +9795,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3a373ac3f9b80594a93d0a7ed6e6d9bb, type: 2}
+    - target: {fileID: 1421860924253160828, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 1421860925513984273, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
       propertyPath: m_Name
       value: DeckSelectionHorse

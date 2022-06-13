@@ -113,6 +113,7 @@ namespace Gameboard
         /// <param name="inEventArgs"></param>
         private void CompanionButtonPressedEvent(GameboardCompanionButtonPressedEventArgs inEventArgs)
         {
+            Debug.Log("Companion button pressed event");
             eventQueue.Enqueue(inEventArgs);
         }
     }
