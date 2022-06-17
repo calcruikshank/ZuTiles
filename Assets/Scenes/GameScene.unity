@@ -1041,7 +1041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78741cd218f8a8e48b8f4c809e9513a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topOfDeck: {fileID: 452544956}
+  topOfDeck: {fileID: 624044920}
   bottomOfDeck: {fileID: 764928010}
   middleOfDeck: {fileID: 872088088}
   deckThickness: 0.05
@@ -2622,11 +2622,6 @@ Transform:
   m_Father: {fileID: 1312121911}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &452544956 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2581880229718501782, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
-  m_PrefabInstance: {fileID: 1518012731}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &473321936
 GameObject:
   m_ObjectHideFlags: 0
@@ -3839,6 +3834,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 618909972}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &624044920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2581880229718501865, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
+  m_PrefabInstance: {fileID: 1518012731}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &675114296
 GameObject:
   m_ObjectHideFlags: 0
@@ -4529,6 +4529,7 @@ GameObject:
   - component: {fileID: 872088088}
   - component: {fileID: 872088090}
   - component: {fileID: 872088089}
+  - component: {fileID: 872088091}
   m_Layer: 0
   m_Name: Middle
   m_TagString: Untagged
@@ -4601,6 +4602,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 872088087}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &872088091
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872088087}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99999994, y: 1, z: 0.99999994}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &877688472
 GameObject:
   m_ObjectHideFlags: 0
@@ -8730,9 +8744,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2581880228887591467, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2581880228887591468, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
       propertyPath: m_Name
       value: THDDEck
+      objectReference: {fileID: 0}
+    - target: {fileID: 2581880228887591468, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581880228887591469, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
       propertyPath: m_RootOrder
@@ -8740,7 +8762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2581880228887591469, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -32.78717
+      value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: 2581880228887591469, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8790,7 +8812,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2581880229718501778, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 63cda655ce58b51478aa0fd8b071f8c0, type: 3}
 --- !u!1 &1519212402
 GameObject:

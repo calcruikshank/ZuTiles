@@ -272,7 +272,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         if (!GetCurrentFacing())
         {
-            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
+            transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
             faceUp = true;
             return;
         }

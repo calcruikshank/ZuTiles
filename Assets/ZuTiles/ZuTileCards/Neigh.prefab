@@ -137,7 +137,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6393691491958544490}
   m_LocalRotation: {x: -0.00000004371139, y: -1, z: 2.29761e-15, w: 0.000000011924881}
-  m_LocalPosition: {x: 0, y: 10.7, z: 21.1}
+  m_LocalPosition: {x: -10.5, y: 1.0700003, z: 10.5}
   m_LocalScale: {x: 5, y: 1, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -160,7 +160,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
-  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!114 &4591837743749174712
