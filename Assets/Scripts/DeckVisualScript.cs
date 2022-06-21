@@ -28,7 +28,7 @@ public class DeckVisualScript : MonoBehaviour
         }
         else
         {
-            SetCurrentCardShowing(cardsInDeck[0]);
+            SetCurrentCardShowing(cardsInDeck[cardsInDeck.Count - 1]);
             topOfDeck = transform.GetChild(0).transform.GetChild(0).gameObject;
             SetSizeFromBottom(new Vector3(this.transform.localScale.x, cardsInDeck.Count, this.transform.localScale.z));
         }
@@ -40,7 +40,7 @@ public class DeckVisualScript : MonoBehaviour
 
         topOfDeck.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + localSizeSent.y * deckThickness / 2, this.transform.position.z );
         bottomOfDeck.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - localSizeSent.y * deckThickness / 2, this.transform.position.z );
-        Debug.Log(this.transform.position.y + localSizeSent.y * deckThickness);
+        Debug.Log(bottomOfDeck.transform.position.y - localSizeSent.y * deckThickness + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + bottomOfDeck);
         //this.transform.localScale = localSizeSent;
     }
     public void SetSizeFromBottom(Vector3 localSizeSent)

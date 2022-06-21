@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   idList: 
+  faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
 --- !u!114 &6545555457539019340
@@ -179,7 +180,7 @@ Transform:
   m_GameObject: {fileID: 7161579121766017340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.1, z: 1}
+  m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9178563676060463766}

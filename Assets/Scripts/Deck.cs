@@ -87,14 +87,14 @@ public class Deck : MonoBehaviour
             {
                 if (targetHit.GetComponent<Deck>() != this)
                 {
-                    if (targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
+                    if (targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing() && targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing() == this.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
                     {
                         Debug.Log("Hit detected " + targetHit.name);
                         Deck deckToAddTo = targetHit.GetComponent<Deck>();
                         deckToAddTo.AddToDeck(this.cardsInDeck);
                         Destroy(this.gameObject);
                     }
-                    if (!targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
+                    if (!targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing() && targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing() == this.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
                     {
                         Debug.Log("Adding to front of list " + targetHit.name);
                         Deck deckToAddTo = targetHit.GetComponent<Deck>();
