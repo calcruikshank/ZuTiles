@@ -23,24 +23,36 @@ public class DeckVisualScript : MonoBehaviour
         if (this.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
         {
             SetCurrentCardShowing(cardsInDeck[cardsInDeck.Count - 1]);
+            topOfDeck = transform.GetChild(0).transform.GetChild(0).gameObject;
+            SetSize(new Vector3(this.transform.localScale.x, cardsInDeck.Count, this.transform.localScale.z));
         }
         else
         {
             SetCurrentCardShowing(cardsInDeck[0]);
+            topOfDeck = transform.GetChild(0).transform.GetChild(0).gameObject;
+            SetSizeFromBottom(new Vector3(this.transform.localScale.x, cardsInDeck.Count, this.transform.localScale.z));
         }
-        topOfDeck = transform.GetChild(0).transform.GetChild(0).gameObject;
-        SetSize(new Vector3(this.transform.localScale.x, cardsInDeck.Count, this.transform.localScale.z));
     }
     public void SetSize(Vector3 localSizeSent)
     {
         this.middleOfDeck.localScale = new Vector3(this.transform.localScale.x, localSizeSent.y * deckThickness, this.transform.localScale.z);
         Debug.Log(topOfDeck);
+
         topOfDeck.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + localSizeSent.y * deckThickness / 2, this.transform.position.z );
         bottomOfDeck.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - localSizeSent.y * deckThickness / 2, this.transform.position.z );
         Debug.Log(this.transform.position.y + localSizeSent.y * deckThickness);
         //this.transform.localScale = localSizeSent;
     }
+    public void SetSizeFromBottom(Vector3 localSizeSent)
+    {
+        this.middleOfDeck.localScale = new Vector3(this.transform.localScale.x, localSizeSent.y * deckThickness, this.transform.localScale.z);
+        Debug.Log(topOfDeck);
 
+        topOfDeck.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - localSizeSent.y * deckThickness / 2, this.transform.position.z);
+        bottomOfDeck.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + localSizeSent.y * deckThickness / 2, this.transform.position.z);
+        Debug.Log(this.transform.position.y + localSizeSent.y * deckThickness);
+        //this.transform.localScale = localSizeSent;
+    }
 
     public void SetCurrentCardShowing(GameObject cardSent)
     {

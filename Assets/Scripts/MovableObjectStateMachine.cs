@@ -18,7 +18,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     float doubleTapThreshold = .25f;
     float distanceThreshold = .25f;
     Deck deck;
-    bool faceUp;
+    public bool faceUp;
     bool lowering;
     bool snappingToThreeOnY;
     int numOfFingersOnCard = 0;
@@ -263,7 +263,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     public void FlipObject()
     {
         float tempSXRotation = startingXRotation;
-        Debug.Log(GetCurrentFacing());
+        Debug.Log(GetCurrentFacing() + " Flipping object");
         if (GetCurrentFacing())
         {
             transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);

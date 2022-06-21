@@ -274,7 +274,7 @@ public class Deck : MonoBehaviour
     {
         GameObject newDeck;
         newDeck = Instantiate(this.gameObject, transform.position, Quaternion.identity);
-        
+        newDeck.GetComponent<MovableObjectStateMachine>().faceUp = false;
         int iniatedI = cardsInDeck.Count;
         cardsInDeck.Clear();
         for (int i = 0; i <= numOfCardsToPickUp - 1; i++)
