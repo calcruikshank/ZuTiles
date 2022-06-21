@@ -40,7 +40,6 @@ public class DeckVisualScript : MonoBehaviour
 
         topOfDeck.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + localSizeSent.y * deckThickness / 2, this.transform.position.z );
         bottomOfDeck.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - localSizeSent.y * deckThickness / 2, this.transform.position.z );
-        Debug.Log(bottomOfDeck.transform.position.y - localSizeSent.y * deckThickness + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + bottomOfDeck);
         //this.transform.localScale = localSizeSent;
     }
     public void SetSizeFromBottom(Vector3 localSizeSent)
