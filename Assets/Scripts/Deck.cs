@@ -108,7 +108,7 @@ public class Deck : MonoBehaviour
         }
         for (int i = 0; i < hits.Length; i++)
         {
-            var placementObj = Crutilities.singleton.GetFinalParent(hits[i].transform).GetComponentInChildren<PlacementObject>();
+            var placementObj = hits[i].transform.root.GetComponentInChildren<PlacementObject>();
             if (placementObj != null && placementObj.ListContainsString(this.name))
             {
                 Debug.Log("The name of this component is " + hits[i].transform.name);

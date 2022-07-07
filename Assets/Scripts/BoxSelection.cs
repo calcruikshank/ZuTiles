@@ -310,9 +310,9 @@ public class BoxSelection : MonoBehaviour
         List<MovableObjectStateMachine> newListOfMovablesToSelect = new List<MovableObjectStateMachine>();
         for (int i = 0; i < objectsHit.Length; i++)
         {
-            if (Crutilities.singleton.GetFinalParent(objectsHit[i].transform).GetComponent<MovableObjectStateMachine>() != null)
+            if (objectsHit[i].transform.root.GetComponent<MovableObjectStateMachine>() != null)
             {
-                newListOfMovablesToSelect.Add(Crutilities.singleton.GetFinalParent(objectsHit[i].transform).GetComponent<MovableObjectStateMachine>());
+                newListOfMovablesToSelect.Add(objectsHit[i].transform.root.GetComponent<MovableObjectStateMachine>());
             }
         }
 
@@ -355,7 +355,7 @@ public class BoxSelection : MonoBehaviour
     {
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
-            Crutilities.singleton.GetFinalParent(selectedMovableObjects[i].transform).GetComponentInChildren<MovableObjectStateMachine>().GridMove(targetPosition);
+            selectedMovableObjects[i].transform.root.GetComponentInChildren<MovableObjectStateMachine>().GridMove(targetPosition);
         }
     }
     public void SetBoxSelected(int index, Vector3 positionSent)
@@ -369,14 +369,14 @@ public class BoxSelection : MonoBehaviour
     {
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
-            Crutilities.singleton.GetFinalParent(selectedMovableObjects[i].transform).GetComponentInChildren<MovableObjectStateMachine>().BoxRotateRight();
+            selectedMovableObjects[i].transform.root.GetComponentInChildren<MovableObjectStateMachine>().BoxRotateRight();
         }
     }
     private void RotateAllMovableObjectsLeft(Vector3 position, int index)
     {
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
-            Crutilities.singleton.GetFinalParent(selectedMovableObjects[i].transform).GetComponentInChildren<MovableObjectStateMachine>().BoxRotateLeft();
+            selectedMovableObjects[i].transform.root.GetComponentInChildren<MovableObjectStateMachine>().BoxRotateLeft();
         }
     }
    
@@ -384,7 +384,7 @@ public class BoxSelection : MonoBehaviour
     {
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
-            Crutilities.singleton.GetFinalParent(selectedMovableObjects[i].transform).GetComponentInChildren<MovableObjectStateMachine>().ShuffleDeck();
+            selectedMovableObjects[i].transform.root.GetComponentInChildren<MovableObjectStateMachine>().ShuffleDeck();
         }
     }
 

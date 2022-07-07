@@ -24,7 +24,7 @@ public class ButtonSelector : MonoBehaviour
     {
         if (transformToCallMethodFrom == null)
         {
-            Transform finalParent = Crutilities.singleton.GetFinalParent(this.transform);
+            Transform finalParent = this.transform.root;
 
             MonoBehaviour[] allScriptsInParent = finalParent.GetComponentsInChildren<MonoBehaviour>();
             foreach (MonoBehaviour mb in allScriptsInParent)

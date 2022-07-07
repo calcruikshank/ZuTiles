@@ -37,7 +37,7 @@ public class ZuTiileButtonSelector : MonoBehaviour
             {
                 PlayerContainer playerToAddCardTo = hits[i].transform.GetComponentInChildren<PlayerContainer>();
                 Debug.Log(deckToInstantiate);
-                Crutilities.singleton.GetFinalParent(playerToAddCardTo.transform).transform.GetComponentInChildren<ZuTilePlayer>().SetDeckToDeckToInstantiate(deckToInstantiate, this.gameObject);
+                playerToAddCardTo.transform.root.transform.GetComponentInChildren<ZuTilePlayer>().SetDeckToDeckToInstantiate(deckToInstantiate, this.gameObject);
             }
         }
         UnsubFromDelegates();

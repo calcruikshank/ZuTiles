@@ -650,9 +650,9 @@ public class MovableObjectStateMachine : MonoBehaviour
         GameObject newGameObjectHit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 100.0F))
         {
-            if (crutilitiesSingleton.GetFinalParent(hit.transform) != this.transform)
+            if (hit.transform.root != this.transform)
             {
-                if (crutilitiesSingleton.GetFinalParent(hit.transform).GetComponent<MovableObjectStateMachine>() != null)
+                if (hit.transform.root.GetComponent<MovableObjectStateMachine>() != null)
                 {
                     //crutilitiesSingleton.HighlightGameObject(hit.transform.gameObject);
                     newGameObjectHit = hit.transform.gameObject;
@@ -662,7 +662,7 @@ public class MovableObjectStateMachine : MonoBehaviour
                     }
                     previousGameObjectHit = newGameObjectHit;
                 }
-                if (crutilitiesSingleton.GetFinalParent(hit.transform).GetComponent<PlacementObject>() != null)
+                if (hit.transform.root.GetComponent<PlacementObject>() != null)
                 {
                     crutilitiesSingleton.HighlightGameObject(hit.transform.gameObject);
                     newGameObjectHit = hit.transform.gameObject;

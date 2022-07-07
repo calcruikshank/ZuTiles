@@ -52,7 +52,7 @@ namespace Gameboard.Companion
             companionHandler.CardPlayedEvent += DigestEvent_CardPlayedReceived;
             companionHandler.CompanionButtonPressedEvent += DigestEvent_CompanionButtonPressed;
             companionHandler.CompanionCardsButtonPressedEvent += DigestEvent_CompanionCardsButtonPressed;
-            Debug.Log("--- CompanionCardsButtonPressedEvent ASSIGNED!");
+            Debug.Log("--- CompanionCardsButtonPressedEvent ASSIGNED!");    
         }
 
         void RemoveHandlerListeners()

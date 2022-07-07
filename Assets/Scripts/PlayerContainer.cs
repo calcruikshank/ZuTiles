@@ -27,14 +27,14 @@ public class PlayerContainer : MonoBehaviour
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
     private void Awake()
     {
-        inPlayer = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>();
+        inPlayer = this.transform.root.GetComponentInChildren<PlayerPresenceDrawer>();
         setStencilReference = FindObjectOfType<SetStencilReference>();
         currentOffset = Vector3.zero;
 
     }
     public void AddCardToHand(GameObject cardToAdd)
     {
-        thisRotation = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>().GetRotation();
+        thisRotation = this.transform.root.GetComponentInChildren<PlayerPresenceDrawer>().GetRotation();
         //position = (this.transform.bounds.x - this.transform.bounds.x + padding)
         //cardToAdd.transform.position = new Vector3(((this.transform.position.x + (this.transform.GetComponent<Collider>().bounds.size.x / 2) - (this.transform.GetComponent<Collider>().bounds.size.x / 2)) + (cardToAdd.transform.GetComponentInChildren<Collider>().bounds.size.x * cardsInHand.Count) + movableObjectPadding * cardsInHand.Count), cardToAdd.transform.position.y, this.transform.position.z);
         cardToAdd.transform.rotation = this.transform.rotation;
@@ -164,7 +164,7 @@ public class PlayerContainer : MonoBehaviour
     {
         TouchScript.touchMoved += Scroll;
         TouchScript.fingerReleased += FingerReleased;
-        thisRotation = Crutilities.singleton.GetFinalParent(this.transform).GetComponentInChildren<PlayerPresenceDrawer>().GetRotation();
+        thisRotation = this.transform.root.GetComponentInChildren<PlayerPresenceDrawer>().GetRotation();
 
     }
     public void UnsubToDelegates()
