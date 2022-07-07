@@ -57,13 +57,13 @@ public class TouchController : MonoBehaviour
             }
             if (raycastHit.transform.GetComponent<BoxSelection>() != null)
             {
-               // BoxSelection boxSelection = raycastHit.transform.GetComponent<BoxSelection>();
-               // boxSelection.BeginDraggingGrid(index, position);
+               BoxSelection boxSelection = raycastHit.transform.GetComponent<BoxSelection>();
+               boxSelection.BeginDraggingGrid(index, position);
             }
             if (raycastHit.transform.GetComponentInChildren<BoxSelectionObject>() != null)
             {
-               // BoxSelectionObject boxSelection = raycastHit.transform.GetComponent<BoxSelectionObject>();
-               // boxSelection.SelectBox(index, raycastHit.point);
+                BoxSelectionObject boxSelection = raycastHit.transform.GetComponent<BoxSelectionObject>();
+                boxSelection.SelectBox(index, raycastHit.point);
             }
 
 

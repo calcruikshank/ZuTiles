@@ -42,7 +42,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     public bool boxSelected = false;
 
 
-    float targetPositionOnY = 3f;
+    float targetPositionOnY = 1f;
     Vector3 previousInitialMoveDirection;
 
     HistoryObject historyObject;
@@ -251,7 +251,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         heldDownTimer = 0f;
         lowering = false;
         rayPosition = positionSent;
-        targetPositionOnY = this.transform.position.y + 3f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
+        targetPositionOnY = this.transform.position.y + 1f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
         snappingToThreeOnY = true;
         if (this.GetComponentInChildren<MoveTowardsWithLerp>() != null)
         {
@@ -533,7 +533,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         Highlight();
         HideSelectedWheel();
-        targetPositionOnY = this.transform.position.y + 3f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
+        targetPositionOnY = this.transform.position.y + 1f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
         snappingToThreeOnY = true;
         lowering = false;
         boxSelected = true;
