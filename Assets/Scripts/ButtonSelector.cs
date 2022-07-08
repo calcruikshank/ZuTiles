@@ -11,7 +11,6 @@ public class ButtonSelector : MonoBehaviour
     void Start()
     {
         this.gameObject.layer = 9;
-        Debug.Log(this.gameObject.layer);
     }
 
     // Update is called once per frame
@@ -44,7 +43,6 @@ public class ButtonSelector : MonoBehaviour
 
     public void SetTargetTransform(RectTransform selectionBox)
     {
-        Debug.Log("Setting target transform to  " + selectionBox);
         transformToCallMethodFrom = selectionBox;
     }
 }

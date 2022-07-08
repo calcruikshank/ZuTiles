@@ -60,6 +60,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     {
         startingXRotation = this.transform.GetChild(0).localEulerAngles.x;
         faceUp = true;
+        lowering = true;
     }
     // Start is called before the first frame update
     void Start()
@@ -327,7 +328,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         {
             snappingToThreeOnY = false;
         }
-        targetToMove.position = Vector3.MoveTowards(targetToMove.position, new Vector3(targetToMove.position.x, targetPositionOnY, targetToMove.position.z), .05f * 1000 * Time.deltaTime);
+        targetToMove.position = Vector3.MoveTowards(targetToMove.position, new Vector3(targetToMove.position.x, targetPositionOnY, targetToMove.position.z), .05f * 200 * Time.deltaTime);
     }
     public void SnapToLowestPointHit()
     {
@@ -339,7 +340,7 @@ public class MovableObjectStateMachine : MonoBehaviour
             targetToMove.GetComponentInChildren<CardTilter>().SetRotationToZero();
         }
         float lowestPointHit = FindLowestPoint();
-        targetToMove.position = Vector3.MoveTowards(targetToMove.position, new Vector3(targetToMove.position.x, lowestPointHit, targetToMove.position.z), .05f * 1000 * Time.deltaTime);
+        targetToMove.position = Vector3.MoveTowards(targetToMove.position, new Vector3(targetToMove.position.x, lowestPointHit, targetToMove.position.z), .05f * 200 * Time.deltaTime);
         if (targetToMove.transform.position.y == lowestPointHit)
         {
             lowering = false;

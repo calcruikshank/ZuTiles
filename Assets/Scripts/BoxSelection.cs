@@ -21,6 +21,7 @@ public class BoxSelection : MonoBehaviour
         BoxRotation
     }
 
+    [SerializeField] LayerMask tableMask;
     private Camera cam;
     int id = -1;
     float width;
@@ -97,6 +98,9 @@ public class BoxSelection : MonoBehaviour
         id = indexSent;
         currentPosition = positionSent;
         startPosition = positionSent;
+        Ray ray = Camera.main.ScreenPointToRay(startPosition);
+        startingWorldPosition = ray.GetPoint(Camera.main.transform.position.y);
+        
         SubscribeToDelegates();
         Debug.Log("Begin draggin Grid");
         raycastStartPos = startPosition;
@@ -179,7 +183,7 @@ public class BoxSelection : MonoBehaviour
         height = mostPositiveY - mostNegativeY;
 
         selectionBox.localScale = new Vector3(MathF.Abs(width), MathF.Abs(height), 1);
-        selectionBox.anchoredPosition3D = new Vector3(mostNegativeX + width / 2, 1, mostNegativeY + height / 2);
+        selectionBox.anchoredPosition3D = new Vector3(mostNegativeX + width / 2, selectionBox.transform.position.y, mostNegativeY + height / 2);
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
             selectedMovableObjects[i].SetGridOffset(this.selectionBox.position);
@@ -227,13 +231,13 @@ public class BoxSelection : MonoBehaviour
         }
         if (newSelectionWheel == null)
         {
-            newSelectionWheel = Instantiate(selectionWheelBox, new Vector3(selectionBox.transform.position.x, 7, selectionBox.transform.position.z), Quaternion.identity);
+           /* newSelectionWheel = Instantiate(selectionWheelBox, new Vector3(selectionBox.transform.position.x, 7, selectionBox.transform.position.z), Quaternion.identity);
             newSelectionWheel.transform.parent = selectionBox;
             ButtonSelector[] buttonSelectors = newSelectionWheel.GetComponentsInChildren<ButtonSelector>();
             for (int i = 0; i < buttonSelectors.Length; i++)
             {
                 buttonSelectors[i].SetTargetTransform(selectionBox);
-            }
+            }*/
         }
     }
 
@@ -268,7 +272,9 @@ public class BoxSelection : MonoBehaviour
         if (!moving)
         {
             UpdateSelectionBox();
-            currentPosition = position;
+            Ray ray = Camera.main.ScreenPointToRay(position);
+            currentPosition = ray.GetPoint(Camera.main.transform.position.y);
+            
         }
         if (moving)
         {
@@ -281,32 +287,32 @@ public class BoxSelection : MonoBehaviour
         }
     }
 
+    Vector3 startingWorldPosition;
     void UpdateSelectionBox()
     {
         if (!selectionBox.gameObject.activeInHierarchy)
         {
             selectionBox.gameObject.SetActive(true);
         }
-        Vector3 currentWorldPosition = Camera.main.ScreenToWorldPoint(currentPosition);
-        Vector3 startingWorldPosition = Camera.main.ScreenToWorldPoint(startPosition);
+        Vector3 currentWorldPosition = currentPosition;
+        
         width = currentWorldPosition.x - startingWorldPosition.x;
         height = currentWorldPosition.z - startingWorldPosition.z;
-
         selectionBox.localScale = new Vector3(MathF.Abs(width), MathF.Abs(height), 1);
-        selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, 1, startingWorldPosition.z + height / 2);
+
+        selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, startingWorldPosition.y, startingWorldPosition.z + height / 2);
 
         distanceFromStartToCurrent = Vector3.Distance(raycastStartPos, currentPosition);
-        if (distanceFromStartToCurrent > 10f)
+        if (distanceFromStartToCurrent > .01f)
         {
             ShootRayCastToCheckForMovableObjects();
             raycastStartPos = currentPosition;
         }
     }
-
     void ShootRayCastToCheckForMovableObjects()
     {
-        RaycastHit[] objectsHit = Physics.BoxCastAll(selectionBox.position, new Vector3(selectionBox.localScale.x / 2, selectionBox.localScale.z / 2, selectionBox.localScale.y / 2), Vector3.down, Quaternion.identity, 10f);
-
+        RaycastHit[] objectsHit = Physics.BoxCastAll(selectionBox.position, new Vector3(selectionBox.localScale.x / 2, selectionBox.localScale.z / 2, selectionBox.localScale.y / 2), Vector3.down, Quaternion.identity);
+        Debug.Log(objectsHit.Length);
         List<MovableObjectStateMachine> newListOfMovablesToSelect = new List<MovableObjectStateMachine>();
         for (int i = 0; i < objectsHit.Length; i++)
         {
