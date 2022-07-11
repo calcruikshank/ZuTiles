@@ -60,6 +60,7 @@ public class TouchController : MonoBehaviour
                BoxSelection boxSelection = raycastHit.transform.GetComponent<BoxSelection>();
                boxSelection.BeginDraggingGrid(index, position);
             }
+            Debug.Log("Hit box selection object " + raycastHit.transform);
             if (raycastHit.transform.GetComponentInChildren<BoxSelectionObject>() != null)
             {
                 BoxSelectionObject boxSelection = raycastHit.transform.GetComponent<BoxSelectionObject>();

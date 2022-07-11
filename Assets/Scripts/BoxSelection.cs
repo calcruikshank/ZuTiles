@@ -10,6 +10,7 @@ public class BoxSelection : MonoBehaviour
     [SerializeField] private RectTransform selectionBox;
     private List<MovableObjectStateMachine> selectedMovableObjects = new List<MovableObjectStateMachine>();
     Vector3 startPosition, currentPosition;
+
     public enum State
     {
         Idle,
@@ -186,11 +187,12 @@ public class BoxSelection : MonoBehaviour
         selectionBox.anchoredPosition3D = new Vector3(mostNegativeX + width / 2, selectionBox.transform.position.y, mostNegativeY + height / 2);
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
+            Debug.Log(selectedMovableObjects[i]);
             selectedMovableObjects[i].SetGridOffset(this.selectionBox.position);
         }
         if (newCloseButton == null)
         {
-            SpawnInCloseButton(width, height);
+            //SpawnInCloseButton(width, height);
         }
     }
 
