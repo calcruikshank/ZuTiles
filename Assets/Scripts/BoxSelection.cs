@@ -252,7 +252,7 @@ public class BoxSelection : MonoBehaviour
                 buttonSelectors[i].SetTargetTransform(selectionBox);
             }
         }
-
+        newCloseButton.transform.parent = selectionBox.transform;
         if (newCloseButton != null)
         {
             newCloseButton.GetComponentInChildren<ButtonSelector>().SetTargetTransform(this.transform);
@@ -378,7 +378,7 @@ public class BoxSelection : MonoBehaviour
 
         if (newCloseButton != null)
         {
-            newCloseButton.transform.position = targetCloseButtonPosition;
+            //newCloseButton.transform.position = targetCloseButtonPosition;
         }
     }
 
