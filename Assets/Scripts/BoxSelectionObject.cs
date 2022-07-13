@@ -13,7 +13,7 @@ public class BoxSelectionObject : MonoBehaviour
 
     public void Close()
     {   
-        BoxSelection.singleton.CloseBox();
+        BoxSelection.singleton.Close();
     }
 
     public void FlipObject()
@@ -23,7 +23,7 @@ public class BoxSelectionObject : MonoBehaviour
 
     public void HideSelectedWheel()
     {
-        BoxSelection.singleton.CloseBox();
+        BoxSelection.singleton.Close();
     }
     public void ShuffleDeck()
     {
@@ -31,7 +31,11 @@ public class BoxSelectionObject : MonoBehaviour
     }
     public void GroupAllSimilarMovableObjects()
     {
-        BoxSelection.singleton.GroupAllSimilarObjects(); 
-       
+
+    }
+    public void RotateRightFromButton()
+    {
+
+        BoxSelection.singleton.RotateRightFromButton();
     }
 }

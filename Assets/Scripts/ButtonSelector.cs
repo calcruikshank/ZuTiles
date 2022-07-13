@@ -41,8 +41,8 @@ public class ButtonSelector : MonoBehaviour
         }
     }
 
-    public void SetTargetTransform(RectTransform selectionBox)
+    public void SetTargetTransform(Transform transformSent)
     {
-        transformToCallMethodFrom = selectionBox;
+        transformToCallMethodFrom = transformSent;
     }
 }

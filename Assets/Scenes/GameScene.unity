@@ -4215,8 +4215,8 @@ MonoBehaviour:
   tableMask:
     serializedVersion: 2
     m_Bits: 0
-  closeButton: {fileID: 0}
-  selectionWheelBox: {fileID: 0}
+  closeButton: {fileID: 5901803169086856552, guid: a5105dde97673394ca44e5da2ec9a5bf, type: 3}
+  selectionWheelBox: {fileID: 2707454680480196699, guid: 2020f8ed0e207244bb7e70b7a3ce0130, type: 3}
 --- !u!1 &750005826
 GameObject:
   m_ObjectHideFlags: 0
@@ -4685,7 +4685,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 50
   field of view: 15
-  orthographic: 0
+  orthographic: 1
   orthographic size: 3.22
   m_Depth: -1
   m_CullingMask:

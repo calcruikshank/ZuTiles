@@ -126,7 +126,7 @@ public class MovableObjectStateMachine : MonoBehaviour
                 }
                 break;
             case State.Rotating:
-                Move();
+                //Move();
                 HandleRaising();
                 HandleRotating();
                 break;

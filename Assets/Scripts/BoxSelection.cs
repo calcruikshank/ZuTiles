@@ -192,7 +192,7 @@ public class BoxSelection : MonoBehaviour
         }
         if (newCloseButton == null)
         {
-            //SpawnInCloseButton(width, height);
+            SpawnInCloseButton(width, height);
         }
     }
 
@@ -201,46 +201,63 @@ public class BoxSelection : MonoBehaviour
         //if start position.x < currentposition.x && startposition.z < currentPosition.z
         if (startPosition.x < currentPosition.x && startPosition.y > currentPosition.y)
         {
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
             //call this method when finger is released and selected movable objects.count > 0 
-            newCloseButton = Instantiate(closeButton, new Vector3(selectionBox.transform.position.x + width / 2, 7, selectionBox.transform.position.z + height / 2), Quaternion.identity);
+            newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
+            closeButtonOffset = offset;
             //if seleceted movable object count is == 0 then call closeBox
-            newCloseButton.transform.parent = selectionBox;
+            //newCloseButton.transform.parent = selectionBox;
         }
         else if (startPosition.x < currentPosition.x && startPosition.y < currentPosition.y)
         {
-            newCloseButton = Instantiate(closeButton, new Vector3(selectionBox.transform.position.x - width / 2, 7, selectionBox.transform.position.z + height / 2), Quaternion.identity);
-            
-            newCloseButton.transform.parent = selectionBox;
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            //call this method when finger is released and selected movable objects.count > 0 
+            newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
+            closeButtonOffset = offset;
+            //  newCloseButton.transform.parent = selectionBox;
         }
         else if (startPosition.x > currentPosition.x && startPosition.y < currentPosition.y)
         {
-            newCloseButton = Instantiate(closeButton, new Vector3(selectionBox.transform.position.x - width / 2, 7, selectionBox.transform.position.z - height / 2), Quaternion.identity);
-        
-            newCloseButton.transform.parent = selectionBox;
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            //call this method when finger is released and selected movable objects.count > 0 
+            newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
+            closeButtonOffset = offset;
+            //newCloseButton.transform.parent = selectionBox;
         }
         else if (startPosition.x > currentPosition.x && startPosition.y > currentPosition.y)
         {
-            newCloseButton = Instantiate(closeButton, new Vector3(selectionBox.transform.position.x + width / 2, 7, selectionBox.transform.position.z - height / 2), Quaternion.identity);
-            
-            newCloseButton.transform.parent = selectionBox;
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            //call this method when finger is released and selected movable objects.count > 0 
+            newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
+            closeButtonOffset = offset;
+            // newCloseButton.transform.parent = selectionBox;
         }
         else
         {
             //call this method when finger is released and selected movable objects.count > 0 
-            newCloseButton = Instantiate(closeButton, new Vector3(selectionBox.transform.position.x + width / 2, 7, selectionBox.transform.position.z + height / 2), Quaternion.identity);
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            //call this method when finger is released and selected movable objects.count > 0 
+            newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
+            closeButtonOffset = offset;
             //if seleceted movable object count is == 0 then call closeBox
-            newCloseButton.transform.parent = selectionBox;
+            // newCloseButton.transform.parent = selectionBox;
         }
         if (newSelectionWheel == null)
         {
-           /* newSelectionWheel = Instantiate(selectionWheelBox, new Vector3(selectionBox.transform.position.x, 7, selectionBox.transform.position.z), Quaternion.identity);
+           newSelectionWheel = Instantiate(selectionWheelBox, new Vector3(selectionBox.transform.position.x, 7, selectionBox.transform.position.z), Quaternion.identity);
             newSelectionWheel.transform.parent = selectionBox;
             ButtonSelector[] buttonSelectors = newSelectionWheel.GetComponentsInChildren<ButtonSelector>();
             for (int i = 0; i < buttonSelectors.Length; i++)
             {
                 buttonSelectors[i].SetTargetTransform(selectionBox);
-            }*/
+            }
         }
+
+        if (newCloseButton != null)
+        {
+            newCloseButton.GetComponentInChildren<ButtonSelector>().SetTargetTransform(this.transform);
+        }
+
     }
 
     public void FlipObject()
@@ -251,7 +268,7 @@ public class BoxSelection : MonoBehaviour
         }
     }
     
-    public void CloseBox()
+    public void Close()
     {
         if (selectionBox.gameObject.activeInHierarchy)
         {
@@ -350,13 +367,19 @@ public class BoxSelection : MonoBehaviour
         }
         return false;
     }
-
+    Vector3 closeButtonOffset;
     void Move()
     {
         Vector3 targetPosition = new Vector3(fingerMovePosition.x, this.selectionBox.transform.position.y, fingerMovePosition.z);
         targetPosition = targetPosition + offset;
+        Vector3 targetCloseButtonPosition = targetPosition + closeButtonOffset;
         selectionBox.transform.position = targetPosition;
         MoveAllObjectsWithinSelection(targetPosition);
+
+        if (newCloseButton != null)
+        {
+            newCloseButton.transform.position = targetCloseButtonPosition;
+        }
     }
 
     public void MoveAllObjectsWithinSelection(Vector3 targetPosition)
@@ -429,9 +452,17 @@ public class BoxSelection : MonoBehaviour
             }
         }
 
-        CloseBox();
+        Close();
     }
 
+
+    public void RotateRightFromButton()
+    {
+        for (int i = 0; i < selectedMovableObjects.Count; i++)
+        {
+            selectedMovableObjects[i].transform.root.GetComponentInChildren<MovableObjectStateMachine>().RotateRight(selectedMovableObjects[i].transform.position, 0);
+        }
+    }
 }
 
 

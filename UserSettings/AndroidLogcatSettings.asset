@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "10.1.10.9:5555",
         "name": "com.DefaultCompany.ZuTiles",
-        "processId": 5308,
+        "processId": 7596,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -227,24 +227,6 @@
         {
             "deviceId": "10.1.10.9:5555",
             "name": "com.DefaultCompany.ZuTiles",
-            "processId": 6210,
-            "exited": true
-        },
-        {
-            "deviceId": "10.1.10.9:5555",
-            "name": "com.DefaultCompany.ZuTiles",
-            "processId": 5199,
-            "exited": true
-        },
-        {
-            "deviceId": "10.1.10.9:5555",
-            "name": "com.DefaultCompany.ZuTiles",
-            "processId": 5599,
-            "exited": true
-        },
-        {
-            "deviceId": "10.1.10.9:5555",
-            "name": "com.DefaultCompany.ZuTiles",
             "processId": 4651,
             "exited": true
         },
@@ -258,12 +240,78 @@
             "deviceId": "10.1.10.9:5555",
             "name": "com.DefaultCompany.ZuTiles",
             "processId": 4999,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "10.1.10.9:5555",
             "name": "com.DefaultCompany.ZuTiles",
             "processId": 5308,
+            "exited": true
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.lastgameboard.gameboardlauncher",
+            "processId": 3999,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5284,
+            "exited": true
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5444,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6383,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6644,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 8238,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6623,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6971,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 7155,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 7337,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 7596,
             "exited": false
         }
     ],
