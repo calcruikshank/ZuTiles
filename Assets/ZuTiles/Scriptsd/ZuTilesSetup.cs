@@ -93,7 +93,7 @@ public class ZuTilesSetup : MonoBehaviour
             }
             if (instantiatedDeck.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
             {
-                //instantiatedDeck.GetComponent<MovableObjectStateMachine>().FlipObject();
+                instantiatedDeck.GetComponent<MovableObjectStateMachine>().FlipObject();
             }
         }
     }

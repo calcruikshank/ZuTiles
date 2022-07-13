@@ -75,10 +75,10 @@ public class PlayerContainer : MonoBehaviour
         AddCardToHandDisplay(newCardDef); 
     }
 
-    private async void AddCardToHandDisplay(CardDefinition newCardDef)
+    private void AddCardToHandDisplay(CardDefinition newCardDef)
     {
         cardHandID = CardsTool.singleton.GetCardHandDisplayedForPlayer(inPlayer.userId);
-        await CardsTool.singleton.PlaceCardInPlayerHand_Async(inPlayer.userId, cardHandID, newCardDef);
+        CardsTool.singleton.PlaceCardInPlayerHand(inPlayer.userId, cardHandID, newCardDef);
     }
     public void RemoveCardFromHand(GameObject cardToRemove)
     {

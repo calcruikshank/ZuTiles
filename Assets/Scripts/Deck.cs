@@ -204,7 +204,7 @@ public class Deck : MonoBehaviour
                 return null;
             }
             newCard = InstantiateCardsFromBottom();
-            newCard.GetComponent<Deck>().UpdateDeckInfo();
+           // newCard.GetComponent<Deck>().UpdateDeckInfo();
             /*if (this.GetComponent<MovableObjectStateMachine>().faceUp)
             {
                 newCard = InstantiateCardsFromBottom();
