@@ -13,9 +13,15 @@ namespace Gameboard.Examples
 
     public class PlayerPresenceDrawer : UserPresenceSceneObject
     {
+        UserPresenceController userPresenceController;
+        
         PlayerContainer playerContainer;
         private void Awake()
         {
+            GameboardLogging.Verbose("UserPresenceExample Awake");
+            GameObject gameboardObject = GameObject.FindWithTag("Gameboard");
+            GameboardLogging.Verbose("UserPresenceExample Awake Success");
+            userPresenceController = gameboardObject.GetComponent<UserPresenceController>();
             Gameboard.singleton.companionController.CardPlayed += CardsButtonPressedAsync;
             Gameboard.singleton.companionController.CompanionButtonPressed += ButtonPressed;
             this.playerContainer = this.GetComponent<PlayerContainer>();
@@ -34,8 +40,6 @@ namespace Gameboard.Examples
             }
 
             CardDefinition selectedCard = CardsTool.singleton.GetCardDefinitionByGUID(e.cardId);
-
-            UserPresenceTest.singleton.RemoveCardFromUser(userId, selectedCard);
 
             this.transform.GetComponentInChildren<PlayerContainer>().FindCardToRemove(selectedCard);
             CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);

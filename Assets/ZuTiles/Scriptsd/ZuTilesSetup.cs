@@ -34,9 +34,9 @@ public class ZuTilesSetup : MonoBehaviour
 
     void AddZuTileToEachPlayer(PlayerPresenceDrawer ppd)
     {
-        for (int i = 0; i < UserPresenceTest.singleton.playerList.Count; i++)
+        for (int i = 0; i < UserPresenceGameObjectController.singleton.playerList.Count; i++)
         {
-            ZuTilePlayer ztp = UserPresenceTest.singleton.playerList[i].gameObject.AddComponent<ZuTilePlayer>();
+            ZuTilePlayer ztp = UserPresenceGameObjectController.singleton.playerList[i].gameObject.AddComponent<ZuTilePlayer>();
         }
     }
     public void AddZuTilePlayer(PlayerPresenceDrawer ppd)
@@ -49,7 +49,7 @@ public class ZuTilesSetup : MonoBehaviour
     public void CheckToSeeIfShouldStartGame()
     {
         bool decksAreNotNull = true;
-        foreach (PlayerPresenceDrawer player in UserPresenceTest.singleton.playerList)
+        foreach (PlayerPresenceDrawer player in UserPresenceGameObjectController.singleton.playerList)
         {
             GameObject deckToSpawn = player.GetComponentInChildren<ZuTilePlayer>().ChosenDeck;
             if (deckToSpawn == null)
@@ -67,7 +67,7 @@ public class ZuTilesSetup : MonoBehaviour
 
     private void SetupGame()
     {
-        foreach (PlayerPresenceDrawer player in UserPresenceTest.singleton.playerList)
+        foreach (PlayerPresenceDrawer player in UserPresenceGameObjectController.singleton.playerList)
         {
             
             GameObject deckToSpawn = player.GetComponentInChildren<ZuTilePlayer>().ChosenDeck;
