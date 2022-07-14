@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43504456, g: 0.48216474, b: 0.5630989, a: 1}
+  m_IndirectSpecularColor: {r: 0.4374898, g: 0.48531306, b: 0.56558794, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -191,7 +191,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474982804}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 120, z: 0}
+  m_LocalPosition: {x: 0, y: 15.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -274,7 +274,6 @@ GameObject:
   - component: {fileID: 741614630}
   - component: {fileID: 741614629}
   - component: {fileID: 741614633}
-  - component: {fileID: 741614634}
   m_Layer: 6
   m_Name: Table
   m_TagString: Untagged
@@ -316,7 +315,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2bb5a2ca61949f84db8e77199b98cd40, type: 2}
+  - {fileID: 2100000, guid: 139fc1a609de92248b1fc34e2e5c160e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -355,7 +354,7 @@ Transform:
   m_GameObject: {fileID: 741614628}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -373,23 +372,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d7610f917337d548b92fc2f9b98034c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &741614634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 741614628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60f50786d277ea94d992b46742e37156, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  idList: 
-  selectionBox: {fileID: 1555482047}
-  closeButton: {fileID: 5901803169086856552, guid: a5105dde97673394ca44e5da2ec9a5bf, type: 3}
-  selectionWheelBox: {fileID: 2707454680480196699, guid: 2020f8ed0e207244bb7e70b7a3ce0130, type: 3}
 --- !u!1 &881720836
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,8 +424,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 31.2
-  orthographic: 0
-  orthographic size: 25
+  orthographic: 1
+  orthographic size: 4.69
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -600,7 +582,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.91
+  m_Intensity: 0.64
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2060,6 +2042,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoveLetterDeck
       objectReference: {fileID: 0}
+    - target: {fileID: 9088078425004743337, guid: 769976f259cf93f4b8483fb4eb5ee1b6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: dd2fcf91c4bbe8049bb1ff7f855212a3, type: 2}
     - target: {fileID: 9088078425004743416, guid: 769976f259cf93f4b8483fb4eb5ee1b6, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -2105,12 +2091,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9088078425004743417, guid: 769976f259cf93f4b8483fb4eb5ee1b6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9088078425004743417, guid: 769976f259cf93f4b8483fb4eb5ee1b6, type: 3}
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9088078425004743417, guid: 769976f259cf93f4b8483fb4eb5ee1b6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 10
+      value: 1.45
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 769976f259cf93f4b8483fb4eb5ee1b6, type: 3}
