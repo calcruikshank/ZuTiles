@@ -23,6 +23,8 @@ namespace Gameboard
         private float cachedTime; private string resolveOnUpdate;
 
         UserPresenceController userPresenceController;
+        CardController cardController;
+        AssetController assetController;
         bool setupComplete = false;
         void Start()
         {
@@ -35,7 +37,8 @@ namespace Gameboard
             GameObject gameboardObject = GameObject.FindWithTag("Gameboard");
             userPresenceController = gameboardObject.GetComponent<UserPresenceController>();
             userPresenceController.OnUserPresence += OnUserPresence;
-
+            cardController = gameboardObject.GetComponent<CardController>();
+            assetController = gameboardObject.GetComponent<AssetController>();
         }
 
 
@@ -65,6 +68,7 @@ namespace Gameboard
 
         void OnUserPresence(GameboardUserPresenceEventArgs userPresence)
         {
+            Debug.LogError("User Presence update");
             PlayerPresenceDrawer myObject = playerList.Find(s => s.userId == userPresence.userId);
             if (myObject == null)
             {
@@ -81,6 +85,7 @@ namespace Gameboard
 
                     myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
                     myObject.InjectDependencies(userPresence);
+                    
                     CreateCardHandOnPlayersAsync(myObject);
                     //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
 
@@ -110,8 +115,12 @@ namespace Gameboard
         }
         public async void CreateCardHandOnPlayersAsync(PlayerPresenceDrawer inPlayer)
         {
-            string cardHandId = await CardsTool.singleton.CreateCardHandOnPlayer(inPlayer.userId);
-            await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
+            string cardHandId = (await cardController.CreateCompanionHandDisplay(inPlayer.userId)).newObjectUid;
+            inPlayer.CurrentActiveHandID = cardHandId;
+            //await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
+            
+            await cardController.ShowCompanionHandDisplay(inPlayer.userId, cardHandId);
+
             AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
         }
         internal void RemoveCardFromUser(string userId, CardDefinition selectedCard)
@@ -156,7 +165,8 @@ namespace Gameboard
                 CardDefinition newCardDef = new CardDefinition(cardImageList[i].name, textureArray, "", null, cardImageList[i].width / 2, cardImageList[i].height / 2);
                 Debug.Log(cardImageList[i].width / 2);
                 cardIdList.Add(newCardDef);
-                await CardsTool.singleton.GiveCardToPlayer(inPlayer.userId, newCardDef);
+                await assetController.LoadAsset(inPlayer.userId, textureArray);
+                //await CardsTool.singleton.GiveCardToPlayer(inPlayer.userId, newCardDef);
             }
         }
         public Texture2D DeCompress(Texture2D source)

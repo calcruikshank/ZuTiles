@@ -1,3 +1,4 @@
+using Gameboard;
 using Gameboard.Examples;
 using Gameboard.Tools;
 using System;
@@ -25,6 +26,7 @@ public class PlayerContainer : MonoBehaviour
     public Transform deckSpawnLocation;
 
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
+    CardController cardController;
     private void Awake()
     {
         inPlayer = this.transform.root.GetComponentInChildren<PlayerPresenceDrawer>();
@@ -71,14 +73,13 @@ public class PlayerContainer : MonoBehaviour
         CardDefinition newCardDef = new CardDefinition(cardImageTexture.name, textureArray, "", null, cardImageTexture.width / 2, cardImageTexture.height / 2);
         //cardDefinitions.Add(newCardDef, CardsTool.singleton.GetCurrentLocationOfCardByGUID(newCardDef.cardGuid));
         cardToAdd.GetComponent<Deck>().CardCompanionDefiniiton = newCardDef;
-        CardsTool.singleton.AddCardToLibrary(newCardDef);
+        cardController.AddCardToHandDisplay(inPlayer.userId, inPlayer.CurrentActiveHandID, newCardDef.cardGuid);
         AddCardToHandDisplay(newCardDef); 
     }
 
     private void AddCardToHandDisplay(CardDefinition newCardDef)
     {
-        cardHandID = CardsTool.singleton.GetCardHandDisplayedForPlayer(inPlayer.userId);
-        CardsTool.singleton.PlaceCardInPlayerHand(inPlayer.userId, cardHandID, newCardDef);
+        cardController.AddCardToHandDisplay(inPlayer.userId, inPlayer.CurrentActiveHandID, newCardDef.cardGuid);
     }
     public void RemoveCardFromHand(GameObject cardToRemove)
     {
@@ -119,12 +120,12 @@ public class PlayerContainer : MonoBehaviour
         }
     }
 
-    internal void FindCardToRemove(CardDefinition selectedCard)
+    internal void FindCardToRemove(string selectedCard)
     {
         for (int i = 0; i < cardsInHand.Count; i++)
         {
             Debug.Log("Card companion definition = " + cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton);
-            if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton)
+            if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton.cardFrontTextureGUID)
             {
                // cardsInHand[i].SetActive(true);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().objects.Add(targetPlayCardTransform);

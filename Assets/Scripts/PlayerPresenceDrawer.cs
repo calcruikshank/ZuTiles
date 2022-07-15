@@ -14,14 +14,18 @@ namespace Gameboard.Examples
     public class PlayerPresenceDrawer : UserPresenceSceneObject
     {
         UserPresenceController userPresenceController;
-        
+        public string CurrentActiveHandID;
         PlayerContainer playerContainer;
+        CardController cardController;
+        AssetController assetController;
         private void Awake()
         {
             GameboardLogging.Verbose("UserPresenceExample Awake");
             GameObject gameboardObject = GameObject.FindWithTag("Gameboard");
             GameboardLogging.Verbose("UserPresenceExample Awake Success");
             userPresenceController = gameboardObject.GetComponent<UserPresenceController>();
+            cardController = gameboardObject.GetComponent<CardController>();
+            assetController = gameboardObject.GetComponent<AssetController>();
             Gameboard.singleton.companionController.CardPlayed += CardsButtonPressedAsync;
             Gameboard.singleton.companionController.CompanionButtonPressed += ButtonPressed;
             this.playerContainer = this.GetComponent<PlayerContainer>();
@@ -39,10 +43,12 @@ namespace Gameboard.Examples
                 return;
             }
 
-            CardDefinition selectedCard = CardsTool.singleton.GetCardDefinitionByGUID(e.cardId);
+            //CardDefinition selectedCard = CardsTool.singleton.GetCardDefinitionByGUID(e.cardId);
+            string selectedCard = e.cardId;
 
+            cardController.RemoveCardFromHandDisplay(userId, CurrentActiveHandID, e.cardId);
             this.transform.GetComponentInChildren<PlayerContainer>().FindCardToRemove(selectedCard);
-            CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
+            //CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
         }
 
         protected override void ScenePositionUpdated(Vector3 inNewPosition)
