@@ -1,3 +1,4 @@
+using Gameboard.Objects;
 using Gameboard.Tools;
 using Shared.UI.Helpers;
 using System;
@@ -11,7 +12,7 @@ public class Deck : MonoBehaviour
     // Start is called before the first frame update
     public List<GameObject> cardsInDeck = new List<GameObject>();
     MovableObjectStateMachine movableObject;
-    public CardDefinition CardCompanionDefiniiton;
+    public CompanionTextureAsset CardCompanionDefiniiton;
     Shader startingShader;
     void Start()
     {

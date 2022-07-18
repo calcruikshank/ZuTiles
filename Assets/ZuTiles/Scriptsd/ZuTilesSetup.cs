@@ -80,11 +80,11 @@ public class ZuTilesSetup : MonoBehaviour
                 //instantiatedDeck.GetComponent<MovableObjectStateMachine>().FlipObject();
             }
 
-            List<GameObject> cardsToAdd = (instantiatedDeck.GetComponent<Deck>().MakeANewListOfInstantiatedCards(numOfCardsToStartWith));
-            for (int i = 0; i < cardsToAdd.Count; i++)
+            //List<GameObject> cardsToAdd = (instantiatedDeck.GetComponent<Deck>().MakeANewListOfInstantiatedCards(numOfCardsToStartWith));
+            /*for (int i = 0; i < cardsToAdd.Count; i++)
             {
                 player.gameObject.GetComponentInChildren<PlayerContainer>().AddCardToHand(cardsToAdd[i]);
-            }
+            }*/
             deckToSpawn.gameObject.SetActive(false);
             ZuTiileButtonSelector[] deckSelectors = FindObjectsOfType<ZuTiileButtonSelector>();
             for (int i = 0; i < deckSelectors.Length; i++)

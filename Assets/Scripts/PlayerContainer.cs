@@ -1,5 +1,7 @@
 using Gameboard;
+using Gameboard.EventArgs;
 using Gameboard.Examples;
+using Gameboard.Objects;
 using Gameboard.Tools;
 using System;
 using System.Collections;
@@ -27,11 +29,15 @@ public class PlayerContainer : MonoBehaviour
 
     Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
     CardController cardController;
+    AssetController assetController;
     private void Awake()
     {
         inPlayer = this.transform.root.GetComponentInChildren<PlayerPresenceDrawer>();
         setStencilReference = FindObjectOfType<SetStencilReference>();
-        currentOffset = Vector3.zero;
+        currentOffset = Vector3.zero; 
+        GameObject gameboardObject = GameObject.FindWithTag("Gameboard");
+        assetController = gameboardObject.GetComponent<AssetController>();
+         cardController = gameboardObject.GetComponent<CardController>();
 
     }
     public void AddCardToHand(GameObject cardToAdd)
@@ -70,16 +76,19 @@ public class PlayerContainer : MonoBehaviour
     {
         Texture2D cardImageTexture = (Texture2D)cardToAdd.GetComponentInChildren<Renderer>().material.mainTexture;
         byte[] textureArray = DeCompress(cardImageTexture).EncodeToPNG();
-        CardDefinition newCardDef = new CardDefinition(cardImageTexture.name, textureArray, "", null, cardImageTexture.width / 2, cardImageTexture.height / 2);
-        //cardDefinitions.Add(newCardDef, CardsTool.singleton.GetCurrentLocationOfCardByGUID(newCardDef.cardGuid));
-        cardToAdd.GetComponent<Deck>().CardCompanionDefiniiton = newCardDef;
-        cardController.AddCardToHandDisplay(inPlayer.userId, inPlayer.CurrentActiveHandID, newCardDef.cardGuid);
-        AddCardToHandDisplay(newCardDef); 
+        CompanionTextureAsset cta = new CompanionTextureAsset(textureArray, assetController, cardImageTexture.name);
+        AddCardToAssets(cta);
+        AddCardToHandDisplay(cta);
+        cardToAdd.GetComponentInChildren<Deck>().CardCompanionDefiniiton = cta;
     }
-
-    private void AddCardToHandDisplay(CardDefinition newCardDef)
+    private async void AddCardToAssets(CompanionTextureAsset cta)
     {
-        cardController.AddCardToHandDisplay(inPlayer.userId, inPlayer.CurrentActiveHandID, newCardDef.cardGuid);
+        assetController.LoadAsset(inPlayer.userId, cta.textureBytes, cta.AssetGuid.ToString());
+        CompanionCreateObjectEventArgs newCardResponse = await cardController.CreateCompanionCard(inPlayer.userId, cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), 400, 400);
+    }
+    private async void AddCardToHandDisplay(CompanionTextureAsset newCardDef)
+    {
+         cardController.AddCardToHandDisplay(inPlayer.userId, inPlayer.CurrentActiveHandID, newCardDef.AssetGuid.ToString());
     }
     public void RemoveCardFromHand(GameObject cardToRemove)
     {
@@ -125,9 +134,8 @@ public class PlayerContainer : MonoBehaviour
         for (int i = 0; i < cardsInHand.Count; i++)
         {
             Debug.Log("Card companion definition = " + cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton);
-            if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton.cardFrontTextureGUID)
+            if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton.AssetGuid.ToString())
             {
-               // cardsInHand[i].SetActive(true);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().objects.Add(targetPlayCardTransform);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().ChangeStateToLerp();
                 RemoveCardFromHand(cardsInHand[i]);

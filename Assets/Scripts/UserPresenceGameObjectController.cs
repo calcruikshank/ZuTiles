@@ -1,6 +1,7 @@
 using Gameboard;
 using Gameboard.EventArgs;
 using Gameboard.Examples;
+using Gameboard.Objects;
 using Gameboard.Tools;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,15 @@ namespace Gameboard
         public static UserPresenceGameObjectController singleton;
         SetStencilReference setStencilReference;
 
-        public List<CardDefinition> cardIdList;
+        public List<CompanionTextureAsset> cardIdList;
         List<Texture2D> cardImageList = new List<Texture2D>();
         private float cachedTime; private string resolveOnUpdate;
 
         UserPresenceController userPresenceController;
         CardController cardController;
         AssetController assetController;
+
+
         bool setupComplete = false;
         void Start()
         {
@@ -39,6 +42,8 @@ namespace Gameboard
             userPresenceController.OnUserPresence += OnUserPresence;
             cardController = gameboardObject.GetComponent<CardController>();
             assetController = gameboardObject.GetComponent<AssetController>();
+            cardController.CardPlayed += OnCardPlayed;
+
         }
 
 
@@ -119,13 +124,11 @@ namespace Gameboard
             inPlayer.CurrentActiveHandID = cardHandId;
             //await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
             
-            await cardController.ShowCompanionHandDisplay(inPlayer.userId, cardHandId);
+             cardController.ShowCompanionHandDisplay(inPlayer.userId, cardHandId);
 
             AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
         }
-        internal void RemoveCardFromUser(string userId, CardDefinition selectedCard)
-        {
-        }
+       
 
         void AddToLog(string logMessage)
         {
@@ -143,9 +146,9 @@ namespace Gameboard
 
         public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer)
         {
-            await Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
+            Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
 
-            await Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
+            Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
         }
 
         public async void AddCardsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
@@ -162,10 +165,12 @@ namespace Gameboard
                 Debug.Log(cardImageList[i]);
                 byte[] textureArray = DeCompress(cardImageList[i]).EncodeToPNG();
 
-                CardDefinition newCardDef = new CardDefinition(cardImageList[i].name, textureArray, "", null, cardImageList[i].width / 2, cardImageList[i].height / 2);
+                //CardDefinition newCardDef = new CardDefinition(cardImageList[i].name, textureArray, "", null, cardImageList[i].width / 2, cardImageList[i].height / 2);
                 Debug.Log(cardImageList[i].width / 2);
-                cardIdList.Add(newCardDef);
-                await assetController.LoadAsset(inPlayer.userId, textureArray);
+                //CardHandler.singleton.LoadAssets(inPlayer.userId, textureArray, newCardDef.cardGuid);
+                CompanionTextureAsset cta = new CompanionTextureAsset(textureArray, assetController, cardImageList[i].name);
+                 assetController.LoadAsset(inPlayer.userId, textureArray, cta.AssetGuid.ToString());
+                cardIdList.Add(cta);
                 //await CardsTool.singleton.GiveCardToPlayer(inPlayer.userId, newCardDef);
             }
         }
@@ -191,6 +196,18 @@ namespace Gameboard
 
 
 
+        private async void OnCardPlayed(CompanionCardPlayedEventArgs cardPlayedEvent)
+        {
+            string currentHand;
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                if (playerList[i].CurrentActiveHandID == cardPlayedEvent.userId)
+                {
+                    currentHand = playerList[i].CurrentActiveHandID;
+                    await cardController.RemoveCardFromHandDisplay(cardPlayedEvent.userId, currentHand, cardPlayedEvent.cardId);
+                }
+            }
+        }
 
         private void ResolveButtonPress(string inCallbackMethod)
         {
