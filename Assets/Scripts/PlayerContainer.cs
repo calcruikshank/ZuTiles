@@ -85,6 +85,8 @@ public class PlayerContainer : MonoBehaviour
     {
         assetController.LoadAsset(inPlayer.userId, cta.textureBytes, cta.AssetGuid.ToString());
         CompanionCreateObjectEventArgs newCardResponse = await cardController.CreateCompanionCard(inPlayer.userId, cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), 400, 400);
+
+        //CardDefinition newCardDef = new CardDefinition(cardImageTexture.name, textureArray, "", null, cardImageTexture.width / 2, cardImageTexture.height / 2);
     }
     private async void AddCardToHandDisplay(CompanionTextureAsset newCardDef)
     {
