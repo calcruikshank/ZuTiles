@@ -30,6 +30,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     Vector3 targetRotation;
     float startingXRotation;
 
+    Vector3 startingSize;
     Vector3 currentLocalEulerAngles;
 
     bool showSelectedWheel = false;
@@ -41,7 +42,7 @@ public class MovableObjectStateMachine : MonoBehaviour
 
     public bool boxSelected = false;
 
-
+    bool fullyZoomed = false;
     float targetPositionOnY = 1f;
     Vector3 previousInitialMoveDirection;
 
@@ -54,10 +55,13 @@ public class MovableObjectStateMachine : MonoBehaviour
         Moving,
         Rotating,
         BoxSelected,
-        BoxRotation
+        BoxRotation,
+        Zoom,
+        Shrink
     }
     private void Awake()
     {
+        startingSize = this.transform.localScale;
         startingXRotation = this.transform.GetChild(0).localEulerAngles.x;
         faceUp = true;
         lowering = true;
@@ -106,9 +110,11 @@ public class MovableObjectStateMachine : MonoBehaviour
         {
             case State.Idle:
                 HandleIdle();
+                CheckForZoom();
                 HandleLowering();
                 break;
             case State.Indeterminate:
+                CheckForZoom();
                 CheckForInputCommands();
                 break;
             case State.Selected:
@@ -117,6 +123,7 @@ public class MovableObjectStateMachine : MonoBehaviour
                 break;
             case State.Moving:
                 Move();
+                CheckForZoom();
                 HandleRaising();
                 CheckForShuffle();
                 HighlightPotentialCompatibleObjects();
@@ -136,6 +143,14 @@ public class MovableObjectStateMachine : MonoBehaviour
                 break;
             case State.BoxRotation:
                 HandleRotating();
+                break;
+            case State.Zoom:
+                HandleZoom();
+                Move();
+                break;
+            case State.Shrink:
+                HandleShrink();
+                Move();
                 break;
         }
 
@@ -206,7 +221,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
     }
 
-
+    Vector3 startingTouchPosition1, startingTouchPosition2;
     public void SetTouched(int id, Vector3 positionSent)
     {
         Debug.Log("Set Touched this " + this.transform);
@@ -237,6 +252,14 @@ public class MovableObjectStateMachine : MonoBehaviour
         {
             this.transform.GetComponentInChildren<CardTilter>().SetRotationToNotZero();
         }
+        if (idList.Count <= 1)
+        {
+            if (transform.localScale != startingSize)
+            {
+                state = State.Shrink;
+            }
+        }
+        
         SubscribeToDelegates();
         historyObject.prefabToInstantiate = this.gameObject;
         historyObject.positionToInstantiate = this.transform.position;
@@ -246,7 +269,22 @@ public class MovableObjectStateMachine : MonoBehaviour
             HistoryTracker.singleton.AddToList(historyObject);
             HistoryTracker.singleton.SetTouched();
         }
+        
         startingTouchPosition = positionSent;
+
+        if (idList.Count >= 2)
+        {
+            if (idList[0] == id)
+            {
+                startingTouchPosition1 = positionSent;
+            }
+            if (idList[1] == id)
+            {
+                startingTouchPosition2 = positionSent;
+            }
+            startingDistanceBetweenEachFingerOnCard = Mathf.Abs((startingTouchPosition - startingTouchPosition2).magnitude);
+        }
+
         raycastStartPos = startingTouchPosition;
         offset = new Vector3(this.transform.position.x - positionSent.x, 0, this.transform.position.z - positionSent.z);
         heldDownTimer = 0f;
@@ -259,6 +297,13 @@ public class MovableObjectStateMachine : MonoBehaviour
             this.GetComponentInChildren<MoveTowardsWithLerp>().SetToIdle();
         }
         state = State.Indeterminate;
+        if (idList.Count == 1)
+        {
+            if (transform.localScale != startingSize)
+            {
+                state = State.Shrink;
+            }
+        }
     }
 
     public void FlipObject()
@@ -277,6 +322,69 @@ public class MovableObjectStateMachine : MonoBehaviour
             faceUp = true;
             return;
         }
+    }
+
+    float distanceBetweenEachFingerOnCard = 1;
+    float startingDistanceBetweenEachFingerOnCard = 1;
+    void CheckForZoom()
+    {
+        if (state == State.Shrink)
+        {
+            return;
+        }
+        if (idList.Count >= 2)
+        {
+            Debug.Log(distanceBetweenEachFingerOnCard + " " + startingDistanceBetweenEachFingerOnCard + "!!!!!!!!!!!!!!!!!!!!!!!!!!!"); 
+            distanceBetweenEachFingerOnCard = Mathf.Abs((fingerMovePosition2 - fingerMovePosition).magnitude);
+            
+            if (Mathf.Abs(startingDistanceBetweenEachFingerOnCard - distanceBetweenEachFingerOnCard) > .2f && startingDistanceBetweenEachFingerOnCard < distanceBetweenEachFingerOnCard)
+            {
+                state = State.Zoom;
+            }
+            if (Mathf.Abs(startingDistanceBetweenEachFingerOnCard - distanceBetweenEachFingerOnCard) > .2f && startingDistanceBetweenEachFingerOnCard > distanceBetweenEachFingerOnCard)
+            {
+                state = State.Zoom;
+            }
+        }
+    }
+
+    void HandleZoom()
+    {
+        float multiplier = Time.deltaTime * 15;
+        if (transform.localScale.x >= 2)
+        {
+            startingDistanceBetweenEachFingerOnCard = Mathf.Abs((fingerMovePosition2 - fingerMovePosition).magnitude);
+            if (idList.Count > 1)
+            {
+                state = State.Moving;
+            }
+            if (idList.Count == 0)
+            {
+                state = State.Idle;
+            }
+            return;
+        }
+        transform.localScale += new Vector3(multiplier, multiplier, multiplier);
+        
+    }
+    void HandleShrink()
+    {
+        float multiplier = Time.deltaTime * 15;
+        if (transform.localScale.magnitude <= startingSize.magnitude)
+        {
+            transform.localScale = startingSize;
+            
+            if (idList.Count > 0)
+            {
+                state = State.Moving;
+            }
+            else
+            {
+                state = State.Idle;
+            }
+            return;
+        }
+        transform.localScale -= new Vector3(multiplier, multiplier, multiplier);
     }
     public void CheckForInputCommands()
     {
@@ -467,6 +575,7 @@ public class MovableObjectStateMachine : MonoBehaviour
                 lowering = true;
                 snappingToThreeOnY = false;
                 state = State.Idle;
+               
             }
             if (deck != null)
             {
@@ -483,11 +592,18 @@ public class MovableObjectStateMachine : MonoBehaviour
 
     private void FingerMoved(Vector3 position, int index)
     {
+
+
         if (idList.Count >= 2)
         {
             if (index == idList[1])
             {
-                fingerMovePosition2 = position;
+                Vector3 rayPosition2 = position;
+                Ray ray2 = Camera.main.ScreenPointToRay(position);
+                if (Physics.Raycast(ray2, out RaycastHit raycastHit2))
+                {
+                    fingerMovePosition2 = raycastHit2.point;
+                }
             }
         }
         if (idList[0] != index) return;
@@ -659,7 +775,7 @@ public class MovableObjectStateMachine : MonoBehaviour
                     newGameObjectHit = hit.transform.gameObject;
                     if (previousGameObjectHit != newGameObjectHit && previousGameObjectHit != null)
                     {
-                        crutilitiesSingleton.RemoveHighlight(previousGameObjectHit); 
+                        crutilitiesSingleton.RemoveHighlight(previousGameObjectHit);
                     }
                     previousGameObjectHit = newGameObjectHit;
                 }

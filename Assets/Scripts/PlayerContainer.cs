@@ -42,6 +42,13 @@ public class PlayerContainer : MonoBehaviour
     }
     public void AddCardToHand(GameObject cardToAdd)
     {
+        if (cardToAdd.GetComponentInChildren<Deck>() != null)
+        {
+            if (cardToAdd.GetComponentInChildren<Deck>().cardsInDeck.Count > 1)
+            {
+                return;
+            }
+        }
         thisRotation = this.transform.root.GetComponentInChildren<PlayerPresenceDrawer>().GetRotation();
         //position = (this.transform.bounds.x - this.transform.bounds.x + padding)
         //cardToAdd.transform.position = new Vector3(((this.transform.position.x + (this.transform.GetComponent<Collider>().bounds.size.x / 2) - (this.transform.GetComponent<Collider>().bounds.size.x / 2)) + (cardToAdd.transform.GetComponentInChildren<Collider>().bounds.size.x * cardsInHand.Count) + movableObjectPadding * cardsInHand.Count), cardToAdd.transform.position.y, this.transform.position.z);
