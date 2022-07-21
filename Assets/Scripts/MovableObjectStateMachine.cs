@@ -251,7 +251,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         offset = new Vector3(this.transform.position.x - positionSent.x, 0, this.transform.position.z - positionSent.z);
         heldDownTimer = 0f;
         lowering = false;
-        rayPosition = positionSent;
+        fingerMovePosition = positionSent;
         targetPositionOnY = this.transform.position.y + 1f + transform.GetComponentInChildren<Collider>().bounds.extents.y;
         snappingToThreeOnY = true;
         if (this.GetComponentInChildren<MoveTowardsWithLerp>() != null)

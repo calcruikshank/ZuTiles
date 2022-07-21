@@ -47,6 +47,7 @@ public class BoxSelection : MonoBehaviour
         singleton = this;
         cam = Camera.main;
         this.state = State.Idle;
+        selectionBox.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -101,11 +102,12 @@ public class BoxSelection : MonoBehaviour
         startPosition = positionSent;
         Ray ray = Camera.main.ScreenPointToRay(startPosition);
         startingWorldPosition = ray.GetPoint(Camera.main.transform.position.y);
-        
+        selectionBox.transform.position = startingWorldPosition;
         SubscribeToDelegates();
-        Debug.Log("Begin draggin Grid");
         raycastStartPos = startPosition;
-        UpdateSelectionBox();
+        selectionBox.localScale = Vector3.zero;
+        //UpdateSelectionBox();
+        selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, startingWorldPosition.y, startingWorldPosition.z + height / 2);
         moving = false;
     }
     void SubscribeToDelegates()
@@ -198,6 +200,7 @@ public class BoxSelection : MonoBehaviour
 
     public void SpawnInCloseButton(float width, float height)
     {
+        if (selectedMovableObjects.Count < 1) return;
         //if start position.x < currentposition.x && startposition.z < currentPosition.z
         if (startPosition.x < currentPosition.x && startPosition.y > currentPosition.y)
         {
@@ -272,6 +275,7 @@ public class BoxSelection : MonoBehaviour
     {
         if (selectionBox.gameObject.activeInHierarchy)
         {
+            selectionBox.localScale = Vector3.zero;
             selectionBox.gameObject.SetActive(false);
         }
         for (int i = 0; i < selectedMovableObjects.Count; i++)
@@ -290,6 +294,7 @@ public class BoxSelection : MonoBehaviour
         }
         if (!moving)
         {
+            
             UpdateSelectionBox();
             Ray ray = Camera.main.ScreenPointToRay(position);
             currentPosition = ray.GetPoint(Camera.main.transform.position.y);
@@ -309,21 +314,21 @@ public class BoxSelection : MonoBehaviour
     Vector3 startingWorldPosition;
     void UpdateSelectionBox()
     {
-        if (!selectionBox.gameObject.activeInHierarchy)
-        {
-            selectionBox.gameObject.SetActive(true);
-        }
-        Vector3 currentWorldPosition = currentPosition;
-        
-        width = currentWorldPosition.x - startingWorldPosition.x;
-        height = currentWorldPosition.z - startingWorldPosition.z;
-        selectionBox.localScale = new Vector3(MathF.Abs(width), MathF.Abs(height), 1);
-
-        selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, startingWorldPosition.y, startingWorldPosition.z + height / 2);
-
         distanceFromStartToCurrent = Vector3.Distance(raycastStartPos, currentPosition);
         if (distanceFromStartToCurrent > .01f)
         {
+            if (!selectionBox.gameObject.activeInHierarchy)
+            {
+                selectionBox.gameObject.SetActive(true);
+            }
+            Vector3 currentWorldPosition = currentPosition;
+
+            width = currentWorldPosition.x - startingWorldPosition.x;
+            height = currentWorldPosition.z - startingWorldPosition.z;
+            selectionBox.localScale = new Vector3(MathF.Abs(width), MathF.Abs(height), 1);
+
+            selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, startingWorldPosition.y, startingWorldPosition.z + height / 2);
+
             ShootRayCastToCheckForMovableObjects();
             raycastStartPos = currentPosition;
         }
