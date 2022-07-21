@@ -30,7 +30,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     Vector3 targetRotation;
     float startingXRotation;
 
-    Vector3 startingSize;
+    Vector3 startingSize, startingTargetLerp;
     Vector3 currentLocalEulerAngles;
 
     bool showSelectedWheel = false;
@@ -61,7 +61,6 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     private void Awake()
     {
-        startingSize = this.transform.localScale;
         startingXRotation = this.transform.GetChild(0).localEulerAngles.x;
         faceUp = true;
         lowering = true;
@@ -100,6 +99,8 @@ public class MovableObjectStateMachine : MonoBehaviour
         historyObject.positionToInstantiate = this.transform.position;
         historyObject.currentRotation = this.transform.rotation;
         //HistoryTracker.singleton.AddToList(historyObject);
+        startingSize = this.transform.localScale;
+        startingTargetLerp = this.transform.localScale * 2;
     }
 
 
@@ -256,6 +257,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         {
             if (transform.localScale != startingSize)
             {
+                frames = 0;
                 state = State.Shrink;
             }
         }
@@ -334,20 +336,22 @@ public class MovableObjectStateMachine : MonoBehaviour
         }
         if (idList.Count >= 2)
         {
-            Debug.Log(distanceBetweenEachFingerOnCard + " " + startingDistanceBetweenEachFingerOnCard + "!!!!!!!!!!!!!!!!!!!!!!!!!!!"); 
             distanceBetweenEachFingerOnCard = Mathf.Abs((fingerMovePosition2 - fingerMovePosition).magnitude);
             
-            if (Mathf.Abs(startingDistanceBetweenEachFingerOnCard - distanceBetweenEachFingerOnCard) > .2f && startingDistanceBetweenEachFingerOnCard < distanceBetweenEachFingerOnCard)
+            if (Mathf.Abs(startingDistanceBetweenEachFingerOnCard - distanceBetweenEachFingerOnCard) > .4f && startingDistanceBetweenEachFingerOnCard < distanceBetweenEachFingerOnCard)
             {
+                frames = 0;
                 state = State.Zoom;
             }
-            if (Mathf.Abs(startingDistanceBetweenEachFingerOnCard - distanceBetweenEachFingerOnCard) > .2f && startingDistanceBetweenEachFingerOnCard > distanceBetweenEachFingerOnCard)
+            if (Mathf.Abs(startingDistanceBetweenEachFingerOnCard - distanceBetweenEachFingerOnCard) > .4f && startingDistanceBetweenEachFingerOnCard > distanceBetweenEachFingerOnCard)
             {
+                frames = 0;
                 state = State.Zoom;
             }
         }
     }
 
+    float frames = 0;
     void HandleZoom()
     {
         float multiplier = Time.deltaTime * 15;
@@ -364,13 +368,15 @@ public class MovableObjectStateMachine : MonoBehaviour
             }
             return;
         }
-        transform.localScale += new Vector3(multiplier, multiplier, multiplier);
-        
+        transform.localScale = Vector3.Lerp(startingSize, startingTargetLerp, frames/5f);
+        frames++;
+        //transform.localScale += new Vector3(multiplier, multiplier, multiplier);
+
     }
     void HandleShrink()
     {
         float multiplier = Time.deltaTime * 15;
-        if (transform.localScale.magnitude <= startingSize.magnitude)
+        if (transform.localScale.magnitude <= startingSize.magnitude + .2f)
         {
             transform.localScale = startingSize;
             
@@ -384,7 +390,9 @@ public class MovableObjectStateMachine : MonoBehaviour
             }
             return;
         }
-        transform.localScale -= new Vector3(multiplier, multiplier, multiplier);
+        transform.localScale = Vector3.Lerp(startingTargetLerp, startingSize, frames/5f);
+        frames++;
+        //transform.localScale -= new Vector3(multiplier, multiplier, multiplier);
     }
     public void CheckForInputCommands()
     {

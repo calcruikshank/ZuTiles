@@ -133,7 +133,7 @@ namespace Gameboard
             inPlayer.CurrentActiveHandID = cardHandId;
             //await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
             
-             cardController.ShowCompanionHandDisplay(inPlayer.userId, cardHandId);
+            cardController.ShowCompanionHandDisplay(inPlayer.userId, cardHandId);
 
             AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
         }
