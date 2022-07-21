@@ -6988,7 +6988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1421860925513984273, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1421860925513984285, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
       propertyPath: m_RootOrder
@@ -8738,7 +8738,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1421860925513984273, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1421860925513984285, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
       propertyPath: m_RootOrder
@@ -9805,7 +9805,7 @@ PrefabInstance:
     - target: {fileID: 1421860925513984287, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
       propertyPath: deckToInstantiate
       value: 
-      objectReference: {fileID: 3884102568410872526, guid: 2ed30f67ed142944b8d0b43e5611639a, type: 3}
+      objectReference: {fileID: 2581880228887591468, guid: 3b8a9ad793ab9a14ca0a13a1a4ac71d1, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8eb12da741dad5549b6f04132850653a, type: 3}
 --- !u!1 &1767862535
