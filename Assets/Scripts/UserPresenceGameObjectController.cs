@@ -29,7 +29,7 @@ namespace Gameboard
 
 
         bool setupComplete = false;
-        void Start()
+        private void Awake()
         {
             if (singleton != null)
             {
@@ -39,17 +39,23 @@ namespace Gameboard
             setStencilReference = FindObjectOfType<SetStencilReference>();
             GameObject gameboardObject = GameObject.FindWithTag("Gameboard");
             userPresenceController = gameboardObject.GetComponent<UserPresenceController>();
-            userPresenceController.OnUserPresence += OnUserPresence;
             cardController = gameboardObject.GetComponent<CardController>();
             assetController = gameboardObject.GetComponent<AssetController>();
+        }
+        void Start()
+        {
             cardController.CardPlayed += OnCardPlayed;
-
-            foreach (KeyValuePair<String, GameboardUserPresenceEventArgs> kvp in userPresenceController.Users)
+            userPresenceController.OnUserPresence += OnUserPresence;
+            GetUP();
+        }
+        async void GetUP()
+        {
+            CompanionUserPresenceEventArgs compasa = await userPresenceController.GetCompanionUserPresence();
+            foreach (GameboardUserPresenceEventArgs user in compasa.playerPresenceList)
             {
-                OnUserPresence(kvp.Value);
+                OnUserPresence(user);
             }
         }
-
 
         private void Update()
         {
@@ -77,7 +83,6 @@ namespace Gameboard
 
         void OnUserPresence(GameboardUserPresenceEventArgs userPresence)
         {
-            Debug.LogError("User Presence update");
             PlayerPresenceDrawer myObject = playerList.Find(s => s.userId == userPresence.userId);
             if (myObject == null)
             {
