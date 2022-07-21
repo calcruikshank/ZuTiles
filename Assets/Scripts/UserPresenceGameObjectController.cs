@@ -31,10 +31,6 @@ namespace Gameboard
         bool setupComplete = false;
         void Start()
         {
-            foreach (KeyValuePair<String, GameboardUserPresenceEventArgs> kvp in userPresenceController.Users)
-            {
-                OnUserPresence(kvp.Value);
-            }
             if (singleton != null)
             {
                 Destroy(this);
@@ -48,6 +44,10 @@ namespace Gameboard
             assetController = gameboardObject.GetComponent<AssetController>();
             cardController.CardPlayed += OnCardPlayed;
 
+            foreach (KeyValuePair<String, GameboardUserPresenceEventArgs> kvp in userPresenceController.Users)
+            {
+                OnUserPresence(kvp.Value);
+            }
         }
 
 
