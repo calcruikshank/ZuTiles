@@ -50,11 +50,16 @@ namespace Gameboard
         }
         async void GetUP()
         {
-            CompanionUserPresenceEventArgs compasa = await userPresenceController.GetCompanionUserPresence();
-            foreach (GameboardUserPresenceEventArgs user in compasa.playerPresenceList)
+            if (userPresenceController != null)
             {
-                OnUserPresence(user);
+                CompanionUserPresenceEventArgs compasa = await userPresenceController.GetCompanionUserPresence();
+                foreach (GameboardUserPresenceEventArgs user in compasa.playerPresenceList)
+                {
+                    Debug.LogError(user.id + " user being added from user presence controller");
+                    OnUserPresence(user);
+                }
             }
+            
         }
 
         private void Update()
@@ -83,50 +88,62 @@ namespace Gameboard
 
         void OnUserPresence(GameboardUserPresenceEventArgs userPresence)
         {
+            Debug.LogError("On  user presence " + userPresence.userId);
             PlayerPresenceDrawer myObject = playerList.Find(s => s.userId == userPresence.userId);
-            if (myObject == null)
+            lock (playerList)
             {
-                // Add it here, and when adding also populate myObject
-                // If the user doesn't exist in our player list, add them now.
-                if (playerList.Find(s => s.userId == userPresence.userId) == null)
+                if (myObject == null)
                 {
-                    /*UserPresencePlayer testPlayer = new UserPresencePlayer()
+                    // Add it here, and when adding also populate myObject
+                    // If the user doesn't exist in our player list, add them now.
+                    if (playerList.Find(s => s.userId == userPresence.userId) == null)
                     {
-                        gameboardId = userPresence.userId
-                    };*/
+                        /*UserPresencePlayer testPlayer = new UserPresencePlayer()
+                        {
+                            gameboardId = userPresence.userId
+                        };*/
 
-                    GameObject scenePrefab = Instantiate(playerPresenceSceneObject, userPresence.boardUserPosition.screenPosition, Quaternion.identity);
+                        GameObject scenePrefab = Instantiate(playerPresenceSceneObject);
+                        Debug.Log(userPresence.boardUserPosition.screenPosition + " Board position");
+                        myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
+                        //myObject.transform.position = new Vector3( userPresence.boardUserPosition.x);
+                        myObject.InjectDependencies(userPresence);
 
-                    myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
-                    myObject.InjectDependencies(userPresence);
-                    
-                    CreateCardHandOnPlayersAsync(myObject);
-                    //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
+                        myObject.UpdatePlayerPositionIfNeeded(userPresence.boardUserPosition.screenPosition);
+                        //CreateCardHandOnPlayersAsync(myObject);
+                        //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
 
 
-                    //this checks if the game is zu tiles and if it is then adds a zu tile player script to myobject has to be a better way to do this
-                    if (ZuTilesSetup.singleton != null)
-                    {
-                        ZuTilesSetup.singleton.AddZuTilePlayer(myObject);
+                        //this checks if the game is zu tiles and if it is then adds a zu tile player script to myobject has to be a better way to do this
+                        if (ZuTilesSetup.singleton != null)
+                        {
+                            ZuTilesSetup.singleton.AddZuTilePlayer(myObject);
+                        }
+
+                        if (!string.IsNullOrEmpty(userPresence.userId))
+                        {
+                            myObject.InjectUserId(userPresence.userId);
+                        }
+
+
+                        playerList.Add(myObject);
+                        Debug.Log("--- === New player added: " + userPresence.userId);
                     }
 
-                    if (!string.IsNullOrEmpty(userPresence.userId))
-                    {
-                        myObject.InjectUserId(userPresence.userId);
-                    }
-
-
-                    playerList.Add(myObject);
-                    AddToLog("--- === New player added: " + userPresence.userId);
+                }
+                if (myObject != null)
+                {
+                    myObject.UpdateUserPresence(userPresence);
                 }
 
             }
-            if (myObject != null)
-            {
-                myObject.UpdateUserPresence(userPresence);
-            }
+            
 
         }
+
+
+        
+
         public async void CreateCardHandOnPlayersAsync(PlayerPresenceDrawer inPlayer)
         {
             string cardHandId = (await cardController.CreateCompanionHandDisplay(inPlayer.userId)).newObjectUid;

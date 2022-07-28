@@ -1,4 +1,5 @@
 using Gameboard.EventArgs;
+using Gameboard.Helpers;
 using Gameboard.Tools;
 using Gameboard.Utilities;
 using System;
@@ -50,7 +51,36 @@ namespace Gameboard.Examples
             this.transform.GetComponentInChildren<PlayerContainer>().FindCardToRemove(selectedCard);
             //CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
         }
+        public void UpdatePlayerPositionIfNeeded(Vector2 vectorSent)
+        {
+            var  playerSceneDrawerPosition = GameboardHelperMethods.GameboardScreenPointToScenePoint(Camera.main, vectorSent);
+            Debug.LogError(playerSceneDrawerPosition + " Player presence scene drawer update");
+            ScenePositionUpdated(playerSceneDrawerPosition);
+            ScenePositionUpdated(new Vector3(playerSceneDrawerPosition.x, 0.2f, playerSceneDrawerPosition.z));
 
+            Vector3 eulerRotation = Vector3.zero;
+            if (playerScreenPosition.y == 0f)
+            {
+                // At top of screen
+                eulerRotation.y = 180f;
+            }
+            else if (playerScreenPosition.y == 1f)
+            {
+                // At bottom of screen
+                eulerRotation.y = 0f;
+            }
+            else if (playerScreenPosition.x == 0f)
+            {
+                // At left of screen
+                eulerRotation.y = 90f;
+            }
+            else if (playerScreenPosition.x == 1f)
+            {
+                // At right of screen
+                eulerRotation.y = -90f;
+            }
+            LocalEulerAnglesUpdated(eulerRotation);
+        }
         protected override void ScenePositionUpdated(Vector3 inNewPosition)
         {
             this.transform.position = inNewPosition;
