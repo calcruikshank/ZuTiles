@@ -109,7 +109,7 @@ namespace Gameboard
                         //myObject.transform.position = new Vector3( userPresence.boardUserPosition.x);
                         myObject.InjectDependencies(userPresence);
 
-                        myObject.UpdatePlayerPositionIfNeeded(userPresence.boardUserPosition.screenPosition);
+                        myObject.UpdatePlayerPositionOnStart(userPresence.boardUserPosition.screenPosition);
                         //CreateCardHandOnPlayersAsync(myObject);
                         //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
 

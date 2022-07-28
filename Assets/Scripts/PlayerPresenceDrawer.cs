@@ -51,7 +51,7 @@ namespace Gameboard.Examples
             this.transform.GetComponentInChildren<PlayerContainer>().FindCardToRemove(selectedCard);
             //CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
         }
-        public void UpdatePlayerPositionIfNeeded(Vector2 vectorSent)
+        public void UpdatePlayerPositionOnStart(Vector2 vectorSent)
         {
             var  playerSceneDrawerPosition = GameboardHelperMethods.GameboardScreenPointToScenePoint(Camera.main, vectorSent);
             Debug.LogError(playerSceneDrawerPosition + " Player presence scene drawer update");
