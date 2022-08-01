@@ -20,13 +20,12 @@ namespace Gameboard
         SetStencilReference setStencilReference;
 
         public List<CompanionTextureAsset> cardIdList;
-        List<Texture2D> cardImageList = new List<Texture2D>();
+        public List<string> cardImageList = new List<string>();
         private float cachedTime; private string resolveOnUpdate;
 
         UserPresenceController userPresenceController;
         CardController cardController;
         AssetController assetController;
-
 
 
         bool setupComplete = false;
@@ -56,7 +55,6 @@ namespace Gameboard
                 CompanionUserPresenceEventArgs compasa = await userPresenceController.GetCompanionUserPresence();
                 foreach (GameboardUserPresenceEventArgs user in compasa.playerPresenceList)
                 {
-                    Debug.LogError(user.id + " user being added from user presence controller");
                     OnUserPresence(user);
                 }
             }
@@ -181,7 +179,7 @@ namespace Gameboard
 
         public async void AddCardsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
         {
-            for (int i = 0; i < deckToGivePlayer.GetComponent<Card>().cardsInDeck.Count; i++)
+            /*for (int i = 0; i < deckToGivePlayer.GetComponent<Card>().cardsInDeck.Count; i++)
             {
                 cardImageList.Add((Texture2D)deckToGivePlayer.GetComponent<Card>().cardsInDeck[i].GetComponentInChildren<Renderer>().material.mainTexture);
             }
@@ -200,7 +198,7 @@ namespace Gameboard
                 await assetController.LoadAsset(inPlayer.userId, textureArray, cta.AssetGuid.ToString());
                 cardIdList.Add(cta);
                 //await CardsTool.singleton.GiveCardToPlayer(inPlayer.userId, newCardDef);
-            }
+            }*/
         }
         public Texture2D DeCompress(Texture2D source)
         {

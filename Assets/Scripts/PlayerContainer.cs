@@ -91,7 +91,12 @@ public class PlayerContainer : MonoBehaviour
     private async void AddCardToAssets(CompanionTextureAsset cta, GameObject cardToAdd)
     {
         //CardDefinition card = new CardDefinition();
-        await assetController.LoadAsset(inPlayer.userId, cta.textureBytes, cta.AssetGuid.ToString());
+        if (!UserPresenceGameObjectController.singleton.cardImageList.Contains(cta.AssetGuid.ToString()))
+        {
+            Debug.LogError("Adding asset guid !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            await assetController.LoadAsset(inPlayer.userId, cta.textureBytes, cta.AssetGuid.ToString());
+            UserPresenceGameObjectController.singleton.cardImageList.Add(cta.AssetGuid.ToString());
+        }
         await cardController.CreateCompanionCard(inPlayer.userId, cardToAdd.GetComponent<Card>().cardId.ToString(), cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), 400, 400);
 
         AddCardToHandDisplay(cardToAdd.GetComponent<Card>());
