@@ -17,7 +17,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     float doubleTapTimer = 0f;
     float doubleTapThreshold = .25f;
     float distanceThreshold = .25f;
-    Deck deck;
+    Card deck;
     public bool faceUp;
     bool lowering;
     bool snappingToThreeOnY;
@@ -77,9 +77,9 @@ public class MovableObjectStateMachine : MonoBehaviour
         playerOwningCard = null;
         this.state = State.Idle;
         this.idList.Clear();
-        if (this.GetComponentInChildren<Deck>() != null)
+        if (this.GetComponentInChildren<Card>() != null)
         {
-            deck = this.GetComponentInChildren<Deck>();
+            deck = this.GetComponentInChildren<Card>();
         }
         doubleTapTimer = doubleTapThreshold;
         if (this.transform.childCount != 0)

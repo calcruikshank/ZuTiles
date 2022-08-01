@@ -48,7 +48,7 @@ namespace Gameboard.Examples
             string selectedCard = e.cardId;
 
             cardController.RemoveCardFromHandDisplay(userId, CurrentActiveHandID, e.cardId);
-            this.transform.GetComponentInChildren<PlayerContainer>().FindCardToRemove(selectedCard);
+            this.transform.GetComponentInChildren<PlayerContainer>().FindCardToRemove(e.cardId);
             //CardsTool.singleton.RemoveCardFromPlayerHand(userId, CardsTool.singleton.GetCardHandDisplayedForPlayer(userId), selectedCard);
         }
         public void UpdatePlayerPositionOnStart(Vector2 vectorSent)
@@ -58,7 +58,7 @@ namespace Gameboard.Examples
             ScenePositionUpdated(playerSceneDrawerPosition);
             ScenePositionUpdated(new Vector3(playerSceneDrawerPosition.x, 0.2f, playerSceneDrawerPosition.z));
 
-            Vector3 eulerRotation = Vector3.zero;
+           /* Vector3 eulerRotation = Vector3.zero;
             if (playerScreenPosition.y == 0f)
             {
                 // At top of screen
@@ -78,8 +78,8 @@ namespace Gameboard.Examples
             {
                 // At right of screen
                 eulerRotation.y = -90f;
-            }
-            LocalEulerAnglesUpdated(eulerRotation);
+            }*/
+            //LocalEulerAnglesUpdated(eulerRotation);
         }
         protected override void ScenePositionUpdated(Vector3 inNewPosition)
         {

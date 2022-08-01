@@ -28,6 +28,7 @@ namespace Gameboard
         AssetController assetController;
 
 
+
         bool setupComplete = false;
         private void Awake()
         {
@@ -104,13 +105,15 @@ namespace Gameboard
                         };*/
 
                         GameObject scenePrefab = Instantiate(playerPresenceSceneObject);
-                        Debug.Log(userPresence.boardUserPosition.screenPosition + " Board position");
+
+                        Debug.Log(userPresence.boardUserPosition.screenPosition + " Board position!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
                         //myObject.transform.position = new Vector3( userPresence.boardUserPosition.x);
                         myObject.InjectDependencies(userPresence);
 
                         myObject.UpdatePlayerPositionOnStart(userPresence.boardUserPosition.screenPosition);
-                        //CreateCardHandOnPlayersAsync(myObject);
+
+                        CreateCardHandOnPlayersAsync(myObject);
                         //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);
 
 
@@ -150,15 +153,14 @@ namespace Gameboard
             inPlayer.CurrentActiveHandID = cardHandId;
             //await CardsTool.singleton.ShowHandDisplay(inPlayer.userId, cardHandId);
             
-            cardController.ShowCompanionHandDisplay(inPlayer.userId, cardHandId);
+            await cardController.ShowCompanionHandDisplay(inPlayer.userId, cardHandId);
 
-            AddToLog("--- Card Hand created with ID " + cardHandId + " on " + inPlayer.userId);
         }
        
 
         void AddToLog(string logMessage)
         {
-            onScreenLog.Add(logMessage);
+           // onScreenLog.Add(logMessage);
             Debug.Log(logMessage);
         }
 
@@ -172,16 +174,16 @@ namespace Gameboard
 
         public async void AddButtonsToPlayer(PlayerPresenceDrawer inPlayer)
         {
-            Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
+            await  Gameboard.singleton.companionController.SetCompanionButtonValues(inPlayer.userId, "1", "Play Card", "ButtonAPressed");
 
-            Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
+            await Gameboard.singleton.companionController.ChangeObjectDisplayState(inPlayer.userId, "1", DataTypes.ObjectDisplayStates.Displayed);
         }
 
         public async void AddCardsToPlayer(PlayerPresenceDrawer inPlayer, GameObject deckToGivePlayer)
         {
-            for (int i = 0; i < deckToGivePlayer.GetComponent<Deck>().cardsInDeck.Count; i++)
+            for (int i = 0; i < deckToGivePlayer.GetComponent<Card>().cardsInDeck.Count; i++)
             {
-                cardImageList.Add((Texture2D)deckToGivePlayer.GetComponent<Deck>().cardsInDeck[i].GetComponentInChildren<Renderer>().material.mainTexture);
+                cardImageList.Add((Texture2D)deckToGivePlayer.GetComponent<Card>().cardsInDeck[i].GetComponentInChildren<Renderer>().material.mainTexture);
             }
             cardImageList.Clear();
 
@@ -195,7 +197,7 @@ namespace Gameboard
                 Debug.Log(cardImageList[i].width / 2);
                 //CardHandler.singleton.LoadAssets(inPlayer.userId, textureArray, newCardDef.cardGuid);
                 CompanionTextureAsset cta = new CompanionTextureAsset(textureArray, assetController, cardImageList[i].name);
-                 assetController.LoadAsset(inPlayer.userId, textureArray, cta.AssetGuid.ToString());
+                await assetController.LoadAsset(inPlayer.userId, textureArray, cta.AssetGuid.ToString());
                 cardIdList.Add(cta);
                 //await CardsTool.singleton.GiveCardToPlayer(inPlayer.userId, newCardDef);
             }

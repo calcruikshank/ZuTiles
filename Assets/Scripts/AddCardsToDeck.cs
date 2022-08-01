@@ -12,12 +12,12 @@ public class AddCardsToDeck : MonoBehaviour
     {
         foreach (Transform transformSelected in Selection.transforms)
         {
-            if (transformSelected.GetComponentInChildren<Deck>()!= null)
+            if (transformSelected.GetComponentInChildren<Card>()!= null)
             {
                 deckToAddTo = transformSelected.gameObject;
             }
         }
-        Deck deckCards = deckToAddTo.GetComponentInChildren<Deck>();
+        Card deckCards = deckToAddTo.GetComponentInChildren<Card>();
         deckCards.cardsInDeck.Clear();
         foreach (Object o in Selection.objects)
         {
@@ -27,7 +27,7 @@ public class AddCardsToDeck : MonoBehaviour
             }
             {
                 GameObject oTransform = o as GameObject;
-                if (oTransform.GetComponentInChildren<Deck>() == null)
+                if (oTransform.GetComponentInChildren<Card>() == null)
                 {
                     Debug.Log("Adding cards");
                     deckCards.cardsInDeck.Add(oTransform.gameObject);

@@ -20,14 +20,8 @@
 
         <!-- TODO Specify the resource to use as the Game/Application Thumbnail -->
         <meta-data android:name="com.lastgameboard.thumbnail" android:resource="@drawable/sample_large_game_card" />
-        <!-- TODO Specify the resource to use as the Game/Application Banner -->
-        <meta-data android:name="com.lastgameboard.banner" android:resource="@drawable/sample_banner_game_details"/>
-        <!-- TODO Specify the resource to use as the Game/Application Ad Banner -->
-        <meta-data android:name="com.lastgameboard.banner_ad" android:resource="@drawable/sample_banner_game_details"/>
-        <!-- TODO Specify the resource to use as the Game/Application Lobby Background -->
-        <meta-data android:name="com.lastgameboard.lobby_background" android:resource="@drawable/sample_banner_advert"/>
-        <!-- TODO Specify the list of Screenshots of this game as a reference to a Array -->
-        <meta-data android:name="com.lastgameboard.screenshots" android:resource="@array/my_screenshots"/>
+
+        <meta-data android:name="com.lastgameboard.banner" android:resource="@drawable/banner_advert"/>
 
         <!-- TODO Specify the resource to use as the Game/Application Summary -->
         <meta-data android:name="com.lastgameboard.game_summary" android:resource="@string/my_game_summary"/>

@@ -1,3 +1,4 @@
+using Gameboard.EventArgs;
 using Gameboard.Objects;
 using Gameboard.Tools;
 using Shared.UI.Helpers;
@@ -7,15 +8,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Deck : MonoBehaviour
+public class Card : MonoBehaviour
 {
     // Start is called before the first frame update
     public List<GameObject> cardsInDeck = new List<GameObject>();
     MovableObjectStateMachine movableObject;
-    public CompanionTextureAsset CardCompanionDefiniiton;
+    public CardDefinition CardCompanionDefiniiton;
+    public Guid cardId;
+    public Guid frontAssetId;
+    public Guid backAssetId;
+
     Shader startingShader;
     void Start()
     {
+        cardId = Guid.NewGuid();
         InitializeDeck();
         UpdateDeckInfo();
     }
@@ -84,21 +90,21 @@ public class Deck : MonoBehaviour
             {
                 targetHit = targetHit.transform.parent;
             }
-            if (targetHit.GetComponentInChildren<Deck>() != null)
+            if (targetHit.GetComponentInChildren<Card>() != null)
             {
-                if (targetHit.GetComponent<Deck>() != this)
+                if (targetHit.GetComponent<Card>() != this)
                 {
                     if (targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing() && targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing() == this.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
                     {
                         Debug.Log("Hit detected " + targetHit.name);
-                        Deck deckToAddTo = targetHit.GetComponent<Deck>();
+                        Card deckToAddTo = targetHit.GetComponent<Card>();
                         deckToAddTo.AddToDeck(this.cardsInDeck);
                         Destroy(this.gameObject);
                     }
                     if (!targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing() && targetHit.GetComponent<MovableObjectStateMachine>().GetCurrentFacing() == this.GetComponent<MovableObjectStateMachine>().GetCurrentFacing())
                     {
                         Debug.Log("Adding to front of list " + targetHit.name);
-                        Deck deckToAddTo = targetHit.GetComponent<Deck>();
+                        Card deckToAddTo = targetHit.GetComponent<Card>();
                         deckToAddTo.AddToFrontOfList(this.cardsInDeck);
                         Destroy(this.gameObject);
                     }
@@ -224,7 +230,7 @@ public class Deck : MonoBehaviour
     {
         GameObject newDeck;
         newDeck = Instantiate(this.gameObject, Vector3.zero, Quaternion.identity);
-        Deck deck = newDeck.GetComponent<Deck>();
+        Card deck = newDeck.GetComponent<Card>();
         UpdateDeckInfo();
         deck.cardsInDeck.Clear();
         deck.cardsInDeck.Add(cardsInDeck[cardsInDeck.Count - 1]);
@@ -262,9 +268,9 @@ public class Deck : MonoBehaviour
         cardsInDeck.Clear();
         for (int i = iniatedI - numOfCardsToPickUp; i <= iniatedI - 1; i++)
         {
-            GameObject cardToAddThenRemove = newDeck.GetComponent<Deck>().cardsInDeck[i];
+            GameObject cardToAddThenRemove = newDeck.GetComponent<Card>().cardsInDeck[i];
             cardsInDeck.Add(cardToAddThenRemove);
-            newDeck.GetComponent<Deck>().cardsInDeck.RemoveAt(i);
+            newDeck.GetComponent<Card>().cardsInDeck.RemoveAt(i);
         }
 
         UpdateDeckInfo();
@@ -281,9 +287,9 @@ public class Deck : MonoBehaviour
         for (int i = 0; i <= numOfCardsToPickUp - 1; i++)
         {
             Debug.Log(i);
-            GameObject cardToAddThenRemove = newDeck.GetComponent<Deck>().cardsInDeck[i];
+            GameObject cardToAddThenRemove = newDeck.GetComponent<Card>().cardsInDeck[i];
             cardsInDeck.Add(cardToAddThenRemove);
-            newDeck.GetComponent<Deck>().cardsInDeck.RemoveAt(i);
+            newDeck.GetComponent<Card>().cardsInDeck.RemoveAt(i);
         }
 
         UpdateDeckInfo();

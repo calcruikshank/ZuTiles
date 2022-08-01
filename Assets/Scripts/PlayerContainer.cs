@@ -42,9 +42,9 @@ public class PlayerContainer : MonoBehaviour
     }
     public void AddCardToHand(GameObject cardToAdd)
     {
-        if (cardToAdd.GetComponentInChildren<Deck>() != null)
+        if (cardToAdd.GetComponentInChildren<Card>() != null)
         {
-            if (cardToAdd.GetComponentInChildren<Deck>().cardsInDeck.Count > 1)
+            if (cardToAdd.GetComponentInChildren<Card>().cardsInDeck.Count > 1)
             {
                 return;
             }
@@ -84,27 +84,29 @@ public class PlayerContainer : MonoBehaviour
         Texture2D cardImageTexture = (Texture2D)cardToAdd.GetComponentInChildren<Renderer>().material.mainTexture;
         byte[] textureArray = DeCompress(cardImageTexture).EncodeToPNG();
         CompanionTextureAsset cta = new CompanionTextureAsset(textureArray, assetController, cardImageTexture.name);
-        AddCardToAssets(cta);
-        AddCardToHandDisplay(cta);
-        cardToAdd.GetComponentInChildren<Deck>().CardCompanionDefiniiton = cta;
-    }
-    private async void AddCardToAssets(CompanionTextureAsset cta)
-    {
-        assetController.LoadAsset(inPlayer.userId, cta.textureBytes, cta.AssetGuid.ToString());
-        CompanionCreateObjectEventArgs newCardResponse = await cardController.CreateCompanionCard(inPlayer.userId, cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), 400, 400);
 
+        //cardToAdd.GetComponentInChildren<Deck>().CardCompanionDefiniiton = cta;
+        AddCardToAssets(cta, cardToAdd);
+    }
+    private async void AddCardToAssets(CompanionTextureAsset cta, GameObject cardToAdd)
+    {
+        //CardDefinition card = new CardDefinition();
+        await assetController.LoadAsset(inPlayer.userId, cta.textureBytes, cta.AssetGuid.ToString());
+        await cardController.CreateCompanionCard(inPlayer.userId, cardToAdd.GetComponent<Card>().cardId.ToString(), cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), 400, 400);
+
+        AddCardToHandDisplay(cardToAdd.GetComponent<Card>());
         //CardDefinition newCardDef = new CardDefinition(cardImageTexture.name, textureArray, "", null, cardImageTexture.width / 2, cardImageTexture.height / 2);
     }
-    private async void AddCardToHandDisplay(CompanionTextureAsset newCardDef)
+    private async void AddCardToHandDisplay(Card card)
     {
-         cardController.AddCardToHandDisplay(inPlayer.userId, inPlayer.CurrentActiveHandID, newCardDef.AssetGuid.ToString());
+         await cardController.AddCardToHandDisplay(inPlayer.userId, inPlayer.CurrentActiveHandID, card.cardId.ToString());
     }
     public void RemoveCardFromHand(GameObject cardToRemove)
     {
         cardsInHand.Remove(cardToRemove);
         cardToRemove.GetComponent<MovableObjectStateMachine>().RemovePlayerOwnership(this);
 
-        cardToRemove.GetComponentInChildren<Deck>().SetToStartingShader();
+        cardToRemove.GetComponentInChildren<Card>().SetToStartingShader();
         Transform[] objectsInCardToAdd = cardToRemove.GetComponentsInChildren<Transform>();
         foreach (Transform objectInCard in objectsInCardToAdd)
         {
@@ -118,32 +120,17 @@ public class PlayerContainer : MonoBehaviour
 
     void UpdateCardPositions()
     {
-        /*if (thisRotation.y == 0)
-        {
-            for (int i = 0; i < cardsInHand.Count; i++)
-            {
-                cardsInHand[i].transform.position = new Vector3(((this.transform.position.x + (cardsInHand[i].transform.GetComponentInChildren<Collider>().bounds.size.x * i) + movableObjectPadding * i)) + currentOffset.x, this.transform.position.y + .1f, this.transform.position.z);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < cardsInHand.Count; i++)
-            {
-                cardsInHand[i].transform.position = this.transform.position;
-            }
-        }*/
         for (int i = 0; i < cardsInHand.Count; i++)
         {
             cardsInHand[i].transform.position = this.transform.position;
         }
     }
 
-    internal void FindCardToRemove(string selectedCard)
+    public void FindCardToRemove(string selectedCard)
     {
         for (int i = 0; i < cardsInHand.Count; i++)
         {
-            Debug.Log("Card companion definition = " + cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton);
-            if (selectedCard == cardsInHand[i].GetComponent<Deck>().CardCompanionDefiniiton.AssetGuid.ToString())
+            if (selectedCard == cardsInHand[i].GetComponent<Card>().cardId.ToString())
             {
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().objects.Add(targetPlayCardTransform);
                 cardsInHand[i].GetComponent<MoveTowardsWithLerp>().ChangeStateToLerp();

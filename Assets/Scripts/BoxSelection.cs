@@ -428,11 +428,11 @@ public class BoxSelection : MonoBehaviour
     {
         //choose a master object to add all other objects to i[0]
         bool hasChosenMasterObject = false;
-        Deck deckToAddTo = new Deck();
+        Card deckToAddTo = new Card();
         MovableObjectStateMachine deckToAddToMovable = new MovableObjectStateMachine();
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
-            if (selectedMovableObjects[i].transform.GetComponentInChildren<Deck>() != null)
+            if (selectedMovableObjects[i].transform.GetComponentInChildren<Card>() != null)
             {
                 if (hasChosenMasterObject)
                 {
@@ -441,8 +441,8 @@ public class BoxSelection : MonoBehaviour
                         if (deckToAddTo != null)
                         {
                             deckToAddTo.transform.position = selectionBox.transform.position;
-                            deckToAddTo.AddToDeck(selectedMovableObjects[i].GetComponentInChildren<Deck>().cardsInDeck);
-                            selectedMovableObjects[i].GetComponentInChildren<Deck>().UpdateDeckInfo();
+                            deckToAddTo.AddToDeck(selectedMovableObjects[i].GetComponentInChildren<Card>().cardsInDeck);
+                            selectedMovableObjects[i].GetComponentInChildren<Card>().UpdateDeckInfo();
                             Destroy(selectedMovableObjects[i].gameObject);
                         }
                     }
@@ -450,7 +450,7 @@ public class BoxSelection : MonoBehaviour
                 if (!hasChosenMasterObject)
                 {
                     hasChosenMasterObject = true;
-                    deckToAddTo = selectedMovableObjects[i].GetComponentInChildren<Deck>(); deckToAddToMovable = selectedMovableObjects[i];
+                    deckToAddTo = selectedMovableObjects[i].GetComponentInChildren<Card>(); deckToAddToMovable = selectedMovableObjects[i];
                 }
                 
                 
