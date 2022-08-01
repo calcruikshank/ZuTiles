@@ -93,9 +93,9 @@ public class PlayerContainer : MonoBehaviour
         //CardDefinition card = new CardDefinition();
         if (!UserPresenceGameObjectController.singleton.cardImageList.Contains(cta.AssetGuid.ToString()))
         {
-            Debug.LogError("Adding asset guid !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            await assetController.LoadAsset(inPlayer.userId, cta.textureBytes, cta.AssetGuid.ToString());
             UserPresenceGameObjectController.singleton.cardImageList.Add(cta.AssetGuid.ToString());
+            Debug.LogError("Assing cta name to card image list " + cta.Name + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            await assetController.LoadAsset(inPlayer.userId, cta.textureBytes, cta.AssetGuid.ToString());
         }
         await cardController.CreateCompanionCard(inPlayer.userId, cardToAdd.GetComponent<Card>().cardId.ToString(), cta.AssetGuid.ToString(), cta.AssetGuid.ToString(), 400, 400);
 
@@ -116,7 +116,6 @@ public class PlayerContainer : MonoBehaviour
         foreach (Transform objectInCard in objectsInCardToAdd)
         {
             setStencilReference.objectsToHide.Remove(objectInCard.gameObject);
-            Debug.Log(objectInCard + " Object in card");
             objectInCard.GetComponentInChildren<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
         }
         UpdateCardPositions();
