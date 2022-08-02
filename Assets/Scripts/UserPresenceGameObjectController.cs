@@ -5,6 +5,7 @@ using Gameboard.Objects;
 using Gameboard.Tools;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gameboard
@@ -48,6 +49,8 @@ namespace Gameboard
             userPresenceController.OnUserPresence += OnUserPresence;
             GetUP();
         }
+
+
         async void GetUP()
         {
             if (userPresenceController != null)
@@ -59,6 +62,12 @@ namespace Gameboard
                 }
             }
             
+        }
+
+        internal async Task SetCardBackgroundAsync(PlayerPresenceDrawer playerPresenceDrawer, ControlAssetType cat, Guid thisBackgoundGUID)
+        {
+            //await cardController.SetCardControlAsset(playerPresenceDrawer.userId, ControlAssetType.CardBackgroundAssetId, thisBackgoundGUID.ToString());
+            //first make a companion texture asset
         }
 
         private void Update()
