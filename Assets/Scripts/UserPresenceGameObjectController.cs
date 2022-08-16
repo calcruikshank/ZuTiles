@@ -2,7 +2,6 @@ using Gameboard;
 using Gameboard.EventArgs;
 using Gameboard.Examples;
 using Gameboard.Objects;
-using Gameboard.Tools;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -113,12 +112,11 @@ namespace Gameboard
 
                         GameObject scenePrefab = Instantiate(playerPresenceSceneObject);
 
-                        Debug.Log(userPresence.boardUserPosition.screenPosition + " Board position!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         myObject = scenePrefab.GetComponent<PlayerPresenceDrawer>();
                         //myObject.transform.position = new Vector3( userPresence.boardUserPosition.x);
                         myObject.InjectDependencies(userPresence);
 
-                        myObject.UpdatePlayerPositionOnStart(userPresence.boardUserPosition.screenPosition);
+                        //myObject.UpdatePlayerPositionOnStart(userPresence.boardUserPosition.screenPosition);
 
                         CreateCardHandOnPlayersAsync(myObject);
                         //setStencilReference.hideObjectsWalls.Add(myObject.GetComponentInChildren<TransparentShader>().gameObject);

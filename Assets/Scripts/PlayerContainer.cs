@@ -2,7 +2,6 @@ using Gameboard;
 using Gameboard.EventArgs;
 using Gameboard.Examples;
 using Gameboard.Objects;
-using Gameboard.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,8 +25,6 @@ public class PlayerContainer : MonoBehaviour
 
     public Transform targetPlayCardTransform;
     public Transform deckSpawnLocation;
-
-    Dictionary<CardDefinition, string> cardDefinitions = new Dictionary<CardDefinition, string>();
     CardController cardController;
     AssetController assetController;
     private void Awake()

@@ -1,6 +1,5 @@
 using Gameboard.EventArgs;
 using Gameboard.Objects;
-using Gameboard.Tools;
 using Shared.UI.Helpers;
 using System;
 using System.Collections;
@@ -13,7 +12,6 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     public List<GameObject> cardsInDeck = new List<GameObject>();
     MovableObjectStateMachine movableObject;
-    public CardDefinition CardCompanionDefiniiton;
     public Guid cardId;
     public Guid frontAssetId;
     public Guid backAssetId;
