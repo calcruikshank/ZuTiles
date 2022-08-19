@@ -44,7 +44,6 @@ public class TouchController : MonoBehaviour
             }
             if (GetFinalParent(raycastHit).GetComponent<MovableObjectStateMachine>() != null)
             {
-                
                 //if a movable was hit set position to target position and add movable to the dictionary
                 MovableObjectStateMachine movableHit = GetFinalParent(raycastHit).GetComponent<MovableObjectStateMachine>();
                 if (movableHit.playerOwningCard == null)
@@ -53,7 +52,6 @@ public class TouchController : MonoBehaviour
                     //Vector3 offset = new Vector3(movableHit.transform.position.x - raycastHit.point.x, 0, movableHit.transform.position.z - raycastHit.point.z);
                     movableHit.SetTouched(index, raycastHit.point);
                 }
-               
             }
             if (raycastHit.transform.GetComponent<BoxSelection>() != null)
             {

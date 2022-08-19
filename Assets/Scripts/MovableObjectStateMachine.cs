@@ -202,7 +202,6 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     void CheckForShuffle()
     {
-
         Vector3 initialMoveDirection = fingerMovePosition - startingTouchPosition;
 
         if (initialMoveDirection.x > previousInitialMoveDirection.x)
@@ -399,6 +398,13 @@ public class MovableObjectStateMachine : MonoBehaviour
         if (fingerMovePosition == Vector3.zero)
         {
             return;
+        }
+        if (deck != null)
+        {
+            if (deck.cardsInDeck.Count <= 1)
+            {
+                QuickDrag();
+            }
         }
         HideSelectedWheel();
         heldDownTimer += Time.deltaTime;

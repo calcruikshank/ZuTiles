@@ -315,7 +315,7 @@ public class BoxSelection : MonoBehaviour
     void UpdateSelectionBox()
     {
         distanceFromStartToCurrent = Vector3.Distance(raycastStartPos, currentPosition);
-        if (distanceFromStartToCurrent > .01f)
+        if (distanceFromStartToCurrent > .1f)
         {
             if (!selectionBox.gameObject.activeInHierarchy)
             {

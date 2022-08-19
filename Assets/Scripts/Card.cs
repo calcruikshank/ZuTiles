@@ -209,7 +209,7 @@ public class Card : MonoBehaviour
                 return null;
             }
             newCard = InstantiateCardsFromBottom();
-           // newCard.GetComponent<Deck>().UpdateDeckInfo();
+            //newCard.GetComponent<Deck>().UpdateDeckInfo();
             /*if (this.GetComponent<MovableObjectStateMachine>().faceUp)
             {
                 newCard = InstantiateCardsFromBottom();
@@ -227,7 +227,7 @@ public class Card : MonoBehaviour
     GameObject InstantiateCardsFromBottom()
     {
         GameObject newDeck;
-        newDeck = Instantiate(this.gameObject, Vector3.zero, Quaternion.identity);
+        newDeck = Instantiate(this.gameObject, this.transform.position, Quaternion.identity);
         Card deck = newDeck.GetComponent<Card>();
         UpdateDeckInfo();
         deck.cardsInDeck.Clear();
@@ -256,7 +256,6 @@ public class Card : MonoBehaviour
             PickUpCardsFromTop(numOfCardsToPickUp);
         }
     }
-
 
     public void PickUpCardsFromBottom(int numOfCardsToPickUp)
     {
