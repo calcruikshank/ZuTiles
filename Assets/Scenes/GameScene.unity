@@ -886,6 +886,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &171853854
 Transform:
   m_ObjectHideFlags: 0
@@ -1074,6 +1075,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &209038193
 Transform:
   m_ObjectHideFlags: 0
@@ -1456,6 +1458,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &311712881
 Transform:
   m_ObjectHideFlags: 0
@@ -2036,6 +2039,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &380199366
 Transform:
   m_ObjectHideFlags: 0
@@ -2900,6 +2904,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &490790827
 Transform:
   m_ObjectHideFlags: 0
@@ -3635,6 +3640,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &555184036
 Transform:
   m_ObjectHideFlags: 0
@@ -6684,6 +6690,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &1110984108
 Transform:
   m_ObjectHideFlags: 0
@@ -10105,6 +10112,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &1796600651
 Transform:
   m_ObjectHideFlags: 0
@@ -10269,6 +10277,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!114 &1838842068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10722,6 +10731,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!4 &1934120114
 Transform:
   m_ObjectHideFlags: 0
@@ -12693,7 +12703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7571684906804287598, guid: 461a57dfb27c4df4a8548f1c2b43e4f6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7571684906804287599, guid: 461a57dfb27c4df4a8548f1c2b43e4f6, type: 3}
       propertyPath: m_RootOrder
@@ -12758,6 +12768,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!114 &7812708951070215623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12775,6 +12786,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!114 &7812708951177413634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12792,6 +12804,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!114 &7812708951308922193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12809,6 +12822,7 @@ MonoBehaviour:
   faceUp: 0
   playerOwningCard: {fileID: 0}
   boxSelected: 0
+  zoomed: 0
 --- !u!114 &9178429948144326512
 MonoBehaviour:
   m_ObjectHideFlags: 0

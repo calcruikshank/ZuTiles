@@ -446,9 +446,9 @@ public class MovableObjectStateMachine : MonoBehaviour
     {
         Vector3 targetPosition = new Vector3(fingerMovePosition.x, this.transform.position.y, fingerMovePosition.z);
 
-        targetPosition.x = Mathf.Clamp(targetPosition.x, -screenBounds.x, screenBounds.x);
-        targetPosition.z = Mathf.Clamp(targetPosition.z, -screenBounds.z, screenBounds.z);
         targetPosition = targetPosition + offset;
+        targetPosition.x = Mathf.Clamp(targetPosition.x, -screenBounds.x + (transform.GetComponentInChildren<Collider>().bounds.size.x / 2), screenBounds.x - (transform.GetComponentInChildren<Collider>().bounds.size.x / 2));
+        targetPosition.z = Mathf.Clamp(targetPosition.z, -screenBounds.z + (transform.GetComponentInChildren<Collider>().bounds.size.z / 2), screenBounds.z - (transform.GetComponentInChildren<Collider>().bounds.size.z / 2));
         this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, 100 * Time.deltaTime);
        
     }
