@@ -115,6 +115,7 @@ public class Card : MonoBehaviour
         for (int i = 0; i < hits.Length; i++)
         {
             var placementObj = hits[i].transform.root.GetComponentInChildren<PlacementObject>();
+            if (this.GetComponent<MovableObjectStateMachine>().zoomed) return;
             if (placementObj != null && placementObj.ListContainsString(this.name))
             {
                 Debug.Log("The name of this component is " + hits[i].transform.name);

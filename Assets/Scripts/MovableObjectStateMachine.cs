@@ -354,6 +354,8 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
 
     float frames = 0;
+
+    public bool zoomed = false;
     void HandleZoom()
     {
         float multiplier = Time.deltaTime * 15;
@@ -368,6 +370,7 @@ public class MovableObjectStateMachine : MonoBehaviour
             {
                 state = State.Idle;
             }
+            zoomed = true;
             return;
         }
         transform.localScale = Vector3.Lerp(startingSize, startingTargetLerp, frames/5f);
@@ -377,6 +380,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     void HandleShrink()
     {
+        zoomed = false;
         float multiplier = Time.deltaTime * 15;
         if (transform.localScale.magnitude <= startingSize.magnitude + .2f)
         {
@@ -440,12 +444,13 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     void Move()
     {
-        if (transform.root.transform.GetComponentInChildren<Renderer>().isVisible)
-        {
-            Vector3 targetPosition = new Vector3(fingerMovePosition.x, this.transform.position.y, fingerMovePosition.z);
-            targetPosition = targetPosition + offset;
-            this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, 100 * Time.deltaTime);
-        }
+        Vector3 targetPosition = new Vector3(fingerMovePosition.x, this.transform.position.y, fingerMovePosition.z);
+
+        targetPosition.x = Mathf.Clamp(targetPosition.x, -screenBounds.x, screenBounds.x);
+        targetPosition.z = Mathf.Clamp(targetPosition.z, -screenBounds.z, screenBounds.z);
+        targetPosition = targetPosition + offset;
+        this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, 100 * Time.deltaTime);
+       
     }
 
 

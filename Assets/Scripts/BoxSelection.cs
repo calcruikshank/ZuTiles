@@ -144,6 +144,10 @@ public class BoxSelection : MonoBehaviour
             alreadySubscribed = false;
         }
         ChangeRectSizeToFitAllMovableObjects();
+        if (selectedMovableObjects.Count == 1)
+        {
+            Close();
+        }
         
     }
 

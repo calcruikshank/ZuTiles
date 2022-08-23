@@ -31,7 +31,7 @@ public class BoxSelectionObject : MonoBehaviour
     }
     public void GroupAllSimilarMovableObjects()
     {
-
+        BoxSelection.singleton.GroupAllSimilarObjects();
     }
     public void RotateRightFromButton()
     {
