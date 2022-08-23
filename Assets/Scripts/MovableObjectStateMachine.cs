@@ -66,8 +66,11 @@ public class MovableObjectStateMachine : MonoBehaviour
         lowering = true;
     }
     // Start is called before the first frame update
+    Vector3 screenBounds;
     void Start()
     {
+        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+        Debug.Log(screenBounds + " Screen bounds");
         InitializeMovableObject();
     }
 
@@ -310,7 +313,7 @@ public class MovableObjectStateMachine : MonoBehaviour
     public void FlipObject()
     {
         float tempSXRotation = startingXRotation;
-        Debug.Log(GetCurrentFacing() + " Flipping object");
+        Debug.LogError(GetCurrentFacing() + " Flipping object");
         if (GetCurrentFacing())
         {
             transform.GetChild(0).localEulerAngles = new Vector3(tempSXRotation + 180, transform.GetChild(0).localEulerAngles.y, transform.GetChild(0).localEulerAngles.z);
@@ -437,9 +440,12 @@ public class MovableObjectStateMachine : MonoBehaviour
     }
     void Move()
     {
-        Vector3 targetPosition = new Vector3(fingerMovePosition.x, this.transform.position.y, fingerMovePosition.z);
-        targetPosition = targetPosition + offset;
-        this.transform.position = targetPosition;
+        if (transform.root.transform.GetComponentInChildren<Renderer>().isVisible)
+        {
+            Vector3 targetPosition = new Vector3(fingerMovePosition.x, this.transform.position.y, fingerMovePosition.z);
+            targetPosition = targetPosition + offset;
+            this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, 100 * Time.deltaTime);
+        }
     }
 
 
@@ -487,7 +493,6 @@ public class MovableObjectStateMachine : MonoBehaviour
     {
         state = State.Moving;
     }
-
     public void QuickDrag()
     {
         //Draw top card 
@@ -495,6 +500,7 @@ public class MovableObjectStateMachine : MonoBehaviour
         {
             deck.PickUpCards(1);
             state = State.Moving;
+
         }
         if (deck == null)
         {

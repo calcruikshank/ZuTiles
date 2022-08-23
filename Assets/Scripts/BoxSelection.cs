@@ -102,12 +102,12 @@ public class BoxSelection : MonoBehaviour
         startPosition = positionSent;
         Ray ray = Camera.main.ScreenPointToRay(startPosition);
         startingWorldPosition = ray.GetPoint(Camera.main.transform.position.y);
-        selectionBox.transform.position = startingWorldPosition;
+        selectionBox.transform.position = new Vector3( startingWorldPosition.x, startingWorldPosition.y, startingWorldPosition.z) ;
         SubscribeToDelegates();
         raycastStartPos = startPosition;
         selectionBox.localScale = Vector3.zero;
         //UpdateSelectionBox();
-        selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, startingWorldPosition.y, startingWorldPosition.z + height / 2);
+        selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, 10, startingWorldPosition.z + height / 2);
         moving = false;
     }
     void SubscribeToDelegates()
@@ -186,7 +186,7 @@ public class BoxSelection : MonoBehaviour
         height = mostPositiveY - mostNegativeY;
 
         selectionBox.localScale = new Vector3(MathF.Abs(width), MathF.Abs(height), 1);
-        selectionBox.anchoredPosition3D = new Vector3(mostNegativeX + width / 2, selectionBox.transform.position.y, mostNegativeY + height / 2);
+        selectionBox.anchoredPosition3D = new Vector3(mostNegativeX + width / 2,  10, mostNegativeY + height / 2);
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
             Debug.Log(selectedMovableObjects[i]);
@@ -204,7 +204,7 @@ public class BoxSelection : MonoBehaviour
         //if start position.x < currentposition.x && startposition.z < currentPosition.z
         if (startPosition.x < currentPosition.x && startPosition.y > currentPosition.y)
         {
-            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, 11f, selectionBox.transform.position.z + height / 2);
             //call this method when finger is released and selected movable objects.count > 0 
             newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
             closeButtonOffset = offset;
@@ -213,7 +213,7 @@ public class BoxSelection : MonoBehaviour
         }
         else if (startPosition.x < currentPosition.x && startPosition.y < currentPosition.y)
         {
-            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, 11, selectionBox.transform.position.z + height / 2);
             //call this method when finger is released and selected movable objects.count > 0 
             newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
             closeButtonOffset = offset;
@@ -221,7 +221,7 @@ public class BoxSelection : MonoBehaviour
         }
         else if (startPosition.x > currentPosition.x && startPosition.y < currentPosition.y)
         {
-            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, 11, selectionBox.transform.position.z + height / 2);
             //call this method when finger is released and selected movable objects.count > 0 
             newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
             closeButtonOffset = offset;
@@ -229,7 +229,7 @@ public class BoxSelection : MonoBehaviour
         }
         else if (startPosition.x > currentPosition.x && startPosition.y > currentPosition.y)
         {
-            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, 11, selectionBox.transform.position.z + height / 2);
             //call this method when finger is released and selected movable objects.count > 0 
             newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
             closeButtonOffset = offset;
@@ -238,7 +238,7 @@ public class BoxSelection : MonoBehaviour
         else
         {
             //call this method when finger is released and selected movable objects.count > 0 
-            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, selectedMovableObjects[0].transform.position.y + .2f, selectionBox.transform.position.z + height / 2);
+            Vector3 offset = new Vector3(selectionBox.transform.position.x + width / 2, 11, selectionBox.transform.position.z + height / 2);
             //call this method when finger is released and selected movable objects.count > 0 
             newCloseButton = Instantiate(closeButton, offset, Quaternion.identity);
             closeButtonOffset = offset;
@@ -247,7 +247,7 @@ public class BoxSelection : MonoBehaviour
         }
         if (newSelectionWheel == null)
         {
-           newSelectionWheel = Instantiate(selectionWheelBox, new Vector3(selectionBox.transform.position.x, 7, selectionBox.transform.position.z), Quaternion.identity);
+           newSelectionWheel = Instantiate(selectionWheelBox, new Vector3(selectionBox.transform.position.x, 11, selectionBox.transform.position.z), Quaternion.identity);
             newSelectionWheel.transform.parent = selectionBox;
             ButtonSelector[] buttonSelectors = newSelectionWheel.GetComponentsInChildren<ButtonSelector>();
             for (int i = 0; i < buttonSelectors.Length; i++)
@@ -263,11 +263,12 @@ public class BoxSelection : MonoBehaviour
 
     }
 
-    public void FlipObject()
+    public void FlipObjectFromBox()
     {
         for (int i = 0; i < selectedMovableObjects.Count; i++)
         {
             selectedMovableObjects[i].FlipObject();
+            Debug.LogError(i + " Flkip objecvt ");
         }
     }
     
@@ -327,7 +328,7 @@ public class BoxSelection : MonoBehaviour
             height = currentWorldPosition.z - startingWorldPosition.z;
             selectionBox.localScale = new Vector3(MathF.Abs(width), MathF.Abs(height), 1);
 
-            selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, startingWorldPosition.y, startingWorldPosition.z + height / 2);
+            selectionBox.anchoredPosition3D = new Vector3(startingWorldPosition.x + width / 2, 10, startingWorldPosition.z + height / 2);
 
             ShootRayCastToCheckForMovableObjects();
             raycastStartPos = currentPosition;
@@ -356,9 +357,12 @@ public class BoxSelection : MonoBehaviour
 
         for (int j = 0; j < resultToAdd.Count(); j++)
         {
-            resultToAdd[j].SetBoxSelected();
+            if (!selectedMovableObjects.Contains(resultToAdd[j]))
+            {
+                resultToAdd[j].SetBoxSelected();
+                selectedMovableObjects.Add(resultToAdd[j]);
+            }
         }
-        selectedMovableObjects = newListOfMovablesToSelect;
     }
 
     bool ArrayContains(RaycastHit[] arraySent, RaycastHit rayToCheck)

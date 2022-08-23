@@ -18,7 +18,7 @@ public class BoxSelectionObject : MonoBehaviour
 
     public void FlipObject()
     {
-        BoxSelection.singleton.FlipObject();
+        BoxSelection.singleton.FlipObjectFromBox();
     }
 
     public void HideSelectedWheel()

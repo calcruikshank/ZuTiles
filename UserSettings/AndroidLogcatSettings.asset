@@ -2,8 +2,8 @@
     "m_SelectedDeviceId": "10.1.10.9:5555",
     "m_SelectedPackage": {
         "deviceId": "10.1.10.9:5555",
-        "name": "com.nomadgames.mysticvale",
-        "processId": 7354,
+        "name": "com.DefaultCompany.ZuTiles",
+        "processId": 6852,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -252,6 +252,66 @@
             "deviceId": "10.1.10.9:5555",
             "name": "com.nomadgames.mysticvale",
             "processId": 7354,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 4945,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5427,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5620,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5772,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 5924,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6086,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6280,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6498,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6692,
+            "exited": false
+        },
+        {
+            "deviceId": "10.1.10.9:5555",
+            "name": "com.DefaultCompany.ZuTiles",
+            "processId": 6852,
             "exited": false
         },
         {

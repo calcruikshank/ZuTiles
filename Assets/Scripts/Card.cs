@@ -24,6 +24,7 @@ public class Card : MonoBehaviour
         UpdateDeckInfo();
     }
 
+    Vector3 initialPositionBeforeGrabbing; 
     public void SetSelected(int id, Vector3 offset)
     {
         TouchScript.shuffleInitiated += ShuffleDeck;
@@ -260,16 +261,17 @@ public class Card : MonoBehaviour
     public void PickUpCardsFromBottom(int numOfCardsToPickUp)
     {
         GameObject newDeck;
-        newDeck = Instantiate(this.gameObject, transform.position, Quaternion.identity);
+        newDeck = Instantiate(this.gameObject, new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z) , Quaternion.identity);
         int iniatedI = cardsInDeck.Count;
         cardsInDeck.Clear();
+        newDeck.GetComponent<MovableObjectStateMachine>().SnapToLowestPointHit();
         for (int i = iniatedI - numOfCardsToPickUp; i <= iniatedI - 1; i++)
         {
             GameObject cardToAddThenRemove = newDeck.GetComponent<Card>().cardsInDeck[i];
             cardsInDeck.Add(cardToAddThenRemove);
             newDeck.GetComponent<Card>().cardsInDeck.RemoveAt(i);
         }
-
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1, this.transform.position.z);
         UpdateDeckInfo();
 
     }
